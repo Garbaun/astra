@@ -108,8 +108,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 about: 'WE\nCODE\nART',
                 services: 'CANVASES\nOF\nTHE FUTURE',
                 vision: 'PERSPECTIVE\nOF\nTOMORROW',
-                blog: 'PULSE\nOF\nDIGITAL'
+                blog: 'THE PULSE\nOF\nTHE DIGITAL'
             },
+            blogTags: {
+                all: 'All',
+                strategy: 'Strategy',
+                design: 'Design',
+                data: 'Data'
+            },
+            blogReadMore: 'Read More',
+            blogPosts: [
+                { title: "The Era of AI Search Engines: Your Brand's Place in the Algorithm.", excerpt: 'Google SGE and other AI-powered search engines are redefining search. Learn how your brand can stand out and become visible deep within algorithms.', img: 'blog/1.png', alt: 'AI Search Era', tags: ['strategy','data'], content: 'AI-powered search changes discovery. To stand out, brands need semantic relevance, structured data, and authoritative content that models intent—not just keywords.\n\nInvest in schema, E-E-A-T signals, and fast, accessible pages. Treat the algorithm as a dynamic audience: measure, adapt, and keep improving your content graph.' },
+                { title: 'The Futuristic Face of Branding: The Evolution of Digital Identity.', excerpt: 'Branding is more than a logo and a tagline. Explore the evolution of digital identity from VR to AI to shape your brand’s future persona.', img: 'blog/2.png', alt: 'Futuristic Branding', tags: ['strategy','design'], content: 'Digital identity now lives across screens, worlds, and contexts. Consistency means designing systems—tokens, motion, tone—that scale across realities.\n\nBrands that embrace adaptive identity stay credible as technology shifts, meeting people with familiar cues wherever they are.' },
+                { title: 'The Art of Data: Inspiration from Marketing Analytics.', excerpt: 'Big data fuels marketing. Discover how we turn raw data into meaningful strategies and compelling stories—data as an art form.', img: 'blog/3.png', alt: 'Data as Art', tags: ['data','strategy'], content: 'Data becomes insight when framed with purpose. Ask better questions, reduce noise, and visualize relationships to reveal what matters.\n\nFrom attribution to cohort analysis, the aim is the same: make decisions clearer and faster for teams and customers.' },
+                { title: 'Sustainable SEO: Remaining Resilient Against Algorithm Shifts.', excerpt: 'SEO algorithms constantly change. Secure your rankings with resilient strategies and predict future SEO trends.', img: 'blog/4.png', alt: 'Sustainable SEO', tags: ['strategy','data'], content: 'Algorithm changes reward sites that serve users well. Focus on content quality, topical depth, and technical hygiene like Core Web Vitals.\n\nBuild resilient traffic with evergreen hubs, internal linking, and ongoing editorial improvements rather than one-off hacks.' },
+                { title: 'Micromarketing and Hyper-Segmentation: A Custom Digital Experience for Every Customer.', excerpt: 'The era of generic campaigns is over. Design tailored journeys with AI-powered micromarketing to boost conversions.', img: 'blog/5.png', alt: 'Micromarketing', tags: ['strategy','data'], content: 'Micromarketing matches moments to messages. With permissioned data and AI, tailor offers, timing, and creative to each segment.\n\nRespect privacy, add value, and measure uplift. When personalization feels helpful, conversion follows naturally.' },
+                { title: 'The Future of Digital Interaction: The Metaverse and Brands.', excerpt: 'The Metaverse opens a new frontier. Create brand experiences, design digital products and engage next-gen consumers.', img: 'blog/6.png', alt: 'Metaverse and Brands', tags: ['strategy','design'], content: 'New mediums demand new behaviors. In immersive spaces, design for presence, community, and co-creation rather than passive consumption.\n\nBrands that experiment responsibly will learn faster and earn trust as the ecosystem matures.' },
+                { title: 'Content Marketing 2.0: Generative AI and the Art of Storytelling.', excerpt: 'Generative AI transforms content creation. Build effective, personalized and scalable content without losing the human touch.', img: 'blog/7.png', alt: 'Content Marketing 2.0', tags: ['strategy','design'], content: 'Generative AI accelerates ideation and production. Keep humans in the loop for strategy, voice, and ethics.\n\nCombine templates with original thinking and real expertise to build content that is useful, distinctive, and trustworthy.' }
+            ],
             visionContent: [
                 {
                     heading: 'Architects of the Digital Universe: Infinite Potential',
@@ -186,11 +202,27 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             slogan: 'YILDIZLARA\nULAŞMANIN\nYOLU',
             slogans: {
-                about: 'BİZ\nSANATI\nKODLUYORUZ',
+                about: 'SANATI\nKODLUYORUZ',
                 services: 'GELECEĞİN\nKANVASLARI',
                 vision: 'YARININ\nPERSPEKTİFİ\nİÇİN',
                 blog: 'DİJİTALİN\nNABZI'
             },
+            blogTags: {
+                all: 'Tümü',
+                strategy: 'Strateji',
+                design: 'Tasarım',
+                data: 'Veri'
+            },
+            blogReadMore: 'Devamını oku',
+            blogPosts: [
+                { title: 'Yapay Zeka Arama Motorları Çağı: Markanızın Algoritmadaki Yeri.', excerpt: 'Google SGE ve diğer yapay zeka destekli arama motorları aramayı yeniden tanımlıyor. Markanızın bu düzende nasıl öne çıkacağını ve algoritmaların derinliklerinde nasıl görünür olacağını keşfedin.', img: 'blog/1.png', alt: 'YZ Arama Çağı', tags: ['strategy','data'], content: 'YZ destekli arama; keşfi kökten değiştiriyor. Öne çıkmak için anahtar kelimelerden çok niyeti modelleyen anlamsal içerik, yapılandırılmış veri ve otorite gerekir.\n\nŞemaya yatırım yapın, E-E-A-T sinyallerini güçlendirin ve erişilebilir, hızlı sayfalar üretin. Algoritmayı dinamik bir izleyici gibi görün: ölç, uyumlan ve içerik grafini sürekli geliştir.' },
+                { title: "Branding'in Fütüristik Yüzü: Dijital Kimliğin Evrimi.", excerpt: 'Artık marka olmak sadece logo ve slogandan ibaret değil. Dijital kimliğin VR’dan yapay zekâya uzanan evrimiyle geleceğin marka personasını şekillendirin.', img: 'blog/2.png', alt: 'Fütüristik Branding', tags: ['strategy','design'], content: 'Dijital kimlik; ekranlar, dünyalar ve bağlamlar arasında yaşıyor. Tutarlılık; gerçeklikler arası ölçeklenen tasarım sistemleri—tokenlar, hareket, üslup—ile sağlanır.\n\nUyarlanabilir kimliği benimseyen markalar teknoloji değişse de inandırıcılıklarını korur; insanların olduğu her yerde tanıdık ipuçlarıyla buluşur.' },
+                { title: 'Data Sanatı: Pazarlama Analizlerinden Gelen İlham.', excerpt: 'Büyük veri, pazarlamanın hammaddesi. Ham veriyi anlamlı stratejilere ve etkileyici hikayelere nasıl dönüştürdüğümüzü keşfedin—veriyi sanat eserine çeviriyoruz.', img: 'blog/3.png', alt: 'Data Sanatı', tags: ['data','strategy'], content: 'Veri; amaçla çerçevelendiğinde içgörüye dönüşür. Daha iyi sorular sorun, gürültüyü azaltın ve ilişkileri görselleştirerek önemli olanı ortaya çıkarın.\n\nAtıf analizinden kohortlara kadar amaç aynı: ekiplerin ve müşterilerin daha net ve hızlı karar vermesini sağlamak.' },
+                { title: 'Sürdürülebilir SEO: Algoritma Değişikliklerine Karşı Esnek Kalmak.', excerpt: 'SEO algoritmaları sürekli güncelleniyor. Sıralamaları kalıcı kılmak için esnek stratejiler ve geleceğin SEO trendlerini öngörme yaklaşımlarını inceleyin.', img: 'blog/4.png', alt: 'Sürdürülebilir SEO', tags: ['strategy','data'], content: 'Algoritma güncellemeleri; kullanıcıya iyi hizmet veren siteleri ödüllendirir. İçerik kalitesine, konu derinliğine ve Core Web Vitals gibi teknik hijyene odaklanın.\n\nEvergreen içerik merkezleri, dahili bağlantılar ve sürekli editoryal iyileştirmelerle dayanıklı trafik oluşturun.' },
+                { title: 'Mikropazarlama ve Hiper-Segmentasyon: Her Müşteriye Özel Bir Dijital Deneyim.', excerpt: 'Genel kampanyaların devri bitti. Yapay zekâ destekli mikropazarlama ile her müşteriye özel yolculuk tasarlayarak dönüşümleri artırın.', img: 'blog/5.png', alt: 'Mikropazarlama', tags: ['strategy','data'], content: 'Mikropazarlama; anları mesajlarla eşleştirir. İzinli veri ve YZ ile teklifleri, zamanlamayı ve kreatifi her segmente göre uyarlayın.\n\nGizliliğe saygı duyun, değer katın ve gerçek etkiyi ölçün. Kişiselleştirme yardımcı hissettirdiğinde dönüşüm doğal olarak gelir.' },
+                { title: 'Dijital Etkileşimin Geleceği: Metaverse ve Markalar.', excerpt: 'Metaverse, markalar için yeni bir alan. Sanal dünyada deneyimler yaratın, dijital ürünler tasarlayın ve yeni nesil tüketicilerle etkileşime geçin.', img: 'blog/6.png', alt: 'Metaverse ve Markalar', tags: ['strategy','design'], content: 'Yeni ortamlar; yeni davranışlar ister. İmmersif alanlarda tasarım; varlık hissi, topluluk ve birlikte üretim üzerine kurulmalıdır—pasif tüketim değil.\n\nEkosistem olgunlaşırken sorumlu deney yapan markalar daha hızlı öğrenir ve güven kazanır.' },
+                { title: 'İçerik Pazarlaması 2.0: Yaratıcı Yapay Zeka ve Hikaye Anlatımı.', excerpt: 'Yaratıcı yapay zekâ içerik üretimini dönüştürüyor. İnsan dokunuşunu koruyarak etkili, kişiselleştirilmiş ve ölçeklenebilir içerikler üretin.', img: 'blog/7.png', alt: 'İçerik Pazarlaması 2.0', tags: ['strategy','design'], content: 'Yaratıcı YZ; fikir üretimi ve üretimi hızlandırır. Strateji, üslup ve etik için insanı döngüde tutun.\n\nŞablonları özgün düşünce ve gerçek uzmanlıkla birleştirerek faydalı, ayırt edici ve güvenilir içerikler üretin.' }
+            ],
             visionContent: [
                 {
                     heading: 'Dijital Evrenin Mimarları: Sonsuz Potansiyel',
@@ -262,6 +294,149 @@ document.addEventListener('DOMContentLoaded', function() {
         langButtons.forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-lang') === lang));
     }
 
+    // --- Blog: Dinamik render ve filtre (DOM yüklendikten sonra kapsamda) ---
+    const state = { blogFilter: 'all' };
+    function renderBlogFilter(lang) {
+        const dict = i18n[lang] || i18n.en;
+        const container = document.querySelector('#blog .blog-container');
+        if (!container) return;
+        let bar = container.querySelector('.blog-filter');
+        if (!bar) {
+            bar = document.createElement('div');
+            bar.className = 'blog-filter';
+            container.insertBefore(bar, container.querySelector('.section-divider')?.nextSibling || container.firstChild);
+        }
+        const labels = dict.blogTags;
+        bar.innerHTML = [
+            { key: 'all', label: labels.all },
+            { key: 'strategy', label: labels.strategy },
+            { key: 'design', label: labels.design },
+            { key: 'data', label: labels.data }
+        ].map(btn => `<button class="filter-btn${state.blogFilter===btn.key?' active':''}" data-filter="${btn.key}" aria-pressed="${state.blogFilter===btn.key}">${btn.label}</button>`).join('');
+        bar.querySelectorAll('.filter-btn').forEach(b => {
+            b.addEventListener('click', () => {
+                state.blogFilter = b.getAttribute('data-filter');
+                renderBlogFilter(lang);
+                renderBlogGallery(lang);
+            });
+        });
+    }
+    function renderBlogGallery(lang) {
+        const dict = i18n[lang] || i18n.en;
+        const posts = Array.isArray(dict.blogPosts) ? dict.blogPosts : [];
+        const gallery = document.querySelector('#blog .blog-gallery');
+        if (!gallery) return;
+        // Rastgele tarihleri (son 2 yıl) üret ve localStorage'da kalıcı tut
+        const storageKey = `blogDates:v1:${lang}`;
+        let map = {};
+        try { map = JSON.parse(localStorage.getItem(storageKey) || '{}'); } catch (_) { map = {}; }
+        const now = Date.now();
+        const twoYears = 2 * 365 * 24 * 60 * 60 * 1000;
+        posts.forEach(p => {
+            const key = p.title;
+            if (!map[key]) {
+                const rnd = Math.random();
+                const d = new Date(now - Math.floor(rnd * twoYears));
+                map[key] = d.toISOString();
+            }
+        });
+        try { localStorage.setItem(storageKey, JSON.stringify(map)); } catch (_) {}
+
+        // Yardımcı: tarihi biçimle
+        function formatDate(iso) {
+            const d = new Date(iso);
+            if (lang === 'tr') {
+                const dd = String(d.getDate()).padStart(2, '0');
+                const mm = String(d.getMonth() + 1).padStart(2, '0');
+                const yyyy = d.getFullYear();
+                return `${dd}.${mm}.${yyyy}`;
+            }
+            return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        const withDates = posts.map(p => ({ ...p, __dateISO: map[p.title], __date: new Date(map[p.title]) }));
+        // Filtre ve sıralama: eskiden yeniye doğru
+        const activeTag = state.blogFilter;
+        const filtered = activeTag==='all' ? withDates : withDates.filter(p => (p.tags||[]).includes(activeTag));
+        filtered.sort((a,b) => a.__date - b.__date);
+
+        gallery.innerHTML = filtered.map(p => `
+            <article class="blog-card" tabindex="0" data-tags="${(p.tags||[]).join(',')}">
+                <img class="blog-thumb" src="${p.img}" alt="${p.alt||p.title}">
+                <div class="blog-meta">
+                    <div class="blog-card-date">${formatDate(p.__dateISO)}</div>
+                    <h3 class="blog-card-title">${p.title}</h3>
+                    <p class="blog-card-excerpt">${p.excerpt}</p>
+                    <button class="read-more-btn" type="button">${dict.blogReadMore || 'Read More'}</button>
+                </div>
+            </article>
+        `).join('');
+        // Kart odak/klik animasyonu
+        gallery.querySelectorAll('.blog-card').forEach(card => {
+            card.addEventListener('click', () => card.classList.add('pulse'));
+            card.addEventListener('animationend', () => card.classList.remove('pulse'));
+        });
+        // Read More: modal aç
+        gallery.querySelectorAll('.read-more-btn').forEach((btn, idx) => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const post = filtered[idx];
+                if (post) openReadModal(post, lang);
+            });
+        });
+    }
+
+    // --- Read Modal Helpers ---
+    function ensureReadModal() {
+        let overlay = document.querySelector('.read-modal-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.className = 'read-modal-overlay';
+            overlay.innerHTML = `
+                <div class="read-modal" role="dialog" aria-modal="true" aria-labelledby="readModalTitle" tabindex="-1">
+                    <button class="read-modal-close" type="button" aria-label="Close">×</button>
+                    <div class="read-modal-header"><h3 id="readModalTitle"></h3></div>
+                    <div class="read-modal-content"></div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+            // Close on overlay click
+            overlay.addEventListener('click', (ev) => {
+                if (ev.target.classList.contains('read-modal-overlay')) closeReadModal();
+            });
+            // Close on button
+            overlay.querySelector('.read-modal-close').addEventListener('click', closeReadModal);
+            // Close on Escape
+            document.addEventListener('keydown', (ev) => {
+                if (ev.key === 'Escape') closeReadModal();
+            });
+        }
+        return overlay;
+    }
+
+    function openReadModal(post, lang) {
+        const overlay = ensureReadModal();
+        const dict = i18n[lang] || i18n.en;
+        overlay.querySelector('#readModalTitle').textContent = post.title;
+        const contentHTML = String(post.content || post.excerpt || '')
+            .split('\n\n')
+            .map(p => `<p>${p}</p>`)
+            .join('');
+        overlay.querySelector('.read-modal-content').innerHTML = contentHTML;
+        overlay.querySelector('.read-modal-close').setAttribute('aria-label', dict.blogClose || (lang==='tr'?'Kapat':'Close'));
+        overlay.classList.add('visible');
+        document.body.style.overflow = 'hidden';
+        const modal = overlay.querySelector('.read-modal');
+        modal.focus();
+    }
+
+    function closeReadModal() {
+        const overlay = document.querySelector('.read-modal-overlay');
+        if (!overlay) return;
+        overlay.classList.remove('visible');
+        document.body.style.overflow = '';
+    }
+
     function applyLanguage(lang, restart = false) {
         const dict = i18n[lang] || i18n.en;
         // Nav metinleri
@@ -285,6 +460,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 el.innerHTML = '';
             }
         });
+
+        // Blog içeriğini ve filtreyi güncelle
+        try {
+            renderBlogFilter(lang);
+            renderBlogGallery(lang);
+        } catch (_) {}
 
         // About içerik görünürlüğü (TR/EN)
         try {
@@ -370,6 +551,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const savedLang = localStorage.getItem('lang') || 'en';
     applyLanguage(savedLang, false);
+
+    // Blog: Yükleme sonrası güvenlik ağı – galeri boşsa yeniden çiz
+    try {
+        const galleryEl = document.querySelector('#blog .blog-gallery');
+        const containerEl = document.querySelector('#blog .blog-container');
+        const langNow = localStorage.getItem('lang') || savedLang;
+        if (containerEl) { renderBlogFilter(langNow); }
+        if (galleryEl && !galleryEl.children.length) { renderBlogGallery(langNow); }
+    } catch (_) {}
 
     langButtons.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -489,6 +679,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const targetPage = this.getAttribute('data-page');
             const targetSection = document.getElementById(targetPage);
             if (targetSection) {
+                // Bölümü hemen aktif et: hero görünür ve sabit ayarlar doğru uygulanır
+                try { activateNav(targetPage, 'nav'); } catch (_) {}
                 const isHome = targetPage === 'home';
                 if (isHome) {
                     suppressUpwardModeUntil = Date.now() + 1200 + 80;
@@ -506,9 +698,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
             // URL hash’i güncelle: geri/ileri tuşlarında tutarlı davranış
-            if (!isHome) {
+            if (targetPage !== 'home') {
                 try { history.replaceState(null, '', `#${targetPage}`); } catch (_) {}
-                activateNav(targetPage, 'nav');
             }
         });
     });
@@ -1621,8 +1812,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Hero görsellerini scroll ile kademeli koyultma
     (function enableHeroDarkenOnScroll() {
         let rafId = null;
+        // Bölüm sırası: aktif ve bir sonraki bölümü kolay bulmak için
+        const order = ['home','about','services','vision','blog','contact'];
         const MAX_DARK_PER_SECTION = {
-            home: 0.20,
+            home: 0.45,
             about: 0.18,
             services: 0.20,
             vision: 0.18,
@@ -1657,6 +1850,20 @@ document.addEventListener('DOMContentLoaded', function() {
             const maxDark = MAX_DARK_PER_SECTION[active] ?? 0.18; // bölüm bazlı kararma üst sınırı
             const darkness = (1 - t) * maxDark;
             hero.style.setProperty('--hero-darkness', darkness.toFixed(3));
+
+            // Aşağı geçişlerde ton farkını kaldırmak için: bir sonraki bölüm önizlemesi varsa
+            // onun karanlığını aktif bölümün karanlığıyla senkronize et.
+            const idx = order.indexOf(active);
+            if (idx !== -1 && idx < order.length - 1) {
+                const nextId = order[idx + 1];
+                const nextSection = document.getElementById(nextId);
+                if (nextSection && nextSection.classList.contains('hero-preview')) {
+                    const nextHero = nextSection.querySelector('.hero-fill');
+                    if (nextHero) {
+                        nextHero.style.setProperty('--hero-darkness', darkness.toFixed(3));
+                    }
+                }
+            }
         }
 
         window.addEventListener('scroll', () => {
