@@ -1,0 +1,289 @@
+/* Placeholder Images for Different Sections */
+
+.page-section[data-background="space"] {
+    background-image: url('mainpage.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+/* Office/Studio background for About Section */
+.page-section[data-background="office"] {
+    background-image: url('pages/hakkimizda.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.page-section[data-background="office"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(45deg, transparent 30%, rgba(0, 212, 255, 0.05) 50%, transparent 70%),
+        linear-gradient(-45deg, transparent 30%, rgba(255, 255, 255, 0.02) 50%, transparent 70%);
+    background-size: 60px 60px;
+    /* Animasyon kapalı */
+    animation: none;
+    filter: blur(1px);
+}
+
+.page-section[data-background="office"]::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(ellipse at top left, rgba(0, 212, 255, 0.1), transparent 70%),
+        radial-gradient(ellipse at bottom right, rgba(255, 255, 255, 0.05), transparent 70%);
+    /* Animasyon kapalı */
+    animation: none;
+}
+
+@keyframes officeGrid {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(60px, 60px); }
+}
+
+@keyframes officeLights {
+    0% { opacity: 0.4; }
+    100% { opacity: 0.8; }
+}
+
+/* Billboard/Street background for Services Section */
+.page-section[data-background="billboard"] {
+    background-image: url('pages/hizmetlerimiz.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.page-section[data-background="billboard"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 50px,
+            rgba(255, 255, 255, 0.03) 50px,
+            rgba(255, 255, 255, 0.03) 52px
+        ),
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 100px,
+            rgba(0, 212, 255, 0.05) 100px,
+            rgba(0, 212, 255, 0.05) 102px
+        );
+    /* Animasyon kapalı */
+    animation: none;
+}
+
+.page-section[data-background="billboard"]::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(rectangle at 25% 50%, rgba(255, 0, 110, 0.2), transparent 30%),
+        radial-gradient(rectangle at 75% 50%, rgba(0, 212, 255, 0.2), transparent 30%);
+    /* Animasyon kapalı */
+    animation: none;
+}
+
+@keyframes billboardGrid {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(52px); }
+}
+
+@keyframes billboardGlow {
+    0% { opacity: 0.3; }
+    100% { opacity: 0.7; }
+}
+
+/* Window/Residential background for Vision Section */
+.page-section[data-background="window"] {
+    background-image: url('pages/vizyonumuz.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.page-section[data-background="window"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(
+            45deg,
+            transparent 40%,
+            rgba(255, 255, 255, 0.02) 45%,
+            rgba(255, 255, 255, 0.02) 55%,
+            transparent 60%
+        );
+    background-size: 80px 80px;
+    /* Animasyon kapalı */
+    animation: none;
+    filter: blur(0.5px);
+}
+
+.page-section[data-background="window"]::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.1), transparent 40%),
+        radial-gradient(circle at 70% 80%, rgba(0, 212, 255, 0.08), transparent 40%);
+    /* Animasyon kapalı */
+    animation: none;
+}
+
+@keyframes windowReflection {
+    0% { transform: translate(-80px, -80px); }
+    100% { transform: translate(0, 0); }
+}
+
+@keyframes windowLights {
+    0% { opacity: 0.2; }
+    100% { opacity: 0.6; }
+}
+
+/* Skyscrapers/Urban background for Contact Section */
+.page-section[data-background="skyscrapers"] {
+    background-image: url('pages/iletisim.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+/* Disable decorative overlays for cleaner hero images */
+.page-section[data-background="office"]::before,
+.page-section[data-background="office"]::after,
+.page-section[data-background="billboard"]::before,
+.page-section[data-background="billboard"]::after,
+.page-section[data-background="window"]::before,
+.page-section[data-background="window"]::after,
+.page-section[data-background="skyscrapers"]::before,
+.page-section[data-background="skyscrapers"]::after {
+    content: none !important;
+    background: none !important;
+    animation: none !important;
+}
+
+.page-section[data-background="skyscrapers"]::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    background: 
+        linear-gradient(
+            0deg,
+            transparent 0%,
+            rgba(0, 212, 255, 0.1) 20%,
+            rgba(255, 255, 255, 0.05) 40%,
+            rgba(0, 212, 255, 0.08) 60%,
+            transparent 100%
+        );
+    /* Animasyon kapalı */
+    animation: none;
+}
+
+.page-section[data-background="skyscrapers"]::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        repeating-linear-gradient(
+            15deg,
+            transparent,
+            transparent 20px,
+            rgba(255, 255, 255, 0.02) 20px,
+            rgba(255, 255, 255, 0.02) 22px
+        ),
+        repeating-linear-gradient(
+            -15deg,
+            transparent,
+            transparent 30px,
+            rgba(0, 212, 255, 0.03) 30px,
+            rgba(0, 212, 255, 0.03) 32px
+        );
+    /* Animasyon kapalı */
+    animation: none;
+}
+
+@keyframes skyscraperGlow {
+    0% { opacity: 0.3; transform: scaleY(1); }
+    100% { opacity: 0.8; transform: scaleY(1.1); }
+}
+
+@keyframes skyscraperGrid {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    100% { transform: translate(22px, 22px) rotate(360deg); }
+}
+
+/* Enhanced blur effects for all backgrounds */
+.page-section[data-background]:not([data-background="none"]) {
+    filter: none;
+    transition: none;
+}
+
+/* Blog section minimal design */
+.page-section[data-background="none"] {
+    background: #000;
+    position: relative;
+}
+
+/* Blog hero image */
+.page-section[data-background="blog"] {
+    background-image: url('pages/blog.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.page-section[data-background="none"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.02), transparent 70%);
+    /* Animasyon kapalı */
+    animation: none;
+}
+
+@keyframes blogPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+}

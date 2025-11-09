@@ -1,0 +1,1720 @@
+// Navigation System
+document.addEventListener('DOMContentLoaded', function() {
+    // Aktivasyon modu: 'mini_logo' olduğunda yalnızca mini-logo/nav/init kaynaklı aktivasyon yapılır
+    let activationMode = 'mini_logo';
+    const activateNav = (id, source = 'scroll') => {
+        // Mini logo modunda bile scroll kaynaklı aktivasyonlara izin ver:
+        // doğal kaydırmada aktif hero/slogan senkronize olsun.
+        if (activationMode === 'mini_logo') {
+            if (!(source === 'mini' || source === 'nav' || source === 'init' || source === 'scroll')) return;
+        }
+        setActiveNav(id);
+    };
+    // Tarayıcının önceki konumu ve hash’e göre otomatik kaydırmasını devre dışı bırak
+    try {
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        if (window.location.hash) {
+            // Başlangıçta yanlış sayfaya (ör. #blog) atlamayı önlemek için hash’i temizle
+            history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+    } catch (_) {}
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('.page-section');
+    const logoLink = document.querySelector('.logo-link');
+    const navContainer = document.querySelector('.nav-container');
+    const langButtons = document.querySelectorAll('.lang-btn');
+    // Programatik kaydırmada yukarı modunu geçici kapatma (text-panel gizleme bug’ını önler)
+    let suppressUpwardModeUntil = 0;
+    // Global siyah şeffaf overlay
+    const blackOverlay = document.createElement('div');
+    blackOverlay.className = 'black-fade-overlay';
+    document.body.appendChild(blackOverlay);
+    let blackFadeLock = false;
+    function startBlackFade(from = 0.45, duration = 600) {
+        if (!blackOverlay) return;
+        if (blackFadeLock) return;
+        blackFadeLock = true;
+        blackOverlay.style.transition = `opacity ${duration}ms ease-in-out`;
+        blackOverlay.style.opacity = from;
+        // Reflow
+        void blackOverlay.offsetHeight;
+        blackOverlay.style.opacity = '0';
+        const done = () => {
+            blackFadeLock = false;
+            blackOverlay.removeEventListener('transitionend', done);
+        };
+        blackOverlay.addEventListener('transitionend', done);
+    }
+    // Intro sıralaması aktif mi?
+    let introActive = true;
+    let initialSettled = false; // İlk yükleme tamamlanana kadar aktif takibi beklet
+    
+    // Başlangıç: nav sağda dikey sabit hizalı
+    stackNavRight();
+    
+    // Handle logo click: anlık şekilde home'a git
+    if (logoLink) {
+        logoLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            try {
+                const homeSection = document.getElementById('home');
+                if (homeSection) {
+                    suppressUpwardModeUntil = Date.now() + 1200 + 80;
+                    startBlackFade(0.5, 1200);
+                    smoothScrollToElement(homeSection, 1200, () => {
+                        try { setActiveNav('home'); } catch (_) {}
+                        try { history.replaceState(null, '', '#home'); } catch (_) {}
+                        suppressUpwardModeUntil = 0;
+                    });
+                }
+            } catch (_) {}
+        });
+    }
+    
+    // Random positioning for navigation links
+    function randomizeNavPositions() {
+        if (!navContainer || navContainer.classList.contains('stacked')) return;
+        navLinks.forEach((link, index) => {
+            const randomTop = Math.random() * (window.innerHeight - 200) + 100;
+            const randomLeft = Math.random() * (window.innerWidth - 300) + 150;
+
+            link.style.top = randomTop + 'px';
+            link.style.left = randomLeft + 'px';
+
+            const scale = 0.8 + Math.random() * 0.4;
+            link.style.transform = `scale(${scale})`;
+
+            link.style.animationDelay = `${Math.random() * 2}s`;
+        });
+    }
+    
+    // Sabit nav konumu; rastgele konumlandırma devre dışı
+    
+    // --- Language / i18n ---
+    const i18n = {
+        en: {
+            nav: {
+                home: 'Home',
+                about: 'About',
+                services: 'Services',
+                vision: 'Vision',
+                blog: 'Blog',
+                contact: 'Contact'
+            },
+            slogan: 'THE WAY\nTO REACH\nTHE STARS',
+            slogans: {
+                about: 'WE\nCODE\nART',
+                services: 'CANVASES\nOF\nTHE FUTURE',
+                vision: 'PERSPECTIVE\nOF\nTOMORROW',
+                blog: 'PULSE\nOF\nDIGITAL'
+            },
+            visionContent: [
+                {
+                    heading: 'Architects of the Digital Universe: Infinite Potential',
+                    paragraphs: [
+                        'We operate with a mindset that builds not just for today, but for tomorrow. At Adastra, we are pioneers and architects for brands within the constantly evolving frontiers of the digital universe. Humanity has always looked to the stars, but we are realigning digital stars for brands.',
+                        '"Man completes himself only in the future; we guide brands towards this completed state."'
+                    ]
+                },
+                {
+                    heading: 'Charting the Star Map: Leading with AI',
+                    paragraphs: [
+                        'Our goal is to chart each brand\'s unique "star map" in the digital realm and propel them to uncharted peaks. For us, success lies not merely in metrics, but in the impact we create and the innovation we champion.',
+                        'To achieve this goal, we proactively monitor technological advancements and AI-powered analytical tools, leading the industry in this domain. We ensure our personnel and executives receive continuous, mandatory training on the most current and futuristic tools in digital marketing.',
+                        '"The essence of everything is its striving to preserve itself; our striving is to immortalize the brand\'s essence in the digital."'
+                    ]
+                },
+                {
+                    heading: 'Artists of the Algorithm: A Form of Expression',
+                    paragraphs: [
+                        'We believe that digital marketing is not merely a technical process, but also a creative form of expression. In the future, we aim to push the boundaries of algorithms, enabling brands to shine like works of art in the digital space. Art and science are an inseparable whole at Adastra.'
+                    ]
+                },
+                {
+                    heading: 'Continuous Evolution: The Philosophy of Adaptation',
+                    paragraphs: [
+                        'As technology and trends rapidly change, so do we; however, our core philosophy remains constant: to be pioneers, to inspire, and to exceed expectations. We constantly re-program our strategies and methodologies to ensure brands remain a perpetually regenerating force in the digital.'
+                    ]
+                },
+                {
+                    heading: 'Our Source of Inspiration: The Zeal for Leadership',
+                    paragraphs: [
+                        'Every day, we are in pursuit of a new idea, a new technology, and a new story. Our vision is to ensure brands do not merely exist digitally, but become leaders who define the future.'
+                    ]
+                }
+            ],
+            tips: {
+                label: 'Hint',
+                tip1: {
+                    heading: 'Focus on the Future.',
+                    items: [
+                        "Tip 1: Every challenge hides an opportunity. Digital transformation is not just a process, it's a new beginning for your brand.",
+                        "Tip 2: Think big, start small. Even the most ambitious projects begin with the first step.",
+                        "Tip 3: Don't be afraid to make mistakes; digital is the art of continuous learning and adaptation."
+                    ]
+                },
+                tip2: {
+                    heading: 'Speak with Data, Engage with Art.',
+                    items: [
+                        "Tip 1: Don't just know your target audience, understand them. Data analytics is the map of their digital journey.",
+                        "Tip 2: Don't stick to a single platform. Tell your brand's story across the most suitable digital channels with a holistic approach.",
+                        "Tip 3: Content is king, but engagement is queen. Create valuable content, but don't forget to maintain continuous dialogue with your audience.",
+                        "Tip 4: Make A/B testing a habit. Digital marketing is a process of continuous experimentation and learning."
+                    ]
+                },
+                tip3: {
+                    heading: 'Say More with Less.',
+                    items: [
+                        "Tip 1: See simplicity as a source of power. A design free of unnecessary elements communicates the message more clearly.",
+                        "Tip 2: Whitespace is the breath of design. Effectively use negative space to add depth and focus to your visuals.",
+                        "Tip 3: Typography is the voice of the brand. Your font choices should accurately reflect the brand's identity and the message it wants to convey.",
+                        "Tip 4: Use your color palette strategically. Create a futuristic and striking visual language with a sparse and precise use of colors."
+                    ]
+                }
+            }
+        },
+        tr: {
+            nav: {
+                home: 'Ana Sayfa',
+                about: 'Hakkımızda',
+                services: 'Hizmetlerimiz',
+                vision: 'Vizyonumuz',
+                blog: 'Blog',
+                contact: 'İletişim'
+            },
+            slogan: 'YILDIZLARA\nULAŞMANIN\nYOLU',
+            slogans: {
+                about: 'BİZ\nSANATI\nKODLUYORUZ',
+                services: 'GELECEĞİN\nKANVASLARI',
+                vision: 'YARININ\nPERSPEKTİFİ\nİÇİN',
+                blog: 'DİJİTALİN\nNABZI'
+            },
+            visionContent: [
+                {
+                    heading: 'Dijital Evrenin Mimarları: Sonsuz Potansiyel',
+                    paragraphs: [
+                        'Biz, sadece bugünü değil, yarını inşa eden bir zihniyetle çalışırız. Adastra olarak, dijital evrenin sürekli evrilen sınırlarında, markalar için birer kaşif ve mimarız. İnsanlık, her zaman yıldızlara bakmış, ancak biz dijital yıldızları markalar için yeniden hizalıyoruz.',
+                        '“İnsan, kendini ancak gelecekte tamamlar; biz, markaların bu tamamlanmış haline yol gösteriyoruz.”'
+                    ]
+                },
+                {
+                    heading: 'Yıldız Haritası Çıkarmak: Yapay Zeka ile Öncülük',
+                    paragraphs: [
+                        'Amacımız, her markanın dijitaldeki benzersiz "yıldız haritasını" çıkarmak ve onları henüz keşfedilmemiş zirvelere taşımaktır. Bizim için başarı, sadece metriklerde değil, yarattığımız etki ve öncülük ettiğimiz inovasyonda yatar.',
+                        'Bu hedefe ulaşmak için, teknolojik gelişmeleri ve yapay zeka destekli analizleri proaktif olarak takip ediyor, bu alanda sektöre öncülük ediyoruz. Personelimizin ve yöneticilerimizin, dijital pazarlamanın en güncel ve fütüristik araçları hakkında sürekli ve zorunlu eğitimler almasını sağlıyoruz.',
+                        '“Her şeyin özü, kendini koruma çabasındadır; markanın özünü dijitalde ölümsüzleştirmek bizim çabamızdır.”'
+                    ]
+                },
+                {
+                    heading: 'Algoritmanın Sanatçıları: İfade Biçimi',
+                    paragraphs: [
+                        'Dijital pazarlamanın yalnızca teknik bir süreç değil, aynı zamanda yaratıcı bir ifade biçimi olduğuna inanıyoruz. Gelecekte, algoritmaların sınırlarını zorlayarak, markaların dijitalde birer sanat eseri gibi parlamasını sağlamayı hedefliyoruz. Sanat ve bilim, Adastra\'da ayrılmaz bir bütündür.'
+                    ]
+                },
+                {
+                    heading: 'Sürekli Evrim: Adaptasyonun Felsefesi',
+                    paragraphs: [
+                        'Teknoloji ve trendler hızla değiştikçe, biz de değişiriz; ancak temel felsefemiz sabittir: öncü olmak, ilham vermek ve beklentilerin ötesine geçmek. Markaların dijitalde sürekli yenilenen bir güç olmasını sağlamak için, stratejilerimizi ve metodolojimizi sürekli yeniden programlarız.'
+                    ]
+                },
+                {
+                    heading: 'İlham Kaynağımız: Liderlik Azmi',
+                    paragraphs: [
+                        'Her gün, yeni bir fikrin, yeni bir teknolojinin ve yeni bir hikayenin peşindeyiz. Vizyonumuz, markaların dijitalde sadece var olmalarını değil, geleceği tanımlayan liderler olmalarını sağlamaktır.'
+                    ]
+                }
+            ],
+            tips: {
+                label: 'İpucu',
+                tip1: {
+                    heading: 'Geleceğe Odaklan',
+                    items: [
+                        'İpucu 1: Her zorlukta bir fırsat gizlidir. Dijital dönüşüm, sadece bir süreç değil, markanız için yeni bir başlangıçtır.',
+                        'İpucu 2: Büyük düşün, küçük başla. En iddialı projeler bile, ilk adımı atmakla başlar.',
+                        'İpucu 3: Hata yapmaktan korkma; dijital, sürekli öğrenme ve adapte olma sanatıdır.'
+                    ]
+                },
+                tip2: {
+                    heading: 'Veriyle Konuş, Sanatla Etkile',
+                    items: [
+                        'İpucu 1: Hedef kitleni sadece tanıma, anla. Veri analizleri, onların dijital yolculuklarının haritasıdır.',
+                        'İpucu 2: Tek bir platforma bağlı kalma. Markanın hikayesini, en uygun dijital kanallarda, bütünsel bir yaklaşımla anlat.',
+                        'İpucu 3: İçerik kraldır, ancak etkileşim kraliçedir. Değer yaratan içerikler üret, ancak kitlenle sürekli diyalog kurmayı unutma.',
+                        'İpucu 4: A/B testlerini bir alışkanlık haline getir. Dijital pazarlama, sürekli deneme ve öğrenme sürecidir.'
+                    ]
+                },
+                tip3: {
+                    heading: 'Azda Çok Şey Anlat',
+                    items: [
+                        'İpucu 1: Sadeliği gücün kaynağı olarak gör. Gereksiz elementlerden arınmış bir tasarım, mesajı daha net iletir.',
+                        'İpucu 2: Boşluk, tasarımın nefesidir. Negatif alanı etkili kullanarak görsellerine derinlik ve odak kat.',
+                        'İpucu 3: Tipografi, markanın sesidir. Font seçimlerin, markanın kimliğini ve vermek istediği mesajı doğru yansıtmalı.',
+                        'İpucu 4: Renk paletini stratejik kullan. Az ve öz renklerle, fütüristik ve çarpıcı bir görsel dil yarat.'
+                    ]
+                }
+            }
+        }
+    };
+
+    function setActiveLangButton(lang) {
+        langButtons.forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-lang') === lang));
+    }
+
+    function applyLanguage(lang, restart = false) {
+        const dict = i18n[lang] || i18n.en;
+        // Nav metinleri
+        navLinks.forEach(link => {
+            const key = link.getAttribute('data-page');
+            if (dict.nav[key]) link.textContent = dict.nav[key];
+        });
+        // Slogan metinleri: sadece data-text güncelle, animasyonu tetikleme
+        const homeSlogan = document.querySelector('#home .main-slogan');
+        if (homeSlogan) {
+            homeSlogan.setAttribute('data-text', dict.slogan);
+            homeSlogan.innerHTML = '';
+        }
+        const sectionKeys = ['about','services','vision','blog'];
+        sectionKeys.forEach(key => {
+            const el = document.querySelector(`#${key} .section-slogan`);
+            if (!el) return;
+            const text = dict.slogans && dict.slogans[key];
+            if (text) {
+                el.setAttribute('data-text', text);
+                el.innerHTML = '';
+            }
+        });
+
+        // About içerik görünürlüğü (TR/EN)
+        try {
+            const aboutTr = document.querySelector('#about .about-content');
+            const aboutEn = document.querySelector('#about .about-content-en');
+            if (aboutTr && aboutEn) {
+                if (lang === 'en') {
+                    aboutEn.classList.remove('ui-hidden');
+                    aboutTr.classList.add('ui-hidden');
+                } else {
+                    aboutTr.classList.remove('ui-hidden');
+                    aboutEn.classList.add('ui-hidden');
+                }
+            }
+        } catch (_) {}
+
+        // Vision metinleri: gerçek DOM yapısına uyum (text-panel içinde)
+        if (Array.isArray(dict.visionContent)) {
+            const blocks = document.querySelectorAll('#vision .text-panel .split-block');
+            blocks.forEach((block, idx) => {
+                const item = dict.visionContent[idx];
+                if (!item) return;
+                const copyEl = block.querySelector('.section-copy');
+                if (!copyEl) return;
+                const paras = (item.paragraphs || []).map(p => `<p>${p}</p>`).join('');
+                copyEl.innerHTML = `<h3 class="section-heading">${item.heading}</h3>${paras}`;
+            });
+            const closingEl = document.querySelector('#vision .text-panel .closing-line');
+            if (closingEl) {
+                if (lang === 'en') {
+                    closingEl.textContent = 'Ad astra, per aspera. Our determination to overcome the challenges of the future and reach the stars illuminates our every step.';
+                } else {
+                    closingEl.textContent = 'Ad astra, per aspera. Geleceğin zorluklarını aşarak yıldızlara ulaşma azmimiz, her adımımızı aydınlatır.';
+                }
+            }
+        }
+
+        // Services içerik görünürlüğü (TR/EN)
+        try {
+            const servicesTr = document.querySelector('#services .services-content');
+            const servicesEn = document.querySelector('#services .services-content-en');
+            if (servicesTr && servicesEn) {
+                if (lang === 'en') {
+                    servicesEn.classList.remove('ui-hidden');
+                    servicesTr.classList.add('ui-hidden');
+                } else {
+                    servicesTr.classList.remove('ui-hidden');
+                    servicesEn.classList.add('ui-hidden');
+                }
+            }
+        } catch (_) {}
+
+        // HTML lang özniteliğini güncelle
+        try { document.documentElement.setAttribute('lang', lang); } catch (_) {}
+
+        // Tips içerikleri
+        if (dict.tips) {
+            const label = dict.tips.label || 'Tip';
+            function sanitizeHeading(text) {
+                if (!text) return '';
+                return text.trim().replace(/[\s\.!?]+$/u, '');
+            }
+            function setTip(selector, tip) {
+                const itemEl = document.querySelector(selector);
+                if (!itemEl || !tip) return;
+                const headingEl = itemEl.querySelector('.tip-heading');
+                const listEl = itemEl.querySelector('.tip-list');
+                if (headingEl && tip.heading) headingEl.textContent = sanitizeHeading(tip.heading);
+                if (listEl && Array.isArray(tip.items)) {
+                    listEl.innerHTML = tip.items.map((text, idx) => {
+                        const cleaned = text.replace(/^(Tip|İpucu)\s*\d+:\s*/i, '');
+                        return `<li><strong>${label} ${idx+1}:</strong> ${cleaned}</li>`;
+                    }).join('');
+                }
+            }
+            setTip('.tip-item.tip-1', dict.tips.tip1);
+            setTip('.tip-item.tip-2', dict.tips.tip2);
+            setTip('.tip-item.tip-3', dict.tips.tip3);
+        }
+        localStorage.setItem('lang', lang);
+        setActiveLangButton(lang);
+    }
+
+    const savedLang = localStorage.getItem('lang') || 'en';
+    applyLanguage(savedLang, false);
+
+    langButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const lang = btn.getAttribute('data-lang');
+            applyLanguage(lang, true);
+        });
+    });
+
+    // Nav tıklamada anlık şekilde bölüme git ve aktif/görünür durumları yönet
+    const logo = document.querySelector('.logo');
+    let currentActiveId = null;
+    function setActiveNav(id) {
+        const idChanged = currentActiveId !== id;
+        const prevSection = idChanged && currentActiveId ? document.getElementById(currentActiveId) : null;
+        navLinks.forEach(link => {
+            link.classList.toggle('active', link.getAttribute('data-page') === id);
+        });
+        if (logo) {
+            if (id === 'contact') logo.classList.add('hidden');
+            else logo.classList.remove('hidden');
+        }
+        // Aktif bölümü body data attribute üzerinde tut
+        document.body.dataset.activeSection = id;
+        // Hero görünürlüğünü senkronize et: yalnızca aktif bölümün hero görseli görünür
+        try {
+            // Önce tüm önizlemeleri temizle
+            sections.forEach(s => s.classList.remove('hero-preview'));
+            // Çapraz geçiş: önceki bölüm hero’sunu kısa süre tut
+            if (prevSection) prevSection.classList.add('hero-hold');
+            // Sonra yeni bölümü aktif hale getir
+            sections.forEach(s => s.classList.toggle('hero-active', s.id === id));
+            // Kısa gecikme sonra önceki tutmayı kaldır
+            if (prevSection) setTimeout(() => { prevSection.classList.remove('hero-hold'); }, 300);
+        } catch (_) {}
+        // Slogan görünürlüğünü senkronize et: yalnızca aktif bölümde görünür olsun
+        try {
+            sections.forEach(s => s.classList.toggle('slogan-active', s.id === id));
+        } catch (_) {}
+        // Aynı bölüm tekrar bildirildiğinde animasyonları yeniden tetikleme: ERKEN DÖN
+        if (!idChanged) {
+            return;
+        }
+        // Slogan animasyonunu yalnızca bölüm değiştiğinde tetikle
+        try {
+            const slogan = document.querySelector(`#${id} .section-slogan`) || (id === 'home' ? document.querySelector('#home .main-slogan') : null);
+            if (slogan) {
+                slogan.innerHTML = '';
+                typewriterEffect(slogan);
+            }
+        } catch (_) {}
+        // Görünür bölüme geçildiğinde ilgili animasyonları tetikle
+        const sectionEl = document.getElementById(id);
+        if (sectionEl) {
+            try { triggerSectionAnimations(sectionEl); } catch (_) {}
+        }
+        currentActiveId = id;
+    }
+    // İlk yüklemede ana sayfa aktif
+    activateNav('home', 'init');
+
+    // Aktif bölümde hero’yu sabitleyen sınıfı senkronize et
+    (function syncFixedHeroWithActiveSection() {
+        const EXCLUDE = new Set(['contact']);
+        function apply(id) {
+            document.querySelectorAll('.page-section.fixed-hero-active').forEach(el => el.classList.remove('fixed-hero-active'));
+            if (!id || EXCLUDE.has(id)) return;
+            const section = document.getElementById(id);
+            if (section) section.classList.add('fixed-hero-active');
+        }
+        // İlk durum
+        apply(document.body.dataset.activeSection || 'home');
+        // Aktiflik değiştiğinde güncelle
+        const obs = new MutationObserver(mutations => {
+            for (const m of mutations) {
+                if (m.attributeName === 'data-active-section') {
+                    apply(document.body.dataset.activeSection);
+                    break;
+                }
+            }
+        });
+        obs.observe(document.body, { attributes: true, attributeFilter: ['data-active-section'] });
+        // Nav tıklamalarında da güvence altına al
+        navLinks.forEach(link => link.addEventListener('click', () => apply(link.getAttribute('data-page'))));
+    })();
+
+    // Global yumuşak kaydırma: öncelikle element.scrollIntoView kullan
+    function smoothScrollToElement(el, duration = 800, onDone = null) {
+        if (!el) return;
+        // Varsayılan sürede native davranışı kullan, özel sürede manuel easing uygula
+        if (duration === 800) {
+            try {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                return;
+            } catch (_) {}
+        }
+        // Fallback: pencere düzeyi animasyon (destek yoksa)
+        const startY = window.scrollY || window.pageYOffset || 0;
+        const targetY = startY + el.getBoundingClientRect().top;
+        const start = performance.now();
+        const ease = (t) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        function step(now) {
+            const elapsed = now - start;
+            const t = Math.min(elapsed / duration, 1);
+            const y = startY + (targetY - startY) * ease(t);
+            window.scrollTo(0, y);
+            if (t < 1) requestAnimationFrame(step);
+            else if (typeof onDone === 'function') {
+                try { onDone(); } catch (_) {}
+            }
+        }
+        requestAnimationFrame(step);
+    }
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetPage = this.getAttribute('data-page');
+            const targetSection = document.getElementById(targetPage);
+            if (targetSection) {
+                const isHome = targetPage === 'home';
+                if (isHome) {
+                    suppressUpwardModeUntil = Date.now() + 1200 + 80;
+                    startBlackFade(0.5, 1200);
+                    smoothScrollToElement(targetSection, 1200, () => {
+                        try { setActiveNav('home'); } catch (_) {}
+                        try { history.replaceState(null, '', `#${targetPage}`); } catch (_) {}
+                        suppressUpwardModeUntil = 0;
+                    });
+                } else {
+                    suppressUpwardModeUntil = Date.now() + 600 + 80;
+                    startBlackFade(0.4, 600);
+                    smoothScrollToElement(targetSection);
+                    setTimeout(() => { suppressUpwardModeUntil = 0; }, 700);
+                }
+            }
+            // URL hash’i güncelle: geri/ileri tuşlarında tutarlı davranış
+            if (!isHome) {
+                try { history.replaceState(null, '', `#${targetPage}`); } catch (_) {}
+                activateNav(targetPage, 'nav');
+            }
+        });
+    });
+
+    // Aktif bölüm takibi mevcut enableActiveTracking ile yönetiliyor (aşağıda).
+
+    // Bölüm gözlemcisi kaldırıldı; aktif durum tıklama ile yönetilir
+    
+    // Trigger animations based on section
+    function triggerSectionAnimations(section) {
+        const sectionId = section.id;
+        
+        switch(sectionId) {
+            case 'home':
+                animateHomeSection();
+                break;
+            case 'about':
+                animateAboutSection();
+                break;
+            case 'services':
+                animateServicesSection();
+                break;
+            case 'vision':
+                animateVisionSection();
+                break;
+            case 'blog':
+                animateBlogSection();
+                break;
+            case 'contact':
+                animateContactSection();
+                break;
+        }
+    }
+    
+    // Home section animations
+    function animateHomeSection() {
+        const slogan = document.querySelector('#home .main-slogan');
+        const heroImage = document.querySelector('#home .hero-image');
+        // Reset and prepare typing
+        if (slogan) {
+            slogan.style.animation = 'none';
+            slogan.style.opacity = '1';
+        }
+
+        // Trigger reflow
+        if (slogan) slogan.offsetHeight;
+
+        // Görsel doğrudan yüklensin: animasyon yok
+        if (heroImage) {
+            heroImage.style.animation = 'none';
+        }
+
+        // Sloganın yazım animasyonu setActiveNav içinde tetikleniyor; burada çağırmıyoruz
+
+        // Sayfa açıldı: nav'ı sağda yığ ve animasyonu durdur
+        setTimeout(() => {
+            stackNavRight();
+        }, 1600);
+    }
+    
+    // About section animations
+    function animateAboutSection() {
+        const slogan = document.querySelector('#about .section-slogan');
+        if (slogan) {
+            slogan.style.animation = 'none';
+            slogan.style.opacity = '1';
+            // Yazım animasyonu setActiveNav tarafından tetiklenir
+        }
+    }
+    
+    // Services section animations
+    function animateServicesSection() {
+        const slogan = document.querySelector('#services .section-slogan');
+        if (slogan) {
+            slogan.style.animation = 'none';
+            slogan.style.opacity = '1';
+            // Yazım animasyonu setActiveNav tarafından tetiklenir
+        }
+    }
+    
+    // Vision section animations
+    function animateVisionSection() {
+        const slogan = document.querySelector('#vision .section-slogan');
+        if (slogan) {
+            slogan.style.animation = 'none';
+            slogan.style.opacity = '1';
+            // Yazım animasyonu setActiveNav tarafından tetiklenir
+        }
+    }
+    
+    // Blog section animations
+    function animateBlogSection() {
+        const slogan = document.querySelector('#blog .section-slogan');
+        if (slogan) {
+            slogan.style.animation = 'none';
+            slogan.style.opacity = '1';
+            // Yazım animasyonu setActiveNav tarafından tetiklenir
+        }
+    }
+    
+    // Contact section animations
+    function animateContactSection() {
+        const slogan = document.querySelector('#contact .section-slogan');
+        const qrContainer = document.querySelector('#contact .qr-container');
+        // Bölümde animasyon kullanılmıyor
+        if (slogan) slogan.style.animation = 'none';
+        if (qrContainer) qrContainer.style.animation = 'none';
+    }
+    
+    // Typewriter effect function
+    function typewriterEffect(element) {
+        const text = element.getAttribute('data-text') || '';
+        // Önce varsa bekleyen zamanlayıcıyı temizle
+        if (element._typewriterTimer) {
+            clearTimeout(element._typewriterTimer);
+            element._typewriterTimer = null;
+        }
+        element.innerHTML = '';
+
+        let i = 0;
+        const speed = 100; // typing speed in milliseconds
+
+        function typeWriter() {
+            if (i < text.length) {
+                const ch = text.charAt(i);
+                const next = text.charAt(i + 1);
+                if (ch === '\n') {
+                    element.innerHTML += '<br>';
+                    i += 1;
+                } else if (ch === '\\' && next === 'n') {
+                    // '\n' kaçış dizilerini gerçek satır sonu olarak işle
+                    element.innerHTML += '<br>';
+                    i += 2;
+                } else {
+                    element.innerHTML += ch;
+                    i += 1;
+                }
+                element._typewriterTimer = setTimeout(typeWriter, speed);
+            } else {
+                element._typewriterTimer = null;
+            }
+        }
+
+        typeWriter();
+    }
+    
+    // İlk animasyonlar setActiveNav ile tetiklenir; ekstra zamanlayıcı yok
+
+    // Eş zamanlı kaydırma hareketi kaldırıldı: sadece slogan animasyonlu
+    
+    // Add floating animation to navigation links
+    // Yüzen animasyon devre dışı; nav sabit
+
+    function stopNavAnimations() {
+        navLinks.forEach(link => {
+            link.style.animation = 'none';
+            link.style.animationDelay = '';
+        });
+    }
+
+    function stackNavRight() {
+        if (!navContainer) return;
+        if (navContainer.classList.contains('stacked')) return;
+
+        stopNavAnimations();
+        navContainer.classList.add('stacked');
+
+        navLinks.forEach(link => {
+            link.style.top = '';
+            link.style.left = '';
+            link.style.right = '';
+            link.style.bottom = '';
+            link.style.transform = '';
+        });
+    }
+    
+    // QR Code pulse animation CSS
+    const qrPulseCSS = `
+        @keyframes qrPulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+            }
+            50% { 
+                transform: scale(1.05);
+                box-shadow: 0 0 50px rgba(0, 212, 255, 0.6);
+            }
+        }
+    `;
+    
+    const qrStyle = document.createElement('style');
+    qrStyle.textContent = qrPulseCSS;
+    document.head.appendChild(qrStyle);
+    
+    // Parallax effect for background images
+    let ticking = false;
+    
+    function updateParallax() {
+        const scrolled = window.pageYOffset;
+        const parallaxElements = document.querySelectorAll('.page-section[data-background]:not([data-background="none"])');
+        
+        parallaxElements.forEach(element => {
+            const speed = 0.5;
+            const yPos = -(scrolled * speed);
+            element.style.transform = `translateY(${yPos}px)`;
+        });
+        
+        ticking = false;
+    }
+    
+    function requestTick() {
+        if (!ticking) {
+            window.requestAnimationFrame(updateParallax);
+            ticking = true;
+        }
+    }
+    
+    const enableParallax = false;
+    if (enableParallax) {
+        window.addEventListener('scroll', requestTick);
+    }
+    
+    // Mouse movement effect disabled: nav links remain static unless hovered
+
+    // Mouse wheel snapping: AÇIK. Tekerlek çevirmede tek adımda bölüm değiştir.
+    (function enableWheelSnap() {
+        const ENABLE_WHEEL_SNAP = false;
+        if (!ENABLE_WHEEL_SNAP) return;
+        const order = ['home', 'about', 'services', 'vision', 'blog', 'contact'];
+        let snapping = false;
+        let lastSnapTime = 0;
+        const snapCooldown = 350; // ms
+
+        function currentSectionIndex() {
+            return order.findIndex(id => {
+                const el = document.getElementById(id);
+                if (!el) return false;
+                const rect = el.getBoundingClientRect();
+                const mid = window.innerHeight * 0.5;
+                return rect.top <= mid && rect.bottom >= mid;
+            });
+        }
+
+        function snapTo(index) {
+            const now = Date.now();
+            if (snapping || (now - lastSnapTime) < snapCooldown) return;
+            const id = order[Math.max(0, Math.min(order.length - 1, index))];
+            const el = document.getElementById(id);
+            if (!el) return;
+            snapping = true;
+            lastSnapTime = now;
+            smoothScrollToElement(el);
+            // Aktif bölümü güncelle ve iletişimde logoyu gizle
+            try { setActiveNav(id); } catch (_) {}
+            setTimeout(() => { snapping = false; }, snapCooldown);
+        }
+
+        window.addEventListener('wheel', function(e) {
+            // Her teker hareketinde tek adım snap: doğal scroll'u durdur
+            const absDelta = Math.abs(e.deltaY);
+            if (absDelta < 5) return; // çok küçük hareketleri görmezden gel
+
+            const idx = currentSectionIndex();
+            if (idx === -1) return;
+
+            e.preventDefault();
+            if (e.deltaY > 0 && idx < order.length - 1) {
+                snapTo(idx + 1);
+            } else if (e.deltaY < 0 && idx > 0) {
+                snapTo(idx - 1);
+            }
+        }, { passive: false });
+    })();
+
+    // About sonunda otomatik geçiş: DEVRE DIŞI
+    (function enableAboutAutoAdvance() {
+        const ENABLE = false;
+        if (!ENABLE) return;
+        const aboutEl = document.getElementById('about');
+        const servicesEl = document.getElementById('services');
+        if (!aboutEl || !servicesEl) return;
+
+        let rafId = null;
+        let lastY = window.scrollY || 0;
+        let aboutAdvanced = false;
+        let lastAdvanceTime = 0;
+        const cooldown = 400; // ms
+
+        function tick() {
+            rafId = null;
+            const now = Date.now();
+            const currentY = window.scrollY || 0;
+            const goingDown = currentY > lastY;
+            lastY = currentY;
+
+            const rect = aboutEl.getBoundingClientRect();
+            const threshold = 16; // px
+
+            // Yukarı çıkarken yeniden tetiklenebilir hale getir
+            if (!goingDown && rect.top >= 0) {
+                aboutAdvanced = false;
+            }
+
+            if (goingDown && !aboutAdvanced && (now - lastAdvanceTime) > cooldown) {
+                const atBottom = rect.bottom <= window.innerHeight + threshold;
+                if (atBottom) {
+                    aboutAdvanced = true;
+                    lastAdvanceTime = now;
+                    smoothScrollToElement(servicesEl);
+                    try { setActiveNav('services'); } catch (_) {}
+                }
+            }
+        }
+
+        window.addEventListener('scroll', () => {
+            if (rafId) return;
+            rafId = requestAnimationFrame(tick);
+        }, { passive: true });
+    })();
+
+    // Hizmetler sonunda otomatik geçiş: DEVRE DIŞI
+    (function enableServicesAutoAdvance() {
+        const ENABLE = false;
+        if (!ENABLE) return;
+        const servicesEl = document.getElementById('services');
+        const visionEl = document.getElementById('vision');
+        if (!servicesEl || !visionEl) return;
+
+        let rafId = null;
+        let lastY = window.scrollY || 0;
+        let servicesAdvanced = false;
+        let lastAdvanceTime = 0;
+        const cooldown = 400; // ms
+
+        function tick() {
+            rafId = null;
+            const now = Date.now();
+            const currentY = window.scrollY || 0;
+            const goingDown = currentY > lastY;
+            lastY = currentY;
+
+            const rect = servicesEl.getBoundingClientRect();
+            const threshold = 72; // px (biraz erken yakala)
+
+            // Yukarı çıkarken yeniden tetiklenebilir hale getir
+            if (!goingDown && rect.top >= 0) {
+                servicesAdvanced = false;
+            }
+
+            if (goingDown && !servicesAdvanced && (now - lastAdvanceTime) > cooldown) {
+                const atBottom = rect.bottom <= window.innerHeight + threshold;
+                if (atBottom) {
+                    servicesAdvanced = true;
+                    lastAdvanceTime = now;
+                    smoothScrollToElement(visionEl);
+                    try { setActiveNav('vision'); } catch (_) {}
+                }
+            }
+        }
+
+        window.addEventListener('scroll', () => {
+            if (rafId) return;
+            rafId = requestAnimationFrame(tick);
+        }, { passive: true });
+
+        // Teker hareketinde erken tetikleme KAPALI: doğal scroll ve CSS scroll-snap kullanılır
+        const ENABLE_WHEEL_ASSIST = false;
+        if (ENABLE_WHEEL_ASSIST) {
+            window.addEventListener('wheel', (ev) => {
+                if (ev.deltaY <= 0) return; // sadece aşağı
+                const now = Date.now();
+                const rect = servicesEl.getBoundingClientRect();
+                const wheelThreshold = 72; // px
+                const predictedBottom = rect.bottom - ev.deltaY;
+                const atBottom = rect.bottom <= window.innerHeight + wheelThreshold;
+                const willCross = predictedBottom <= window.innerHeight + wheelThreshold;
+                if (!servicesAdvanced && (now - lastAdvanceTime) > cooldown && (atBottom || willCross)) {
+                    // preventDefault KULLANMA: doğal kaydırma korunsun
+                    servicesAdvanced = true;
+                    lastAdvanceTime = now;
+                    smoothScrollToElement(visionEl);
+                    try { setActiveNav('vision'); } catch (_) {}
+                }
+            }, { passive: true });
+        }
+    })();
+
+    // Home sonunda otomatik geçiş: DEVRE DIŞI
+    (function enableHomeAutoAdvance() {
+        const ENABLE = false;
+        if (!ENABLE) return;
+        const homeEl = document.getElementById('home');
+        const aboutEl = document.getElementById('about');
+        if (!homeEl || !aboutEl) return;
+
+        let rafId = null;
+        let lastY = window.scrollY || 0;
+        let homeAdvanced = false;
+        let lastAdvanceTime = 0;
+        const cooldown = 400; // ms
+
+        function tick() {
+            rafId = null;
+            const now = Date.now();
+            const currentY = window.scrollY || 0;
+            const goingDown = currentY > lastY;
+            lastY = currentY;
+
+            const rect = homeEl.getBoundingClientRect();
+            const threshold = 16; // px; alt sınırı biraz erken yakala
+
+            // Yukarı çıkarken yeniden tetiklenebilir hale getir
+            if (!goingDown && rect.top >= 0) {
+                homeAdvanced = false;
+            }
+
+            if (goingDown && !homeAdvanced && (now - lastAdvanceTime) > cooldown) {
+                const atBottom = rect.bottom <= window.innerHeight + threshold;
+                if (atBottom) {
+                    homeAdvanced = true;
+                    lastAdvanceTime = now;
+                    smoothScrollToElement(aboutEl);
+                    try { setActiveNav('about'); } catch (_) {}
+                }
+            }
+        }
+
+        window.addEventListener('scroll', () => {
+            if (rafId) return;
+            rafId = requestAnimationFrame(tick);
+        }, { passive: true });
+    })();
+
+    // About'tan Home'a otomatik dönüş: DEVRE DIŞI
+    (function enableHomeAutoReturn() {
+        const ENABLE = false;
+        if (!ENABLE) return;
+        const homeEl = document.getElementById('home');
+        const aboutEl = document.getElementById('about');
+        if (!homeEl || !aboutEl) return;
+
+        let rafId = null;
+        let lastY = window.scrollY || 0;
+        let lastSnapTime = 0;
+        const cooldown = 400; // ms
+
+        function tick() {
+            rafId = null;
+            const now = Date.now();
+            const currentY = window.scrollY || 0;
+            const goingUp = currentY < lastY;
+            lastY = currentY;
+
+            if (!goingUp) return;
+
+            // About bölümünün tam tepesindeyken (neredeyse 0) yukarı hamlede Home'a dön
+            const aboutRect = aboutEl.getBoundingClientRect();
+            const aboutThreshold = 4; // px; sadece tam tepe sınırında Home'a geç
+            if (Math.abs(aboutRect.top) <= aboutThreshold && (now - lastSnapTime) > cooldown) {
+                lastSnapTime = now;
+                requestAnimationFrame(() => {
+                    smoothScrollToElement(homeEl);
+                    try { setActiveNav('home'); } catch (_) {}
+                });
+                return;
+            }
+
+            // Ek güvenlik: Home zaten görünür ve tepeye yakınsa hizala
+            const homeRect = homeEl.getBoundingClientRect();
+            const homeThreshold = 24;
+            if (Math.abs(homeRect.top) <= homeThreshold && (now - lastSnapTime) > cooldown) {
+                lastSnapTime = now;
+                requestAnimationFrame(() => {
+                    smoothScrollToElement(homeEl);
+                    try { setActiveNav('home'); } catch (_) {}
+                });
+            }
+        }
+
+        window.addEventListener('scroll', () => {
+            if (rafId) return;
+            rafId = requestAnimationFrame(tick);
+        }, { passive: true });
+
+        // Sınırda yukarı teker hareketini yakalayıp anında dön: KAPALI
+        const ENABLE_HOME_WHEEL_RETURN = false;
+        if (ENABLE_HOME_WHEEL_RETURN) {
+            window.addEventListener('wheel', (ev) => {
+                if (ev.deltaY >= 0) return; // sadece yukarı
+                const rect = aboutEl.getBoundingClientRect();
+                if (Math.abs(rect.top) <= 2) {
+                    // preventDefault kullanmadan hizala: doğal kaydırma korunur
+                    smoothScrollToElement(homeEl);
+                    try { setActiveNav('home'); } catch (_) {}
+                }
+            }, { passive: true });
+        }
+    })();
+
+    // About içinde başa erken dön: DEVRE DIŞI
+    (function enableAboutReturnToTop() {
+        const ENABLE = false;
+        if (!ENABLE) return;
+        const aboutEl = document.getElementById('about');
+        if (!aboutEl) return;
+
+        let rafId = null;
+        let lastY = window.scrollY || 0;
+        let lastSnapTime = 0;
+        const cooldown = 400; // ms
+
+        function tick() {
+            rafId = null;
+            const now = Date.now();
+            const currentY = window.scrollY || 0;
+            const goingUp = currentY < lastY;
+            lastY = currentY;
+
+            if (!goingUp) return;
+
+            // Yalnızca About aktifken çalışsın
+            const active = document.body.dataset.activeSection;
+            if (active !== 'about') return;
+
+            const rect = aboutEl.getBoundingClientRect();
+            const nearTopRange = 120; // px; tepeye yaklaşınca About başına hizala
+
+            if (rect.top < 0 && Math.abs(rect.top) <= nearTopRange && (now - lastSnapTime) > cooldown) {
+                lastSnapTime = now;
+                requestAnimationFrame(() => {
+                    smoothScrollToElement(aboutEl);
+                    try { setActiveNav('about'); } catch (_) {}
+                });
+            }
+        }
+
+        window.addEventListener('scroll', () => {
+            if (rafId) return;
+            rafId = requestAnimationFrame(tick);
+        }, { passive: true });
+    })();
+
+    // Viewport bazlı aktif bölüm takibi: doğal kaydırmada da logoyu doğru yönet
+    (function enableActiveTracking() {
+        // Varsayılan takip açık kalsın; IntersectionObserver ile güçlendireceğiz
+        const order = ['home', 'about', 'services', 'vision', 'blog', 'contact'];
+        let rafId = null;
+        let lastId = null;
+
+        function currentId() {
+            const mid = window.innerHeight * 0.5;
+            for (const id of order) {
+                const el = document.getElementById(id);
+                if (!el) continue;
+                const rect = el.getBoundingClientRect();
+                if (rect.top <= mid && rect.bottom >= mid) return id;
+            }
+            return null;
+        }
+
+        function update() {
+            rafId = null;
+            // İlk yükleme yerleşene kadar aktifliği otomatik değiştirme
+            if (!initialSettled) return;
+            // Tepeye çok yaklaştıysak Home'u güvenceye al
+            const y = window.scrollY || 0;
+            if (y <= 5) {
+                try { activateNav('home', 'scroll'); } catch (_) {}
+                lastId = 'home';
+                return;
+            }
+            const id = currentId();
+            if (id && id !== lastId) {
+                try { activateNav(id, 'scroll'); } catch (_) {}
+                lastId = id;
+            }
+        }
+
+        window.addEventListener('scroll', () => {
+            if (rafId) return;
+            rafId = requestAnimationFrame(update);
+        }, { passive: true });
+
+        // İlk durum: yükleme tamamlandıktan sonra çalıştırılacak
+    })();
+
+    // IntersectionObserver ile güvenilir aktif bölüm takibi ve hizalama
+    (function enableIntersectionActiveTracking() {
+        const ENABLE = false;
+        if (!ENABLE) return;
+        const order = ['home', 'about', 'services', 'vision', 'blog', 'contact'];
+        const sections = order.map(id => document.getElementById(id)).filter(Boolean);
+        if (!sections.length) return;
+
+        let activeId = null;
+
+        const observer = new IntersectionObserver((entries) => {
+            // En yüksek görünürlük oranına sahip bölümü seç
+            let best = { id: null, ratio: 0 };
+            for (const e of entries) {
+                const id = e.target.id;
+                const ratio = e.intersectionRatio || 0;
+                if (ratio > best.ratio) best = { id, ratio };
+            }
+            if (best.id && best.id !== activeId) {
+                activeId = best.id;
+                try { activateNav(activeId, 'scroll'); } catch (_) {}
+            }
+        }, { threshold: [0.55, 0.7, 0.85, 1] });
+
+        sections.forEach(s => observer.observe(s));
+
+        // İlk durumda görünür bölümü belirle ve aktif et
+        const initial = sections.find(s => {
+            const r = s.getBoundingClientRect();
+            const mid = window.innerHeight * 0.5;
+            return r.top <= mid && r.bottom >= mid;
+        }) || sections[0];
+        if (initial) {
+            try { activateNav(initial.id, 'init'); } catch (_) {}
+        }
+    })();
+
+    // Scroll bitişinde üst başa hizalama: tek seferlik, doğal hissi korur
+    (function enableScrollEndAlign() {
+        const ENABLE = false;
+        if (!ENABLE) return;
+        const order = ['home', 'about', 'services', 'vision', 'blog', 'contact'];
+        const NON_UPWARD_SECTIONS = new Set(['home','about','services','vision','blog']); // sloganlı/resimli sayfalar
+        let timer = null;
+        let aligning = false;
+        let lastScrollY = window.scrollY || 0;
+        let lastMoveAt = Date.now();
+        let direction = null; // 'down' | 'up'
+        const idleDelay = 450; // ms: tekerlek durduktan sonra bekleme (daha sakin)
+        const topThreshold = 80; // px: tepeye oldukça yakınsa hizalama yapma
+        const minMove = 140; // px: son hizalamadan beri yeterli hareket olmalı
+
+        function currentIndex() {
+            const mid = window.innerHeight * 0.5;
+            return order.findIndex(id => {
+                const el = document.getElementById(id);
+                if (!el) return false;
+                const rect = el.getBoundingClientRect();
+                return rect.top <= mid && rect.bottom >= mid;
+            });
+        }
+
+        function alignIfIdle() {
+            timer = null;
+            if (aligning) return;
+            const now = Date.now();
+            const movedEnough = Math.abs((window.scrollY || 0) - lastScrollY) >= minMove;
+            if (!movedEnough) return; // mikroskobik hareketlerde hizalama yok
+
+            const idx = currentIndex();
+            if (idx === -1) return;
+
+            let targetIdx = idx;
+            if (direction === 'down' && idx < order.length - 1) {
+                targetIdx = idx + 1;
+            } else if (direction === 'up' && idx > 0) {
+                // Sloganlı/resimli sayfalarda yukarı yön otomatik hizalamayı kapat
+                const currentId = order[idx];
+                if (NON_UPWARD_SECTIONS.has(currentId)) return;
+                targetIdx = idx - 1;
+            } else {
+                return;
+            }
+
+            const id = order[targetIdx];
+            const el = document.getElementById(id);
+            if (!el) return;
+
+            // Histerezis: hedef bölüm zaten görünür ise hizalama yapma
+            const rect = el.getBoundingClientRect();
+            const visibleMid = rect.top <= window.innerHeight * 0.5 && rect.bottom >= window.innerHeight * 0.5;
+            if (visibleMid && Math.abs(rect.top) <= topThreshold) return;
+
+            aligning = true;
+            smoothScrollToElement(el);
+            try { setActiveNav(id); } catch (_) {}
+            setTimeout(() => { aligning = false; }, 650);
+        }
+
+        function schedule() {
+            if (timer) clearTimeout(timer);
+            timer = setTimeout(alignIfIdle, idleDelay);
+        }
+
+        window.addEventListener('wheel', (e) => {
+            direction = (e.deltaY || 0) > 0 ? 'down' : 'up';
+            lastMoveAt = Date.now();
+            lastScrollY = window.scrollY || 0;
+            schedule();
+        }, { passive: true });
+        window.addEventListener('scroll', () => {
+            lastMoveAt = Date.now();
+            lastScrollY = window.scrollY || 0;
+            schedule();
+        }, { passive: true });
+    })();
+
+    // Panel scroll sırasında bir sonraki hero görselini preload et (iletişim hariç)
+    (function enableHeroPreloadOnPanelScroll() {
+        const order = ['home','about','services','vision','blog'];
+        const preloaded = new Set();
+        for (const id of order) {
+            const panelRoot = document.querySelector(`#${id} .text-panel`);
+            if (!panelRoot) continue;
+            const nextIdx = order.indexOf(id) + 1;
+            const nextId = nextIdx < order.length ? order[nextIdx] : null;
+            if (!nextId) continue;
+            const nextHero = document.querySelector(`#${nextId} .hero-image`);
+            if (!nextHero) continue;
+
+            const key = `${id}->${nextId}`;
+            const obs = new IntersectionObserver((entries) => {
+                for (const entry of entries) {
+                    if (!entry.isIntersecting) continue;
+                    if (__dir !== 'down') continue;
+                    if (preloaded.has(key)) continue;
+                    // preload
+                    const tmp = new Image();
+                    tmp.decoding = 'async';
+                    tmp.src = nextHero.src;
+                    preloaded.add(key);
+                }
+            }, { root: null, threshold: 0, rootMargin: '70% 0% 0% 0%' });
+            obs.observe(panelRoot);
+        }
+    })();
+
+    // Keyboard navigation (viewport-based)
+    document.addEventListener('keydown', function(e) {
+        const order = ['home', 'about', 'services', 'vision', 'blog', 'contact'];
+        const currentIndex = order.findIndex(id => {
+            const el = document.getElementById(id);
+            if (!el) return false;
+            const rect = el.getBoundingClientRect();
+            return rect.top <= window.innerHeight * 0.5 && rect.bottom >= window.innerHeight * 0.5;
+        });
+        if (e.key === 'ArrowRight' && currentIndex !== -1 && currentIndex < order.length - 1) {
+            const nextId = order[currentIndex + 1];
+            smoothScrollToElement(document.getElementById(nextId));
+            try { setActiveNav(nextId); } catch (_) {}
+        } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
+            const prevId = order[currentIndex - 1];
+            smoothScrollToElement(document.getElementById(prevId));
+            try { setActiveNav(prevId); } catch (_) {}
+        }
+    });
+    
+    // Add loading animation
+    window.addEventListener('load', function() {
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.5s ease';
+        
+        setTimeout(() => {
+            document.body.style.opacity = '1';
+            // Başlangıçta en üste konumlan ve ana sayfayı aktif yap
+            try {
+                window.scrollTo({ top: 0, behavior: 'auto' });
+                const homeEl = document.getElementById('home');
+                if (homeEl) {
+                    // Hash veya önceki pozisyonu yok sayarak ana bölümü aktif işaretle
+                    if (typeof setActiveNav === 'function') {
+                        setActiveNav('home');
+                    }
+                }
+                // Artık aktif takibi devreye al
+                initialSettled = true;
+                // İlk boyama bloklayıcı sınıfı kaldır: diğer hero'lar görünür hâle gelebilir
+                document.body.classList.remove('initial-block');
+            } catch (_) {}
+        }, 100);
+    });
+
+    // Nav, logo ve dil butonlarını yumuşak şekilde kademeli gizle/göster
+    (function enableSoftFadeUI() {
+        const navContainer = document.querySelector('.nav-container');
+        const logoEl = document.querySelector('.logo');
+        const langEl = document.querySelector('.language-switcher');
+        if (!navContainer || !logoEl || !langEl) return;
+
+        let rafId = null;
+
+        function computeFade() {
+            rafId = null;
+            // Görünürdeki bölümü doğrudan viewport orta çizgisine göre bul
+            const order = ['home', 'about', 'services', 'vision', 'blog', 'contact'];
+            const mid = window.innerHeight * 0.5;
+            let visibleSectionId = null;
+            for (const id of order) {
+                const el = document.getElementById(id);
+                if (!el) continue;
+                const r = el.getBoundingClientRect();
+                if (r.top <= mid && r.bottom >= mid) { visibleSectionId = id; break; }
+            }
+            const navContainer = document.querySelector('.nav-container');
+            const logoEl = document.querySelector('.logo');
+            const langEl = document.querySelector('.language-switcher');
+            const panel = visibleSectionId ? document.querySelector(`#${visibleSectionId} .text-panel`) : null;
+
+            // Basitleştirilmiş mantık: panel görünür olduğunda üst sabit UI'yi gizle
+            // Ana sayfanın kahraman (hero) kısmında UI görünür kalsın, contact'ta da görünür
+            if (!panel || visibleSectionId === 'home' || visibleSectionId === 'contact') {
+                document.body.style.setProperty('--ui-opacity', '1');
+                document.body.classList.remove('tips-active');
+                // UI her zaman görünür ve tıklanabilir kalsın
+                return;
+            }
+
+            const rect = panel.getBoundingClientRect();
+            const vh = window.innerHeight;
+            // Panel üst kenarı viewport içine girdiğinde (ör. alt %95), gizle
+            const panelEntering = rect.top < (vh * 0.95) && rect.bottom > 0;
+            // Kademeli, hafif fade; etkileşimi kapatma
+            document.body.style.setProperty('--ui-opacity', panelEntering ? '0.92' : '1');
+            document.body.classList.toggle('tips-active', !!panelEntering);
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!rafId) rafId = requestAnimationFrame(computeFade);
+        }, { passive: true });
+        window.addEventListener('resize', () => {
+            if (!rafId) rafId = requestAnimationFrame(computeFade);
+        });
+        computeFade();
+
+        // Aktif bölüm değişikliklerinde fade hesaplamasını tetikle
+        const observer = new MutationObserver(mutations => {
+            for (const m of mutations) {
+                if (m.attributeName === 'data-active-section') {
+                    if (!rafId) rafId = requestAnimationFrame(computeFade);
+                    break;
+                }
+            }
+        });
+        observer.observe(document.body, { attributes: true, attributeFilter: ['data-active-section'] });
+    })();
+
+    // Alt sayfa üst/alt enine çizgiye mini logo yerleştir
+    (function injectMiniLogos() {
+        const order = ['home', 'about', 'services', 'vision', 'blog', 'contact'];
+        for (const id of order) {
+            const panelRoot = document.querySelector(`#${id} .text-panel`);
+            if (!panelRoot) continue;
+            // İçerik konteyneri varsa içine yerleştir; yoksa panel kökünü kullan
+            const container = panelRoot.querySelector(':scope > .content-container') || panelRoot;
+            // Divider'ları panel kökünde ara: blog'un alt divider'ı container dışında
+            const allDividers = panelRoot.querySelectorAll('.section-divider');
+            const first = allDividers.length ? allDividers[0] : null;
+            const last = allDividers.length ? allDividers[allDividers.length - 1] : null;
+
+            // Sayfa özel slotları varsa (ör. home-mini-top, about-mini-top) onları kullan
+            const topSlot = panelRoot.querySelector(`:scope > .full-bleed-center.${id}-mini-top`);
+            const bottomSlot = panelRoot.querySelector(`:scope > .full-bleed-center.${id}-mini-bottom`);
+
+            // Mevcutsa tekrar ekleme
+            if (!panelRoot.querySelector('.mini-logo-top')) {
+                const topLogo = document.createElement('img');
+                topLogo.src = 'a-logo.png';
+                topLogo.alt = 'Adastra';
+                topLogo.className = 'mini-logo mini-logo-top';
+                if (topSlot) {
+                    topSlot.appendChild(topLogo);
+                } else {
+                    const topWrap = document.createElement('div');
+                    topWrap.className = 'full-bleed-center';
+                    topWrap.appendChild(topLogo);
+                    // Dil bloklarından bağımsız çalışması için panel köküne yerleştir
+                    panelRoot.insertBefore(topWrap, panelRoot.firstChild);
+                }
+            }
+
+            if (!panelRoot.querySelector('.mini-logo-bottom')) {
+                const bottomLogo = document.createElement('img');
+                bottomLogo.src = 'a-logo.png';
+                bottomLogo.alt = 'Adastra';
+                bottomLogo.className = 'mini-logo mini-logo-bottom';
+                if (bottomSlot) {
+                    bottomSlot.appendChild(bottomLogo);
+                } else {
+                    const bottomWrap = document.createElement('div');
+                    bottomWrap.className = 'full-bleed-center';
+                    bottomWrap.appendChild(bottomLogo);
+                    // Daha erken görünmesi için panel içindeki divider'ların ortasına yakın yerleştir
+                    if (allDividers && allDividers.length >= 2) {
+                        const mid = allDividers[Math.floor(allDividers.length / 2)];
+                        mid.parentNode.insertBefore(bottomWrap, mid.nextSibling);
+                    } else if (last) {
+                        last.parentNode.insertBefore(bottomWrap, last.nextSibling);
+                    } else if (first) {
+                        first.parentNode.insertBefore(bottomWrap, first.nextSibling);
+                    } else {
+                        // Bölücü yoksa panelin sonuna değil, çocukların ~%70'inden sonra yerleştir
+                        const children = panelRoot.children;
+                        const idx = Math.max(0, Math.floor(children.length * 0.7));
+                        const ref = children[idx];
+                        if (ref) {
+                            panelRoot.insertBefore(bottomWrap, ref);
+                        } else {
+                            panelRoot.appendChild(bottomWrap);
+                        }
+                    }
+                }
+            }
+        }
+    })();
+
+    // Scroll yönünü takip et (mini logo ve divider tetikleri için)
+    let __lastY = window.scrollY;
+    let __dir = 'down';
+    window.addEventListener('scroll', () => {
+        const y = window.scrollY;
+        __dir = y > __lastY ? 'down' : (y < __lastY ? 'up' : __dir);
+        __lastY = y;
+    }, { passive: true });
+
+    // Yukarı yönde metin panellerini gizle, sadece hero görsellerini göster
+    (function enableUpwardOnlyHeroes() {
+        let rafId = null;
+        function applyMode() {
+            rafId = null;
+            const suppressed = suppressUpwardModeUntil && (Date.now() < suppressUpwardModeUntil);
+            const modeUp = (__dir === 'up') && !suppressed;
+            if (suppressed) {
+                document.body.classList.remove('upward-mode');
+            } else {
+                document.body.classList.toggle('upward-mode', modeUp);
+            }
+        }
+        window.addEventListener('scroll', () => {
+            if (rafId) return;
+            rafId = requestAnimationFrame(applyMode);
+        }, { passive: true });
+        // İlk durumda aşağı kabul et
+        applyMode();
+    })();
+
+    // Alt çizgi görünür olduğunda bir alt sayfanın başına otomatik geçiş
+    (function enableBottomDividerAdvance() {
+        const ENABLE = false;
+        if (!ENABLE) return;
+        const order = ['home', 'about', 'services', 'vision', 'blog', 'contact'];
+        const triggered = new Set();
+        const observers = [];
+
+        function nextOf(id) {
+            const idx = order.indexOf(id);
+            if (idx === -1 || idx >= order.length - 1) return null;
+            return order[idx + 1];
+        }
+
+        for (const id of order) {
+            if (id === 'contact') continue; // iletişimde otomatik geçiş yok
+            const panelRoot = document.querySelector(`#${id} .text-panel`);
+            if (!panelRoot) continue;
+            // Divider'ları panel kökünde ara (container dışı olanlar için)
+            const dividers = panelRoot.querySelectorAll('.section-divider');
+            if (!dividers.length) continue;
+            const last = dividers[dividers.length - 1];
+
+            const obs = new IntersectionObserver((entries) => {
+                for (const entry of entries) {
+                    if (entry.isIntersecting && __dir === 'down') {
+                        const nid = nextOf(id);
+                        if (!nid) return;
+                        if (triggered.has(id)) return;
+                        triggered.add(id);
+                        const el = document.getElementById(nid);
+                        if (!el) return;
+                        // Daha yumuşak geçiş
+                        smoothScrollToElement(el);
+                        try { setActiveNav(nid); } catch (_) {}
+                    } else if (!entry.isIntersecting) {
+                        // Görünürlükten çıktığında yeniden tetiklenebilir olsun
+                        triggered.delete(id);
+                    }
+                }
+            }, { root: null, threshold: 0.15 });
+
+            obs.observe(last);
+            observers.push(obs);
+        }
+    })();
+
+    // Mini logo görünürlüğüne bağlı yönlü otomatik geçiş (üst: önceki, alt: sonraki)
+    (function enableMiniLogoAdvance() {
+        const ENABLE = true;
+        if (!ENABLE) return;
+        const order = ['home', 'about', 'services', 'vision', 'blog', 'contact'];
+        const observers = [];
+        const triggered = new Set();
+
+        function prevOf(id) {
+            const idx = order.indexOf(id);
+            if (idx <= 0) return null;
+            return order[idx - 1];
+        }
+        function nextOf(id) {
+            const idx = order.indexOf(id);
+            if (idx === -1 || idx >= order.length - 1) return null;
+            return order[idx + 1];
+        }
+
+        for (const id of order) {
+            const panelRoot = document.querySelector(`#${id} .text-panel`);
+            if (!panelRoot) continue;
+            const topLogo = panelRoot.querySelector('.mini-logo-top');
+            const bottomLogo = panelRoot.querySelector('.mini-logo-bottom');
+            const preloadedByBottomEdge = new Set();
+
+            // Üst logo için özel gözlemci: yukarı yönde görünür olur olmaz önceki hero'yu aktif et
+            if (topLogo) {
+                const obsTop = new IntersectionObserver((entries) => {
+                    for (const entry of entries) {
+                        const pid = prevOf(id);
+                        const prevSection = pid ? document.getElementById(pid) : null;
+                        if (!entry.isIntersecting) {
+                            triggered.delete(`${id}:top`);
+                            if (prevSection) prevSection.classList.remove('hero-preview');
+                            continue;
+                        }
+                        if (__dir !== 'up') continue;
+                        if (!pid || !prevSection) continue;
+                        const key = `${id}:top`;
+                        if (triggered.has(key)) continue;
+
+                        // Önceki bölümün görselini yarı opak önizleme olarak göster
+                        const prevHeroImg = prevSection.querySelector('.hero-fill img.hero-image');
+                        if (prevHeroImg) {
+                            const tmp = new Image();
+                            tmp.decoding = 'async';
+                            tmp.src = prevHeroImg.src;
+                        }
+                        prevSection.classList.add('hero-preview');
+
+                        // Ekrana girer girmez önceki bölümün hero'sunu aktif et (kaydırma yok)
+                        try { startBlackFade(0.35, 600); } catch (_) {}
+                        triggered.add(key);
+                        try { activateNav(pid, 'mini'); } catch (_) {}
+                        // Aktivasyon sonrasında preview gereksiz olacağından kaldırmayı deneyin
+                        setTimeout(() => { prevSection.classList.remove('hero-preview'); }, 300);
+                    }
+                }, { root: null, threshold: 0, rootMargin: '0% 0% 40% 0%' });
+                observers.push(obsTop);
+                obsTop.observe(topLogo);
+
+                // Aşağı yönde: üst mini logo ekranın tamamen dışına çıktığında (yukarı)
+                // ilgili bölümün hero’sunu efektsiz aç
+                const obsTopDown = new IntersectionObserver((entries) => {
+                    for (const entry of entries) {
+                        const key = `${id}:top-down`;
+                        const bottom = entry.boundingClientRect.bottom;
+                        // Logo görünürken tetikleme yapılmaz; görünürlükten çıkınca kontrol et
+                        if (entry.isIntersecting) { triggered.delete(key); continue; }
+                        if (__dir !== 'down') { triggered.delete(key); continue; }
+                        if (triggered.has(key)) continue;
+                        // Tamamen ekranın üstünde: bottom <= 0
+                        if (bottom <= 0) {
+                            triggered.add(key);
+                            const sec = document.getElementById(id);
+                            if (sec) {
+                                sec.classList.add('hero-no-effect');
+                                try { activateNav(id, 'mini'); } catch (_) {}
+                                setTimeout(() => { sec.classList.remove('hero-no-effect'); }, 300);
+                            }
+                        }
+                    }
+                }, { root: null, threshold: 0 });
+                observers.push(obsTopDown);
+                obsTopDown.observe(topLogo);
+
+                // Aşağı yönde: üst mini logo üstten çıksa bile otomatik ileri aktivasyon kaldırıldı
+            }
+
+            // Alt mini-logo yaklaşırken: bir SONRAKİ bölüm hero görselini erken preload et
+            if (bottomLogo) {
+                const obsBottomPreload = new IntersectionObserver((entries) => {
+                    for (const entry of entries) {
+                        const key = `${id}:preload-bottom-edge`;
+                        const nid = nextOf(id);
+                        const nextSection = nid ? document.getElementById(nid) : null;
+                        if (!entry.isIntersecting) {
+                            preloadedByBottomEdge.delete(key);
+                            if (nextSection) nextSection.classList.remove('hero-preview');
+                            continue;
+                        }
+                        if (__dir !== 'down') continue;
+                        if (!nid || !nextSection) continue;
+                        const nextHeroImg = nextSection.querySelector('.hero-fill img.hero-image');
+                        if (nextHeroImg) {
+                            // Görseli önceden yükle ve hero’yu önizleme olarak görünür yap
+                            const tmp = new Image();
+                            tmp.decoding = 'async';
+                            tmp.src = nextHeroImg.src;
+                            nextSection.classList.add('hero-preview');
+                            preloadedByBottomEdge.add(key);
+                        }
+                    }
+                }, { root: null, threshold: 0, rootMargin: '0% 0% 120% 0%' });
+                observers.push(obsBottomPreload);
+                obsBottomPreload.observe(bottomLogo);
+            }
+        }
+    })();
+    
+    // Hero görsellerini scroll ile kademeli koyultma
+    (function enableHeroDarkenOnScroll() {
+        let rafId = null;
+        const MAX_DARK_PER_SECTION = {
+            home: 0.20,
+            about: 0.18,
+            services: 0.20,
+            vision: 0.18,
+            blog: 0.16,
+            contact: 0.0
+        };
+
+        function computeDarkness() {
+            rafId = null;
+            const active = document.body.dataset.activeSection;
+            if (!active) return;
+
+            const section = document.getElementById(active);
+            if (!section) return;
+            const hero = section.querySelector('.hero-fill');
+            const panel = section.querySelector('.text-panel');
+            if (!hero || !panel) return;
+
+            const rect = panel.getBoundingClientRect();
+            const vh = window.innerHeight;
+            // Panel görünmeye başladığında kararma başlasın; metne yaklaştıkça artan koyuluk
+            const start = vh * 0.92; // kararma daha geç başlasın
+            const end = vh * 0.35;   // maksimum koyuluk eşiklerini koru
+
+            let t = 1; // 1 → hiç koyu değil
+            if (rect.top < start && rect.bottom > 0) {
+                t = Math.min(Math.max((rect.top - end) / (start - end), 0), 1);
+            } else {
+                t = 1;
+            }
+
+            const maxDark = MAX_DARK_PER_SECTION[active] ?? 0.18; // bölüm bazlı kararma üst sınırı
+            const darkness = (1 - t) * maxDark;
+            hero.style.setProperty('--hero-darkness', darkness.toFixed(3));
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!rafId) rafId = requestAnimationFrame(computeDarkness);
+        }, { passive: true });
+        window.addEventListener('resize', () => {
+            if (!rafId) rafId = requestAnimationFrame(computeDarkness);
+        });
+        // İlk durum
+        computeDarkness();
+    })();
+
+    // Yaklaşan bölümün hero parlaklığını mini-logo üst konumuna göre kontrol et
+    (function enableUpcomingHeroBrightnessControl() {
+        const order = ['home','about','services','vision','blog','contact'];
+        let rafId = null;
+        const preloadedOnTop = new Set();
+        const activatedOnTop = new Set();
+        function tick() {
+            rafId = null;
+            const active = document.body.dataset.activeSection;
+            if (!active) return;
+            const idx = order.indexOf(active);
+            if (idx === -1 || idx >= order.length - 1) return;
+            const nextId = order[idx + 1];
+            const nextSection = document.getElementById(nextId);
+            if (!nextSection) return;
+            const heroNext = nextSection.querySelector('.hero-fill');
+            const nextHeroImg = nextSection.querySelector('.hero-fill img.hero-image');
+            const topLogo = nextSection.querySelector('.mini-logo-top');
+            if (!heroNext || !topLogo) return;
+            const top = topLogo.getBoundingClientRect().top;
+            const vh = window.innerHeight;
+            const triggerTop = vh * 0.5; // ekranın yarısı: daha erken aktivasyon
+            // Üst mini logo ekran başına gelene kadar (top > 0) bir sonraki hero tam parlak
+            if (top > triggerTop) {
+                heroNext.style.setProperty('--hero-darkness', '0');
+                // Üst sınırdan ayrıldığında yeniden aktive edilebilir olması için işareti kaldır
+                activatedOnTop.delete(nextId);
+            } else {
+                // Kontrolü kaldır: bölüm aktif olduğunda kendi kararma mantığı devreye girsin
+                heroNext.style.removeProperty('--hero-darkness');
+                // Üst mini logo üst sınıra ulaştığında hero görselini preload et
+                if (nextHeroImg && !preloadedOnTop.has(nextId)) {
+                    const tmp = new Image();
+                    tmp.decoding = 'async';
+                    tmp.src = nextHeroImg.src;
+                    preloadedOnTop.add(nextId);
+                }
+                // Aktivasyonu aşağı yönde öne çekmeyelim; yalnızca preload yap
+            }
+        }
+        window.addEventListener('scroll', () => {
+            if (!rafId) rafId = requestAnimationFrame(tick);
+        }, { passive: true });
+        window.addEventListener('resize', () => {
+            if (!rafId) rafId = requestAnimationFrame(tick);
+        });
+        tick();
+    })();
+});
