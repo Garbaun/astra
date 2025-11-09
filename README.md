@@ -87,6 +87,47 @@ adastra-web/
 └── README.md       # Proje dökümantasyonu
 ```
 
+## Site Yapısı ve Mimarisi
+
+- Ana bileşenler: `index.html` içindeki her bölüm `.page-section` olarak yapılandırılır.
+- Görsel katman: Her bölümde tam ekran `.hero-image` arka planı kullanılır.
+- Metin katman: İçerik ve başlıklar `.text-panel` içinde yer alır.
+- Navigasyon: Logo ve menü linkleri bölüm atlamalarını tetikler.
+- Geçiş durumları (CSS sınıfları):
+  - `hero-active`: Aktif bölümün görseli (üstte, görünür).
+  - `hero-preview`: Sıradaki bölüm görselinin önizlemesi.
+  - `hero-hold`: Eski görseli kısa süre tutarak cross-fade etkisi sağlar.
+  - `black-fade-overlay`: Geçişlerde yumuşak siyahlık efekti için global overlay.
+- Davranışlar (JS):
+  - `activateNav` ve `setActiveNav`: Bölüm aktivasyon ve sınıf geçişlerini yönetir.
+  - `smoothScrollToElement`: Programatik yumuşak kaydırmayı gerçekleştirir.
+  - `suppressUpwardModeUntil`: Programatik scroll sırasında `upward-mode`’u geçici olarak devre dışı bırakır.
+
+### Bölümler
+- Ana Sayfa (`Home`)
+- Hakkımızda (`About`)
+- Hizmetlerimiz (`Services`)
+- Vizyonumuz (`Vision`)
+- Blog (`Blog`)
+- İletişim (`Contact`)
+
+Varlıklar ve görseller `root` ile `pages/` klasöründe PNG olarak bulunur ve ilgili bölümlerde tam ekran arka plan olarak kullanılır.
+
+## Yerel Çalıştırma
+
+- Herhangi bir statik sunucu ile çalışır. Örnek: `python -m http.server 5500`
+- Tarayıcıda `http://localhost:5500/` adresini açarak deneyimi görüntüleyin.
+
+## Yayınlama (Deploy)
+
+- Statik hosting (ör. paylaşımlı host, Netlify, Vercel, GitHub Pages) ile doğrudan yayımlanabilir.
+- Tüm dosyaları tek bir kök dizinde barındırın; giriş noktası `index.html`.
+- Asset yolları görece (relative) olduğundan dizin yapısını koruyun.
+
+## Commit Politikası
+
+- Bu aşamadan sonra ek commit yapılmayacak; site son hâline getirildikten sonra host’a deploy edilecektir.
+
 ## Tarayıcı Uyumluluğu
 
 - Chrome 80+
@@ -104,3 +145,17 @@ adastra-web/
 ---
 
 **Adastra Reklam Ajansı** - Geleceğin reklamcılığını şekillendiriyoruz.
+
+## Değişiklik Günlüğü
+
+### 2025-11-09
+- Blog (EN) sloganı güncellendi: `THE PULSE OF THE DIGITAL`.
+- Blog kartlarında “Devamını oku / Read More” tıklandığında merkezde modal okuma alanı açılır.
+  - Yumuşak koyu arka plan, okunaklı `Inter` fontu, rahat satır aralığı.
+  - Escape tuşu, arka plan tıklaması veya `×` butonu ile kapanır.
+- `script.js`:
+  - `renderBlogGallery` içinde Read More olayları modalı açacak şekilde bağlandı.
+  - EN/TR `blogPosts` öğelerine tam metin için `content` alanı eklendi.
+  - Modal yardımcıları (`ensureReadModal`, `openReadModal`, `closeReadModal`) eklendi.
+- `styles.css`:
+  - `.read-modal-overlay`, `.read-modal`, `.read-modal-close` stilleri ile modal tasarımı eklendi.
