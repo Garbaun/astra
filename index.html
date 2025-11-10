@@ -26,14 +26,7 @@
         <link rel="stylesheet" href="backgrounds.css">
     </noscript>
     <link rel="preload" href="mainpage.png" as="image">
-    <style>
-      /* Critical: başlangıçta tüm hero görüntülerini gizle, sadece aktif bölüm görünür */
-      .hero-image { opacity: 0 !important; }
-      .page-section.hero-active .hero-image { opacity: 1 !important; }
-      /* İlk boyama bloklayıcı: JS hazır olana kadar yalnızca Home hero görünür */
-      .initial-block .hero-image { visibility: hidden !important; }
-      .initial-block #home .hero-image { visibility: visible !important; }
-    </style>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@300;400;700&family=Rajdhani:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -41,7 +34,7 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 </head>
-<body data-active-section="home" class="initial-block">
+<body data-active-section="home">
     <!-- Fixed Logo -->
     <div class="logo">
         <a href="#home" class="logo-link">
@@ -70,7 +63,10 @@
         <!-- Home Section -->
         <section id="home" class="page-section hero-active slogan-active" data-background="none">
             <div class="hero-fill">
-                <img src="mainpage.png" alt="Ana sayfa görseli" class="hero-image">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="mobil/home.png">
+                    <img src="mainpage.png" alt="Ana sayfa görseli" class="hero-image">
+                </picture>
                 <div class="content-container left-aligned">
                     <h1 class="main-slogan" data-text="YILDIZLARA
 ULAŞMANIN
@@ -128,7 +124,10 @@ YOLU"></h1>
         <!-- About Section -->
         <section id="about" class="page-section" data-background="none">
             <div class="hero-fill">
-                <img src="pages/hakkimizda.png" alt="Hakkımızda görseli" class="hero-image" loading="lazy">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="mobil/about.png">
+                    <img src="pages/hakkimizda.png" alt="Hakkımızda görseli" class="hero-image" loading="lazy">
+                </picture>
                 <div class="content-container left-aligned">
                     <h1 class="main-slogan section-slogan" data-text="SANATI
 KODLUYORUZ"></h1>
@@ -249,7 +248,10 @@ KODLUYORUZ"></h1>
         <!-- Services Section -->
         <section id="services" class="page-section" data-background="none">
             <div class="hero-fill">
-                <img src="pages/hizmetlerimiz.png" alt="Hizmetlerimiz görseli" class="hero-image" loading="lazy">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="mobil/services.png">
+                    <img src="pages/hizmetlerimiz.png" alt="Hizmetlerimiz görseli" class="hero-image" loading="lazy">
+                </picture>
                 <div class="content-container left-aligned">
                     <h1 class="main-slogan section-slogan" data-text="GELECEĞİN KANVASLARI"></h1>
                 </div>
@@ -427,7 +429,10 @@ KODLUYORUZ"></h1>
         <!-- Vision Section -->
         <section id="vision" class="page-section" data-background="none">
             <div class="hero-fill">
-                <img src="pages/vizyonumuz.png" alt="Vizyonumuz görseli" class="hero-image" loading="lazy">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="mobil/vision.png">
+                    <img src="pages/vizyonumuz.png" alt="Vizyonumuz görseli" class="hero-image" loading="lazy">
+                </picture>
                 <div class="content-container left-aligned">
                     <h1 class="main-slogan section-slogan" data-text="YARININ\nPERSPEKTİFİ\nİÇİN"></h1>
                 </div>
@@ -493,7 +498,7 @@ KODLUYORUZ"></h1>
 
                     <div class="section-divider"></div>
 
-                    <p class="closing-line">Ad astra, per aspera. Geleceğin zorluklarını aşarak yıldızlara ulaşma azmimiz, her adımımızı aydınlatır.</p>
+                    <p class="closing-line">"Ad astra, per aspera."<br>"Geleceğin zorluklarını aşarak yıldızlara ulaşma azmimiz,"<br>"her adımımızı aydınlatır ."</p>
                     <div class="section-divider"></div>
             </div>
         </section>
@@ -501,7 +506,10 @@ KODLUYORUZ"></h1>
         <!-- Blog Section -->
         <section id="blog" class="page-section" data-background="none">
             <div class="hero-fill">
-                <img src="pages/blog.png" alt="Blog görseli" class="hero-image" loading="lazy">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="mobil/blog.png">
+                    <img src="pages/blog.png" alt="Blog görseli" class="hero-image" loading="lazy">
+                </picture>
                 <div class="content-container left-aligned">
                     <h1 class="main-slogan section-slogan" data-text="DİJİTALİN NABZI"></h1>
                 </div>
@@ -519,7 +527,10 @@ KODLUYORUZ"></h1>
         <!-- Contact Section -->
         <section id="contact" class="page-section" data-background="none">
             <div class="hero-fill">
-                <img src="pages/iletisim.png" alt="İletişim görseli" class="hero-image" loading="lazy">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="mobil/contact.png">
+                    <img src="pages/iletisim.png" alt="İletişim görseli" class="hero-image" loading="lazy">
+                </picture>
             </div>
             <div class="text-panel">
             <div class="content-container contact-container">

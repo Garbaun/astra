@@ -193,10 +193,10 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         tr: {
             nav: {
-                home: 'Ana Sayfa',
-                about: 'Hakkımızda',
-                services: 'Hizmetlerimiz',
-                vision: 'Vizyonumuz',
+                home: 'Ev',
+                about: 'Bizler',
+                services: 'İşimiz',
+                vision: 'Vizyon',
                 blog: 'Blog',
                 contact: 'İletişim'
             },
@@ -448,7 +448,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const homeSlogan = document.querySelector('#home .main-slogan');
         if (homeSlogan) {
             homeSlogan.setAttribute('data-text', dict.slogan);
-            homeSlogan.innerHTML = '';
+            // Başlangıçta sloganın görünmemesini önlemek için gerçek metni yerleştir
+            homeSlogan.textContent = dict.slogan;
         }
         const sectionKeys = ['about','services','vision','blog'];
         sectionKeys.forEach(key => {
@@ -457,7 +458,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const text = dict.slogans && dict.slogans[key];
             if (text) {
                 el.setAttribute('data-text', text);
-                el.innerHTML = '';
+                // Pseudo‑element kullanılmasa bile metin görünsün
+                el.textContent = text;
             }
         });
 
@@ -498,7 +500,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (lang === 'en') {
                     closingEl.textContent = 'Ad astra, per aspera. Our determination to overcome the challenges of the future and reach the stars illuminates our every step.';
                 } else {
-                    closingEl.textContent = 'Ad astra, per aspera. Geleceğin zorluklarını aşarak yıldızlara ulaşma azmimiz, her adımımızı aydınlatır.';
+                    closingEl.innerHTML = ['"Ad astra, per aspera."', '"Geleceğin zorluklarını aşarak yıldızlara ulaşma azmimiz,"', '"her adımımızı aydınlatır ."'].join('<br>');
                 }
             }
         }
@@ -548,6 +550,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // Contact abonelik alanı kaldırıldı
         localStorage.setItem('lang', lang);
         setActiveLangButton(lang);
+        // İstenen davranış: dil değişince sayfa kendini tazelesin
+        if (restart) {
+            try { window.location.reload(); }
+            catch (_) { window.location.href = window.location.href; }
+            return;
+        }
     }
 
     const savedLang = localStorage.getItem('lang') || 'en';
@@ -1454,30 +1462,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Add loading animation
-    window.addEventListener('load', function() {
-        document.body.style.opacity = '0';
-        document.body.style.transition = 'opacity 0.5s ease';
-        
-        setTimeout(() => {
-            document.body.style.opacity = '1';
-            // Başlangıçta en üste konumlan ve ana sayfayı aktif yap
-            try {
-                window.scrollTo({ top: 0, behavior: 'auto' });
-                const homeEl = document.getElementById('home');
-                if (homeEl) {
-                    // Hash veya önceki pozisyonu yok sayarak ana bölümü aktif işaretle
-                    if (typeof setActiveNav === 'function') {
-                        setActiveNav('home');
-                    }
-                }
-                // Artık aktif takibi devreye al
-                initialSettled = true;
-                // İlk boyama bloklayıcı sınıfı kaldır: diğer hero'lar görünür hâle gelebilir
-                document.body.classList.remove('initial-block');
-            } catch (_) {}
-        }, 100);
-    });
+    // Yükleme fade'ini kaldır: doğrudan başlangıç durumunu yerleştir
+    (function initWithoutLoadFade() {
+        try {
+            // Başlangıçta Home'u güvenceye al ve sayfanın en üstüne konumlan
+            const homeEl = document.getElementById('home');
+            if (homeEl && typeof setActiveNav === 'function') {
+                setActiveNav('home');
+            }
+            // Scroll pozisyonunu kesinlikle en üste al
+            try { window.scrollTo({ top: 0, behavior: 'auto' }); } catch (_) { window.scrollTo(0, 0); }
+            // Aktif takibi çok kısa bir gecikme sonrası devreye al
+            setTimeout(() => { initialSettled = true; }, 60);
+            // Eski initial-block artık kullanılmıyor; varsa kaldır
+            document.body.classList.remove('initial-block');
+        } catch (_) {}
+    })();
 
     // Nav, logo ve dil butonlarını yumuşak şekilde kademeli gizle/göster
     (function enableSoftFadeUI() {
