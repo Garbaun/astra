@@ -1152,7 +1152,7 @@ body::-webkit-scrollbar-thumb { background-color: #4a4a4a; border-radius: 6px; b
 }
 
 .read-modal-content {
-    max-height: 60vh;
+    max-height: 48vh;
     overflow: auto;
     line-height: 1.8;
     font-size: 1.05rem;
