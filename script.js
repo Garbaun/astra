@@ -545,6 +545,7 @@ document.addEventListener('DOMContentLoaded', function() {
             setTip('.tip-item.tip-2', dict.tips.tip2);
             setTip('.tip-item.tip-3', dict.tips.tip3);
         }
+        // Contact abonelik alanı kaldırıldı
         localStorage.setItem('lang', lang);
         setActiveLangButton(lang);
     }

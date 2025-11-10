@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yönlendiriliyor…</title>
+  <meta http-equiv="refresh" content="0; url=../pages/qr.html">
+  <meta name="robots" content="noindex">
+  <script>
+    // Ortama göre doğru hedefi seç: GitHub Pages proje yolu vs. üretim kök yolu
+    (function() {
+      var host = window.location.host;
+      var pathname = window.location.pathname; // örn: /astra/call/
+      var target;
+      if (host.endsWith('github.io')) {
+        // Proje adı (ilk segment) üzerinden mutlak yol oluştur
+        var segments = pathname.split('/').filter(Boolean); // ['astra','call']
+        var base = segments.length ? segments[0] : '';
+        target = '/' + base + '/pages/qr.html';
+      } else {
+        // Üretim sunucuda kök dizine göre göreli yol
+        target = '../pages/qr.html';
+      }
+      window.location.replace(target);
+    })();
+  </script>
+  <style>
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background:#0b0f19; color:#e6e8ee; display:grid; place-items:center; min-height:100vh; }
+    .box { text-align:center; padding:24px; }
+    a { color:#e6e8ee; }
+  </style>
+  <!-- Not: GitHub Pages proje sitesi için göreli yol kullanılıyor: ../pages/qr.html -->
+</head>
+<body>
+  <div class="box">
+    <p>Yönlendiriliyor… Eğer otomatik yönlendirme olmadıysa aşağıdaki bağlantıya tıklayın.</p>
+    <p><a href="../pages/qr.html">QR iletişim sayfasına devam et</a></p>
+  </div>
+</body>
+</html>
