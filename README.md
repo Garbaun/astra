@@ -84,6 +84,13 @@ adastra-web/
 ├── styles.css      # Ana CSS dosyası
 ├── backgrounds.css # Arka plan efektleri
 ├── script.js       # JavaScript animasyonlar
+├── .nojekyll       # GitHub Pages için Jekyll devre dışı
+├── call.html       # Kısa yol: QR sayfasına yönlendirme
+├── call/           # Klasör tabanlı kısa yol
+│   └── index.html  # QR sayfasına yönlendirme (GitHub Pages uyumlu)
+├── pages/
+│   ├── qr.html     # QR iletişim sayfası (canonical içerik)
+│   └── adastra.vcf # vCard (kişiyi rehbere ekle)
 └── README.md       # Proje dökümantasyonu
 ```
 
@@ -123,6 +130,22 @@ Varlıklar ve görseller `root` ile `pages/` klasöründe PNG olarak bulunur ve 
 - Statik hosting (ör. paylaşımlı host, Netlify, Vercel, GitHub Pages) ile doğrudan yayımlanabilir.
 - Tüm dosyaları tek bir kök dizinde barındırın; giriş noktası `index.html`.
 - Asset yolları görece (relative) olduğundan dizin yapısını koruyun.
+- GitHub Pages için kökte `.nojekyll` dosyası mevcuttur; Jekyll işleme devre dışı bırakılır.
+- GitHub Pages yapılandırması: Settings → Pages → Source: Deploy from branch, Branch: `main`, Folder: `/ (root)`.
+
+### QR Sayfası (İletişim Kısayolu)
+- Sayfa: `pages/qr.html`
+- Kısa bağlantılar (GitHub Pages):
+  - `https://garbaun.github.io/astra/call.html` (stabil ve önerilen)
+  - `https://garbaun.github.io/astra/call/` (klasör tabanlı; `call/index.html`)
+  - Doğrudan: `https://garbaun.github.io/astra/pages/qr.html`
+- Üretim hedef URL: `https://adastrabcv.com/call` (DNS ve SSL sonrasında)
+- Özellikler:
+  - Logo 120x120 px, başlık alanında merkezlenmiş
+  - “Adastra BCV Dijital mimari ve yaratıcı algoritmalar” metni kaldırıldı
+  - Alt bilgi metni merkezde: `Adastra BCV® - 10.11.2025`
+  - “Haritada aç” bağlantıları, “Ara” ve “WhatsApp” butonları
+  - vCard: `pages/adastra.vcf`
 
 ## Commit Politikası
 
@@ -147,6 +170,17 @@ Varlıklar ve görseller `root` ile `pages/` klasöründe PNG olarak bulunur ve 
 **Adastra Reklam Ajansı** - Geleceğin reklamcılığını şekillendiriyoruz.
 
 ## Değişiklik Günlüğü
+
+### 2025-11-10
+- `pages/qr.html`: QR iletişim sayfası oluşturuldu ve sadeleştirildi.
+  - Logo büyütüldü ve ortalandı (120x120 px).
+  - Başlık ve açıklama metni kaldırıldı; tipografi sadeleştirildi.
+  - Footer metni güncellendi ve ortalandı: `Adastra BCV® - 10.11.2025`.
+- Kısayollar eklendi:
+  - `call.html` (tek dosya) ve `call/index.html` (klasör)
+  - Her ikisi de `pages/qr.html` sayfasına yönlendirir.
+- `.nojekyll` eklendi: GitHub Pages’in dosyaları olduğu gibi yayınlaması sağlandı.
+- `robots.txt` ve `sitemap.xml` güncellendi/eklendi (yayın uyumluluğu).
 
 ### 2025-11-09
 - Blog (EN) sloganı güncellendi: `THE PULSE OF THE DIGITAL`.
