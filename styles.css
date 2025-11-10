@@ -34,7 +34,7 @@ body {
 }
 
 .logo-image {
-    height: 144px; /* %20 büyütüldü */
+    height: 180px; /* boyut artırıldı */
     width: auto;
     /* Yazılardaki gölgeye benzer, hafif koyu arka gölge */
     filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 4px rgba(0, 0, 0, 0.9));
@@ -302,12 +302,17 @@ body[data-active-section="blog"] .nav-link.active:hover {
 
 /* Tek tip divider: tüm sayfalarda tam genişlik ve sol hizalı */
 /* Sayfa bazlı varyasyonları kaldırıldı; tutarlılık için base kural kullanılacak */
- .text-panel .split-block { display: grid; grid-template-columns: 200px 1fr; gap: 24px; align-items: start; justify-items: start; margin: 24px 0; }
- .text-panel .split-block .section-image { width: 200px; height: 200px; object-fit: cover; border-radius: 6px; display: block; margin-left: 0; }
+ .text-panel .split-block { display: grid; grid-template-columns: 300px 1fr; gap: 24px; align-items: start; justify-items: start; margin: 24px 0; }
+ .text-panel .split-block .section-image { width: 300px; height: 300px; object-fit: cover; border-radius: 6px; display: block; margin: 0 auto; }
  .text-panel .split-block .section-copy { min-width: 0; }
  .text-panel .split-block .section-copy .section-heading { margin: 0 0 8px 0; color: #fff; }
  .text-panel .split-block .section-copy p { margin: 0 0 12px 0; line-height: 1.6; }
  @media (max-width: 768px) { .text-panel .split-block { grid-template-columns: 1fr; } }
+
+/* Mobile: split-block görsellerini görünür tut (üstte, metin altta) */
+@media (max-width: 768px) {
+  .text-panel .split-block .section-image { display: block; }
+}
 
 /* Global overlay: tüm ekranı kaplar, nav/logo/dil üzerinde; içerik paneli üstte kalır */
 /* Tips okunurken ekranı karartan overlay: sadece panel aktifken görünür */
@@ -331,6 +336,7 @@ body[data-active-section="blog"] .nav-link.active:hover {
     width: 100vw;
     height: 100vh;
     object-fit: cover;
+    object-position: center center;
     display: block;
     z-index: 1;
     pointer-events: none;
@@ -371,10 +377,8 @@ body[data-active-section="blog"] .nav-link.active:hover {
     background: #121212;
 }
 
-/* Yukarı yönde: metin panellerini gizle, sadece hero'lar kalsın */
-body.upward-mode .page-section:not(#contact) .text-panel {
-    display: none !important;
-}
+/* Yukarı yönde metin paneli gizleme kapatıldı: okuma sürekliliği korunur */
+/* body.upward-mode .page-section:not(#contact) .text-panel { display: none !important; } */
 
 /* Mini logo: okuma başlangıç/bitiş göstergesi */
 .mini-logo {
@@ -831,37 +835,52 @@ body.upward-mode .page-section:not(#contact) .text-panel {
     .blog-thumb { height: auto; }
 }
 
+/* Tips: mobilde split-block gibi görsel üstte, metin altta */
+@media (max-width: 768px) {
+    .tips-container .tip-item { grid-template-columns: 1fr; }
+    .tips-container .tip-image { width: 92%; height: auto; margin: 0 auto; }
+}
+
 /* Tips section on Home */
 .tips-container {
     max-width: 1200px; /* sayfaya daha iyi yayılma için genişletildi */
     padding: 0; /* ek sol iç boşluğu kaldır: sol hizayı standartlaştır */
     gap: 40px;
-    align-items: flex-start; /* konteyner içeriğini sola hizala */
-    text-align: left; /* başlık ve metin sola hizalı */
+    margin: 0 auto; /* tüm blokları sayfa içinde ortala */
+    display: flex; /* ipuçları bloklarını dikey yığ ve yatayda ortala */
+    flex-direction: column;
+    align-items: center; /* her tip-item bloğunu merkezde tut */
+    text-align: left; /* metin blok içi sol hizalı kalsın */
 }
 
 .tip-item {
-    display: flex;
-    align-items: flex-start;
+    /* Home ipuçları: görsel kolonunu %50 büyüt (450px) */
+    display: grid;
+    grid-template-columns: 405px 1fr; /* %10 küçültme (450px -> 405px) */
+    align-items: start;
+    justify-items: start; /* görsel kendi hücresinde, metin sol hizalı kalsın */
+    justify-content: center; /* tüm grid’i yatayda ortala */
     gap: 24px;
     padding: 24px 0;
     border-bottom: none; /* dar, konteyner genişliğine bağlı çizgiyi kaldır */
-    flex-wrap: wrap;      /* alt satırda full‑width çizgi için sarma yap */
+    /* sola kaydırma kaldırıldı: gerçek merkezleme */
 }
 
 .tip-image {
-    width: 200px;
-    height: 200px;
+    width: 405px; /* %10 küçültme */
+    height: 405px;
     object-fit: cover;
     border-radius: 6px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-    flex: 0 0 200px; /* sabit kolon genişliği: üst üste binmeyi önle */
+    display: block;
+    margin: 0 auto; /* kolon içinde yatay merkezleme */
+    justify-self: center; /* grid hücresinde ortala */
 }
 
 /* İlk bölüm için görseli %50 küçült ve başlığı küçült */
 .tip-item.tip-1 .tip-image {
-    width: 200px;
-    height: 200px;
+    width: 405px;
+    height: 405px;
 }
 .tip-item.tip-1 .tip-heading {
     font-size: 1.2rem;
@@ -871,8 +890,8 @@ body.upward-mode .page-section:not(#contact) .text-panel {
     font-family: 'Inter', 'Rajdhani', sans-serif; /* Türkçe karakter desteği */
     font-weight: 600;
     font-size: 1.6rem;
-    color: #e9e9e9; /* Başlık rengini beyaz/uçuk gri yap */
-    margin-bottom: 12px;
+    color: #fff;
+    margin: 0 0 8px 0;
     text-transform: none; /* Türkçe büyük harf dönüşüm sorunlarını önle */
     letter-spacing: 0.5px;
 }
@@ -890,10 +909,10 @@ body.upward-mode .page-section:not(#contact) .text-panel {
 
 .tip-list li {
     font-family: 'Inter', 'Rajdhani', sans-serif; /* Türkçe karakter desteği */
-    font-size: 1.05rem;
-    line-height: 1.7;
+    font-size: 1rem;
+    line-height: 1.6;
     color: rgba(255, 255, 255, 0.85);
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 /* İpucu etiketini tek satırda tut: "İpucu 3:" asla bölünmesin */
@@ -933,8 +952,8 @@ body.upward-mode .page-section:not(#contact) .text-panel {
 /* Diğer ipuçları bölümlerine de kompakt stil uygula */
 .tip-item.tip-2 .tip-image,
 .tip-item.tip-3 .tip-image {
-    width: 200px;
-    height: 200px;
+    width: 405px;
+    height: 405px;
 }
 .tip-item.tip-2 .tip-heading,
 .tip-item.tip-3 .tip-heading {
@@ -1028,26 +1047,108 @@ body.upward-mode .page-section:not(#contact) .text-panel {
     }
     
     .logo-image {
-        height: 72px; /* mobilde de %20 büyüt */
+        height: 90px; /* mobilde daha büyük logo */
     }
     
-    .nav-link {
-        font-size: 14px;
-        padding: 8px 15px;
+    /* Alt responsive footer‑bar: tam genişlik, sade metin ve dik ayraçlar */
+    .nav-container,
+    .nav-container.stacked {
+        position: fixed;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        transform: none;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        padding: 8px 10px;
+        background: #0b0b0b;
+        box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.35);
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        z-index: 10006;
     }
+    .nav-container.stacked .nav-link { position: static; }
+    .nav-link {
+        flex: 0 0 auto;
+        white-space: nowrap;
+        font-size: 16px; /* mobilde okunabilirliği artır */
+        padding: 8px 10px; /* buton iç boşluklarını daralt */
+        border: none;
+        background: transparent;
+        border-radius: 0;
+    }
+    .nav-link + .nav-link::before {
+        content: '';
+        display: inline-block;
+        width: 1px; /* dikey ayraç */
+        height: 18px; /* biraz daha görünür olsun */
+        background: rgba(255,255,255,0.24);
+        vertical-align: middle;
+        margin: 0 6px; /* linkler arası boşluğu dengeli artır */
+    }
+    .nav-link.active { color: #9e9e9e; }
     
     .content-container {
-        padding: 0 20px;
+        padding: 0 24px;
     }
     
-    .main-slogan {
-        margin-left: 5%;
-        margin-top: 15vh;
-        max-width: 90%;
-        font-size: clamp(2rem, 6vw, 4rem);
+    .main-slogan,
+    .section-slogan {
+        position: static;
+        top: auto;
+        left: auto;
+        transform: none;
+        z-index: 3;
+        margin: 16px 0 20px;
+        max-width: 92%;
+        font-size: clamp(1.98rem, 6.6vw, 3.96rem); /* %10 büyüt */
         text-align: left;
         align-self: flex-start;
     }
+    .page-section .main-slogan,
+    .page-section .section-slogan { opacity: 1 !important; pointer-events: none; }
+
+    /* Hero blok: sabit/fixed değil; üstte normal img */
+    .hero-fill,
+    #home .hero-fill,
+    .page-section:not(#contact) .hero-fill {
+        position: relative !important;
+        top: auto;
+        height: 100vh; /* mobilde tam ekran yüksekliği */
+        min-height: 100vh;
+        z-index: 1;
+        pointer-events: none;
+    }
+    .hero-fill::after { display: none !important; }
+    .black-fade-overlay { display: none !important; }
+    .hero-image {
+        position: relative;
+        top: auto;
+        left: auto;
+        width: 100vw;   /* sayfanın verdiği genişlik */
+        height: 100vh;  /* tam ekran yüksekliği */
+        opacity: 1 !important;
+        z-index: 1;
+        object-fit: cover;
+        object-position: center center; /* mobilde ortala */
+    }
+    /* İletişim kahramanı: ortala; negatif margin yok */
+    #contact .hero-image {
+        object-position: center center !important;
+        margin-left: 0;
+        width: 100vw;
+    }
+    #home .hero-image { height: 100vh; width: 100vw; margin: 0; }
+    
+    /* Panel pad ve full‑bleed çizgiler için X pad’i küçült; panel opak */
+    .text-panel { padding: 36px 24px; --panel-pad-x: 24px; background: #121212; }
+    
+    /* Alt nav çakışmasını önlemek için gövdeye boşluk bırak */
+    body { padding-bottom: 64px; }
     
     .contact-container {
         flex-direction: column;
@@ -1081,9 +1182,9 @@ body.upward-mode .page-section:not(#contact) .text-panel {
 }
 /* Global: yatay taşmayı engelle, full‑bleed çizgilerde scrollbar oluşmasın */
 html, body { overflow-x: hidden; }
-/* Tek dikey scrollbar: html gizli, body görünür ve kaydırır */
-html { height: auto; overflow-y: auto; }
-body { height: auto; min-height: 100%; overflow-y: visible; }
+/* Tek dikey scrollbar: body üzerinden yönetilir */
+html { height: auto; }
+body { height: auto; min-height: 100%; overflow-y: auto; }
 /* Dikey scrollbar koyu tema ile uyumlu olsun (body üzerinden) */
 body { scrollbar-color: #4a4a4a #0b0b0b; scrollbar-width: thin; }
 body::-webkit-scrollbar { width: 10px; background-color: #0b0b0b; }
@@ -1175,3 +1276,46 @@ body::-webkit-scrollbar-thumb { background-color: #4a4a4a; border-radius: 6px; b
     text-align: center;
 }
 .read-modal-close:hover { background: rgba(255,255,255,0.16); }
+
+/* --- Overrides appended for requested UI adjustments --- */
+/* Contact hero: globally offset image 50px to the left */
+#contact .hero-image { object-position: center center !important; margin-left: 0; width: 100vw; }
+
+/* Desktop slogans: increase size by 10% for visual prominence */
+.main-slogan { font-size: clamp(3.3rem, 8.8vw, 6.6rem); }
+.section-slogan { font-size: clamp(3.3rem, 8.8vw, 6.6rem); }
+
+/* Mobile split-block images: make image full-width above text */
+@media (max-width: 768px) {
+  .text-panel .split-block .section-image { width: 100%; height: auto; }
+  /* Contact hero: mobile görünümde negatif margin ve genişlik telafisini kaldır */
+  #contact .hero-image { margin-left: 0; width: 100vw; object-position: center center !important; }
+}
+/* TR dilinde mobil nav: daha ince yazı ve daha sık aralık */
+@media (max-width: 768px) {
+  html[lang="tr"] .nav-link {
+    font-weight: 300;
+    letter-spacing: 0.2px;
+    padding: 6px 8px;
+    font-size: 16px; /* TR mobilde de biraz büyüt */
+  }
+  html[lang="tr"] .nav-link + .nav-link::before {
+    margin: 0 3px; /* kompakt ama görünür ayraç */
+  }
+}
+
+/* EN dilinde mobil nav: ortalama ve daha büyük yazı boyutu */
+@media (max-width: 768px) {
+  html[lang="en"] .nav-container,
+  html[lang="en"] .nav-container.stacked {
+    justify-content: center;
+    padding: 6px 8px; /* İngilizce'de alt bar iç boşluğunu azalt */
+  }
+  html[lang="en"] .nav-link {
+    font-size: 16px;
+    padding: 5px 6px; /* İngilizce linkleri birbirine yaklaştır */
+  }
+  html[lang="en"] .nav-link + .nav-link::before {
+    margin: 0 2px; /* ayraç aralığını daralt */
+  }
+}
