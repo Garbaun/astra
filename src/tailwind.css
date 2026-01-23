@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Örnek: Kart bileşenleri için yardımcı sınıflar */
+@layer components {
+  .card-base {
+    @apply bg-white rounded-xl shadow-card transition-shadow duration-200;
+  }
+  .card-hover:hover {
+    @apply shadow-card-hover;
+  }
+  .card-title {
+    @apply text-lg font-semibold leading-tight;
+  }
+  .card-meta {
+    @apply text-sm text-gray-500;
+  }
+}
+

@@ -9,9 +9,9 @@ body {
     font-family: 'Inter', 'Rajdhani', sans-serif;
     background: #000;
     color: #fff;
-    overflow-y: auto; /* body tek dikey scrollbarı taşır */
+    overflow-y: visible; /* Scroll html üzerinden yönetilsin */
     height: auto;
-    overscroll-behavior-y: none; /* tepe/dipte geri itme/bounce olmasın */
+    /* overscroll-behavior-y: none;  -- Kaldırıldı: Doğal scroll davranışını bozabilir */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -86,7 +86,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: auto; /* nav linkleri tıklanabilir olsun */
+    pointer-events: none; /* Container etkileşimi engellemesin, sadece linkler tıklanabilir olsun */
     z-index: 2;
     opacity: var(--ui-opacity, 1);
     transition: opacity 250ms ease;
@@ -129,10 +129,8 @@ body {
     scroll-behavior: auto;
     /* Scroll-snap devre dışı: hizalamayı JS ile yöneteceğiz */
     scroll-snap-type: none;
-    /* Estetik olarak scrolbar gizle; akış korunur */
-    scrollbar-width: none; /* Firefox */
 }
-body::-webkit-scrollbar { width: 0; height: 0; }
+/* body::-webkit-scrollbar { width: 0; height: 0; } */
 
 /* Başlangıçta hareketli (floating) konumlandırma için */
 .nav-container.floating .nav-link {
@@ -169,7 +167,7 @@ body[data-active-section="blog"] .nav-link.active:hover {
     display: flex;
     flex-direction: column;
     gap: 21px;
-    pointer-events: auto;
+    pointer-events: none;
     z-index: 2;
     width: auto;
     height: auto;
@@ -180,6 +178,35 @@ body[data-active-section="blog"] .nav-link.active:hover {
 .nav-container.stacked .nav-link {
     position: static;
     text-align: right;
+}
+
+/* RTL Support for Stacked Navigation */
+html[lang="ar"] .nav-container.stacked,
+html[dir="rtl"] .nav-container.stacked {
+    right: auto !important;
+    left: 30px !important;
+    align-items: flex-start !important;
+}
+
+html[lang="ar"] .nav-container.stacked .nav-link,
+html[dir="rtl"] .nav-container.stacked .nav-link {
+    text-align: left !important;
+    transform-origin: left center !important;
+}
+
+/* RTL Support for Logo (Move to Right) */
+html[lang="ar"] .logo,
+html[dir="rtl"] .logo {
+    left: auto !important;
+    right: 30px !important;
+}
+
+/* RTL Support for Language Switcher (Move to Left) */
+html[lang="ar"] .language-switcher,
+html[dir="rtl"] .language-switcher {
+    right: auto !important;
+    left: 20px !important;
+    flex-direction: row-reverse; /* Keep visual order if needed, or let it flip */
 }
 
 /* Main Container */
@@ -279,6 +306,7 @@ body[data-active-section="blog"] .nav-link.active:hover {
     z-index: 10005; /* Nav (10001), logo (9999), dil (10002) üzerine çık */
     overflow: visible; /* İç scroll yok, sayfa doğal akar */
 }
+/* (Revert) Home özel sağ padding kaldırıldı: global panel padding kullanılır */
  .text-panel .section-title { margin: 0 0 16px 0; }
 /* Divider: panel pad'ini telafi ederek tam genişlikte (full width) */
 .text-panel .section-divider {
@@ -302,12 +330,49 @@ body[data-active-section="blog"] .nav-link.active:hover {
 
 /* Tek tip divider: tüm sayfalarda tam genişlik ve sol hizalı */
 /* Sayfa bazlı varyasyonları kaldırıldı; tutarlılık için base kural kullanılacak */
- .text-panel .split-block { display: grid; grid-template-columns: 300px 1fr; gap: 24px; align-items: start; justify-items: start; margin: 24px 0; }
+ /* Varsayılan düzen: görsel solda, metin sağda; Services ile eş */
+ .text-panel .split-block {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 24px;
+    align-items: start;
+    justify-items: start;
+    margin: 24px 0;
+}
+
+/* RTL Support for Split Block */
+html[lang="ar"] .text-panel .split-block,
+html[dir="rtl"] .text-panel .split-block {
+    text-align: right;
+    justify-items: start;
+    direction: rtl; /* Ensure RTL flow */
+}
+
+/* Reverse flex/grid visual order for RTL if needed, but Grid handles it via column order. 
+   However, split-block uses grid-template-columns: 300px 1fr. 
+   In RTL, column 1 (image) is on the right. This is correct.
+   But if we wanted image on left and text on right in RTL (mirroring LTR layout physically), we would keep it.
+   Usually RTL users expect image to follow flow (Right -> Left).
+   So Image on Right, Text on Left is standard for RTL.
+   Current Grid does this automatically.
+   
+   However, check mobile media query.
+*/
+
+/* Mobile RTL adjustments if needed */
+@media (max-width: 768px) {
+    html[dir="rtl"] .text-panel .split-block {
+        grid-template-columns: 1fr;
+    }
+}
+/* In RTL grid, column 1 is on right. */
  .text-panel .split-block .section-image { width: 300px; height: 300px; object-fit: cover; border-radius: 6px; display: block; margin: 0 auto; }
  .text-panel .split-block .section-copy { min-width: 0; }
  .text-panel .split-block .section-copy .section-heading { margin: 0 0 8px 0; color: #fff; }
  .text-panel .split-block .section-copy p { margin: 0 0 12px 0; line-height: 1.6; }
- @media (max-width: 768px) { .text-panel .split-block { grid-template-columns: 1fr; } }
+  @media (max-width: 768px) { .text-panel .split-block { grid-template-columns: 1fr; } }
+
+/* (Revert) Home özel sağ hizalama kaldırıldı: global düzen geçerli */
 
 /* Mobile: split-block görsellerini görünür tut (üstte, metin altta) */
 @media (max-width: 768px) {
@@ -345,9 +410,11 @@ body[data-active-section="blog"] .nav-link.active:hover {
 }
 .page-section.hero-active .hero-image { opacity: 1; z-index: 2; }
 /* Yaklaşan bölüm için önizleme: hero görünür olsun ama aktifin altında kalsın */
-.page-section.hero-preview .hero-image { opacity: 0.6; z-index: 1; }
+.page-section.hero-preview .hero-image { opacity: 0; z-index: 1; }
 /* Çapraz geçiş: önceki bölüm hero’sunu kısa süre tut */
 .page-section.hero-hold .hero-image { opacity: 1; z-index: 1; }
+/* Hold efekti devre dışı: tutma sırasında da görünmez kalsın */
+.page-section.hero-hold .hero-image { opacity: 0; }
 /* Global siyah şeffaf overlay: siyahlığı kademeli azaltır */
 .black-fade-overlay {
     position: fixed;
@@ -456,6 +523,21 @@ body[data-active-section="blog"] .nav-link.active:hover {
 .content-container.left-aligned {
     align-items: flex-start;
     text-align: left;
+}
+
+/* RTL Support */
+html[lang="ar"] .content-container.left-aligned,
+html[dir="rtl"] .content-container.left-aligned {
+    align-items: flex-end;
+    text-align: right;
+}
+
+html[dir="rtl"] .main-slogan,
+html[dir="rtl"] .section-slogan {
+    left: auto;
+    right: 30px;
+    text-align: right;
+    align-self: flex-end;
 }
 
 /* Main Slogan (Home Page) */
@@ -780,17 +862,17 @@ body[data-active-section="blog"] .nav-link.active:hover {
 .blog-card {
     display: flex;
     flex-direction: column;
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(0, 212, 255, 0.25);
-    border-radius: 10px;
+    background: #171B20;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
     overflow: hidden;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .blog-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 10px 24px rgba(0, 212, 255, 0.18);
-    border-color: rgba(0, 212, 255, 0.5);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .blog-thumb {
@@ -801,22 +883,88 @@ body[data-active-section="blog"] .nav-link.active:hover {
 }
 
 .blog-meta {
-    padding: 16px 18px 20px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .blog-card-title {
     font-family: 'Inter', sans-serif;
-    font-size: 1.3rem;
-    color: #00d4ff;
-    margin: 0 0 10px 0;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    font-size: 1.4rem;
+    color: #FFFFFF;
+    margin: 0 0 12px 0;
+    letter-spacing: 0.5px;
+    line-height: 1.4;
+    font-weight: 700;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .blog-card-excerpt {
-    font-size: 1rem;
+    font-size: 1.05rem;
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.85);
+    color: #D5D9E2;
+    margin-bottom: 16px;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.blog-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: auto;
+}
+
+.blog-hashtags {
+    display: flex;
+    gap: 8px;
+    flex: 1;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.blog-hashtag {
+    font-size: 0.85rem;
+    color: #BFC5CE;
+    background: rgba(255,255,255,0.08);
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.blog-listen-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: #FFFFFF;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 6px 10px;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.blog-listen-btn:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.3);
+    transform: scale(1.05);
+}
+
+.blog-listen-btn .icon {
+    width: 14px;
+    height: 14px;
 }
 
 /* Subtle card pulse on click */
@@ -1098,19 +1246,73 @@ body[data-active-section="blog"] .nav-link.active:hover {
     
     .main-slogan,
     .section-slogan {
-        position: static;
+        position: relative;
         top: auto;
         left: auto;
         transform: none;
-        z-index: 3;
+        z-index: 10011;
         margin: 16px 0 20px;
         max-width: 92%;
         font-size: clamp(1.98rem, 6.6vw, 3.96rem); /* %10 büyüt */
         text-align: left;
         align-self: flex-start;
+        /* Mobil cihazlar için ek görünürlük garantisi */
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: block !important;
+        /* iOS Safari için ekstra garanti */
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
     }
     .page-section .main-slogan,
-    .page-section .section-slogan { opacity: 1 !important; pointer-events: none; }
+    .page-section .section-slogan { 
+        opacity: 1 !important; 
+        pointer-events: none; 
+        visibility: visible !important;
+        display: block !important;
+        /* iOS Safari için ekstra garanti */
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+    
+    /* Mobil cihazlar için ekstra slogan görünürlük garantisi */
+    @media (max-width: 768px) {
+        .main-slogan,
+        .section-slogan {
+            will-change: opacity, transform;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            /* En agresif görünürlük kuralları */
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
+            position: relative !important;
+            z-index: 9999 !important;
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
+        }
+        
+        /* iOS Safari için özel: after pseudo-element görünürlüğü */
+        .main-slogan::after,
+        .section-slogan::after {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        
+        /* Hero görselinin üstünde kalması için ekstra garanti */
+        .hero-fill {
+            z-index: 0 !important;
+        }
+        
+        .content-container {
+            z-index: 10 !important;
+            position: relative !important;
+        }
+    }
 
     /* Hero blok: sabit/fixed değil; üstte normal img */
     .hero-fill,
@@ -1132,7 +1334,7 @@ body[data-active-section="blog"] .nav-link.active:hover {
         width: 100vw;   /* sayfanın verdiği genişlik */
         height: 100vh;  /* tam ekran yüksekliği */
         opacity: 1 !important;
-        z-index: 1;
+        z-index: 0; /* Sloganların altında kalması için düşürüldü */
         object-fit: cover;
         object-position: center center; /* mobilde ortala */
     }
@@ -1181,21 +1383,21 @@ body[data-active-section="blog"] .nav-link.active:hover {
     justify-content: center;
 }
 /* Global: yatay taşmayı engelle, full‑bleed çizgilerde scrollbar oluşmasın */
-html, body { overflow-x: hidden; }
-/* Tek dikey scrollbar: body üzerinden yönetilir */
-html { height: auto; }
-body { height: auto; min-height: 100%; overflow-y: auto; }
-/* Dikey scrollbar koyu tema ile uyumlu olsun (body üzerinden) */
-body { scrollbar-color: #4a4a4a #0b0b0b; scrollbar-width: thin; }
-body::-webkit-scrollbar { width: 10px; background-color: #0b0b0b; }
-body::-webkit-scrollbar-thumb { background-color: #4a4a4a; border-radius: 6px; border: 2px solid #0b0b0b; }
+html { overflow-x: hidden; overflow-y: auto; height: 100%; }
+body { overflow-x: hidden; min-height: 100vh; }
+/* Tek dikey scrollbar: window üzerinden yönetilir */
+/* html { height: auto; } -- Kaldırıldı: height 100% daha güvenli */
+/* Dikey scrollbar koyu tema ile uyumlu olsun (window üzerinden) */
+html { scrollbar-color: #4a4a4a #0b0b0b; scrollbar-width: thin; }
+::-webkit-scrollbar { width: 10px; background-color: #0b0b0b; }
+::-webkit-scrollbar-thumb { background-color: #4a4a4a; border-radius: 6px; border: 2px solid #0b0b0b; }
 /* HTML scrollbar tamamen gizle (webkit dahil) */
 /* HTML scrollbar gizlenmez; tek scroller html üzerinde görünür */
 /* Blog date and read-more styles */
 .blog-card-date {
     font-family: 'Inter', sans-serif;
     font-size: 0.9rem;
-    color: rgba(255,255,255,0.7);
+    color: #9AA0A6;
 }
 
 .read-more-btn {
@@ -1206,7 +1408,7 @@ body::-webkit-scrollbar-thumb { background-color: #4a4a4a; border-radius: 6px; b
     border-radius: 999px;
     border: 1px solid rgba(255,255,255,0.25);
     background: rgba(255,255,255,0.06);
-    color: #fff;
+    color: #FFFFFF;
     cursor: pointer;
     transition: background 160ms ease, transform 160ms ease, border-color 160ms ease;
 }
@@ -1317,5 +1519,134 @@ body::-webkit-scrollbar-thumb { background-color: #4a4a4a; border-radius: 6px; b
   }
   html[lang="en"] .nav-link + .nav-link::before {
     margin: 0 2px; /* ayraç aralığını daralt */
+  }
+}
+/* --- Desktop Navigation: Ensure right-side positioning --- */
+@media (min-width: 769px) {
+  /* Masaüstü cihazlarda navigasyon: sağ tarafta dikey */
+  .nav-container,
+  .nav-container.floating,
+  .nav-container.stacked {
+    position: fixed !important;
+    top: 50% !important;
+    right: 30px !important;
+    left: auto !important;
+    bottom: auto !important;
+    width: auto !important;
+    height: auto !important;
+    transform: translateY(-50%) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 21px !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    pointer-events: auto !important;
+    z-index: 2 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  .nav-container .nav-link,
+  .nav-container.floating .nav-link,
+  .nav-container.stacked .nav-link {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    text-align: right !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 27px !important;
+    line-height: 1.2 !important;
+    font-weight: 400 !important;
+    letter-spacing: 1px !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* --- Mobile Navigation Override: Clear positioning rules --- */
+@media (max-width: 768px) {
+  /* Mobil cihazlarda navigasyon: sağ tarafta dikey */
+  .nav-container,
+  .nav-container.floating,
+  .nav-container.stacked {
+    position: fixed !important;
+    top: 50% !important;
+    right: 15px !important;
+    left: auto !important;
+    bottom: auto !important;
+    width: auto !important;
+    height: auto !important;
+    transform: translateY(-50%) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    pointer-events: auto !important;
+    z-index: 999 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  .nav-container .nav-link,
+  .nav-container.floating .nav-link,
+  .nav-container.stacked .nav-link {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    text-align: right !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 6px 0 !important;
+    font-size: 16px !important;
+    line-height: 1.3 !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.5px !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* --- Mobile viewport height fixes and nav height override --- */
+@media (max-width: 768px) {
+  /* iOS/Android dinamik araç çubuklarıyla uyum için 100svh kullan */
+  .hero-image {
+    height: 100vh;   /* fallback */
+    height: 100svh;  /* modern mobil viewport yüksekliği */
+  }
+  .hero-fill,
+  #home .hero-fill,
+  .page-section:not(#contact) .hero-fill {
+    height: 100vh;   /* fallback */
+    height: 100svh;  /* modern mobil viewport yüksekliği */
+    min-height: 100vh;  /* fallback */
+    min-height: 100svh; /* modern mobil viewport */
+  }
+  .page-section {
+    min-height: 100vh;   /* fallback */
+    min-height: 100svh;  /* modern mobil viewport */
+  }
+  /* Hero içeriğini absolute yerine doğal akışta tut ki alt nav ile çakışmasın */
+  .hero-fill .content-container {
+    position: relative;
+    z-index: 4; /* hero görseli ve overlay’in üzerinde */
+    min-height: 100vh;   /* fallback */
+    min-height: 100svh;  /* modern mobil viewport */
+  }
+  /* Alt nav bar sadece içerik yüksekliğini kullansın; tüm ekranı kapatmasın */
+  .nav-container,
+  .nav-container.stacked {
+    height: auto;
+    opacity: 1 !important; /* mobilde her zaman görünür kalsın */
+  }
+  /* Alt sabit nav için güvenli boşluk; iPhone safe-area ile uyumlu */
+  body {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
   }
 }

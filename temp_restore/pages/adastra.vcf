@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Adastra;BCV;;;
+FN:Adastra BCV
+ORG:Adastra BCV
+TEL;TYPE=work,voice;VALUE=uri:tel:+905349517555
+EMAIL;TYPE=work:info@adastrabcv.com
+ADR;TYPE=WORK:;;İstasyon Yolu Sk. No: 3/1;Maltepe, İstanbul;34844;TR
+ADR;TYPE=WORK:;;267/11 สุขุมวิท;Khwaeng Khlong Tan Nuea, Watthana;10110;TH
+URL:https://adastrabcv.com
+END:VCARD

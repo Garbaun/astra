@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Yazılar · Ad Astra</title>
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="/styles.css" />
+  <!-- Tailwind çıktısı: Preflight kapalı, mevcut tasarıma dokunmadan yardımcı sınıflar eklenebilir -->
+  <link rel="stylesheet" href="/styles.tailwind.css" />
+  <style>
+    /* Sayfa özel küçük düzenlemeler (genel stylesheet ile uyumlu) */
+    /* Arka plan: Ana sayfa hero görseli */
+    body {
+      background-color: #000;
+      background-image: url('/mainpage.png');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+    /* Okunabilirlik için hafif karartma overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      pointer-events: none;
+      z-index: 0;
+    }
+    /* İçerik overlay’in üzerinde kalsın */
+    .blog-page { position: relative; z-index: 1; }
+    @media (max-width: 768px) {
+      body { background-image: url('/mobil/home.png'); }
+    }
+    .blog-page {
+      max-width: min(1200px, 92vw);
+      margin: 0 auto;
+      padding: clamp(16px, 2.5vw, 36px) 0 clamp(40px, 4vw, 80px);
+      color: #e7e7e7;
+    }
+    /* Üst şerit: solda logo, sağ üstte konular ve altında ana sayfa */
+    .topbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: start;
+      gap: 16px;
+      margin-bottom: clamp(16px, 2.2vw, 24px);
+    }
+    .blog-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: #e7e7e7;
+    }
+    .blog-brand img { width: 120px; height: 120px; object-fit: contain; }
+    .top-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+    .topics-panel {
+      background: rgba(0,0,0,0.52);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+      backdrop-filter: blur(4px);
+      position: sticky;
+      top: 20px;
+      height: fit-content;
+      width: 100%;
+    }
+    .topics-title { font-weight: 700; font-size: 20px; color: #f0f0f0; margin-bottom: 16px; text-align: center; }
+    .topics-tree summary { cursor: pointer; color: #e7e7e7; font-weight: 600; padding: 12px 16px; border-radius: 8px; background: rgba(255,255,255,0.05); margin-bottom: 8px; transition: background 0.2s ease; }
+    .topics-tree summary:hover { background: rgba(255,255,255,0.1); }
+    .topics-tree ul { list-style: none; margin: 8px 0; padding-left: 0; }
+    .topics-tree li { margin: 4px 0; }
+    .topics-tree a { color: #cfcfcf; text-decoration: none; font-size: 14px; padding: 8px 16px; display: block; border-radius: 6px; transition: all 0.2s ease; }
+    .topics-tree a:hover { color: #ffffff; background: rgba(255,255,255,0.08); }
+    .home-btn {
+      display: block;
+      font-size: 14px;
+      color: #e7e7e7;
+      text-decoration: none;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 12px 16px;
+      border-radius: 999px;
+      text-align: center;
+      margin-top: 20px;
+      transition: all 0.2s ease;
+    }
+    .home-btn:hover { background: rgba(255,255,255,0.14); }
+    .blog-hero {
+      margin: 0;
+      font-size: clamp(28px, 4.4vw, 56px);
+      line-height: 1.06;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: #f1f1f1;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.35);
+      text-align: right; /* logonun hizasında sağa yaslı */
+    }
+    /* İçerik düzeni: üstte logo ve sağda slogan, altta sol bloklar sağ index */
+    .page-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: clamp(16px, 2.2vw, 24px); }
+    .hero-right { display: flex; justify-content: flex-end; align-items: center; }
+    /* 4 sütunlu düzen: Sol %75 (3 blog kartı), Sağ %25 (index) */
+    .content-columns { 
+      display: grid; 
+      grid-template-columns: 75% 25%; 
+      gap: 24px; 
+      align-items: start; 
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .post-grid {
+      grid-column: 1; /* İlk sütun - %75 */
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      align-items: stretch; /* Tüm kartlar eşit yükseklikte */
+      grid-auto-rows: 1fr; /* Eşit yükseklik için */
+    }
+    .topics-panel {
+      grid-column: 2; /* İkinci sütun - %25 */
+      position: sticky;
+      top: 96px;
+      height: fit-content;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 16px;
+      padding: 24px;
+      backdrop-filter: blur(10px);
+      display: flex; /* Varsayılan olarak göster */
+      flex-direction: column;
+    }
+    /* 16:9 ve yatay ekranlar için */
+    @media (min-aspect-ratio: 16/9) and (min-width: 1280px) {
+      .content-columns { 
+        grid-template-columns: 75% 25%; 
+      }
+      .post-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .topics-panel {
+        display: flex !important;
+      }
+      .mobile-footer {
+        display: none !important;
+      }
+    }
+    /* Tablet: 1024px - 1279px - 3 sütun */
+    @media (max-width: 1279px) and (min-width: 1024px) {
+      .content-columns { 
+        grid-template-columns: 70% 30%; 
+      }
+      .post-grid {
+        grid-column: 1;
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .topics-panel {
+        grid-column: 2;
+        display: flex !important;
+      }
+      .mobile-footer {
+        display: none !important;
+      }
+    }
+    /* Tablet: 768px - 1023px - 2 sütun */
+    @media (max-width: 1023px) and (min-width: 768px) {
+      .content-columns { 
+        grid-template-columns: 1fr; 
+      }
+      .post-grid { 
+        grid-column: 1; 
+        grid-template-columns: repeat(2, 1fr); 
+      }
+      .topics-panel { 
+        grid-column: 1; 
+        position: static; 
+        margin-bottom: 24px; 
+        order: -1;
+      }
+    }
+    /* <768px: tek sütun, index en üstte */
+    @media (max-width: 768px) {
+      .content-columns { grid-template-columns: 1fr; }
+      .post-grid { 
+        grid-column: 1; 
+        grid-template-columns: 1fr; 
+        gap: 16px;
+      }
+      .topics-panel { 
+        grid-column: 1; 
+        position: static; 
+        margin-bottom: 24px; 
+        max-width: none; 
+        order: -1;
+      }
+      .blog-hero { text-align: left; font-size: 24px; }
+      .page-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+      .hero-right { justify-content: flex-start; }
+      /* Mobilde kartlar */
+      .post-card {
+        margin-bottom: 16px;
+      }
+      .post-body {
+        padding: 20px;
+        min-height: 240px;
+      }
+      .post-title {
+        font-size: 18px;
+      }
+      .post-excerpt {
+        font-size: 14px;
+      }
+    }
+    .post-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      align-items: stretch;
+    }
+    .post-link { text-decoration: none; color: inherit; display: block; height: 100%; }
+    .post-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%; /* Eşit yükseklik için */
+      background: #171B20;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 200ms ease, box-shadow 240ms ease, border-color 200ms ease;
+    }
+    .post-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+      border-color: rgba(255,255,255,0.2);
+    }
+    .post-cover {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      display: block;
+    }
+    .post-body { 
+      position: relative; 
+      padding: 24px; 
+      display: flex; 
+      flex-direction: column; 
+      flex: 1; 
+      justify-content: space-between;
+      min-height: 280px;
+    }
+    .post-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .post-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 16px;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .post-excerpt {
+      font-size: 15px;
+      color: #D5D9E2;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3; /* 3 satıra kadar göster */
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .post-footer { 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between; 
+      padding-top: 16px; 
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin-top: auto;
+    }
+    .post-date { 
+      font-size: 13px; 
+      color: #9AA0A6; 
+      font-weight: 500;
+    }
+    .post-hashtags {
+      display: flex;
+      gap: 8px;
+      flex: 1;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .hashtag {
+      font-size: 12px;
+      color: #BFC5CE;
+      background: rgba(255,255,255,0.08);
+      padding: 6px 10px;
+      border-radius: 16px;
+      font-weight: 500;
+    }
+    .listen-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: #FFFFFF;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 8px 12px;
+      border-radius: 20px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+    .listen-btn:hover { 
+      background: rgba(255,255,255,0.15); 
+      border-color: rgba(255,255,255,0.3); 
+      transform: scale(1.05);
+    }
+    .listen-btn .icon { width: 16px; height: 16px; }
+    @media (max-width: 560px) {
+      .topbar { grid-template-columns: 1fr; }
+      .top-right { align-items: flex-start; }
+      /* Mobil konular paneli: iki sütun buton ve açılan çekmece */
+      .topics-panel { max-width: none; width: 100%; padding: 12px 12px; }
+      .topics-title { margin-bottom: 12px; text-align: left; }
+      .topics-tree { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; }
+      .topics-tree details { width: calc(50% - 4px); margin: 0; }
+      .topics-tree details[open] { width: 100%; }
+      .topics-tree summary { display: block; background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.18); padding: 10px 12px; border-radius: 999px; color: #e7e7e7; font-weight: 600; }
+      .topics-tree summary:hover { background: rgba(255,255,255,0.16); }
+      .topics-tree summary::-webkit-details-marker { display: none; }
+      .topics-tree ul { background: rgba(0,0,0,0.42); border: 1px solid rgba(255,255,255,0.14); border-radius: 12px; padding: 10px 12px; margin-top: 8px; }
+      .topics-tree li { margin: 6px 0; }
+      .topics-tree a { font-size: 14px; }
+    }
+
+    /* Tablet ve küçük masaüstünde (≤900px) aynı iki sütun/çekmece düzenini etkinleştir */
+    @media (max-width: 900px) {
+      .topics-panel { max-width: none; width: 100%; padding: 12px 12px; }
+      .topics-title { margin-bottom: 12px; text-align: left; }
+      .topics-tree { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; }
+      .topics-tree details { flex: 1 1 calc(50% - 4px); margin: 0; }
+      .topics-tree details[open] { flex-basis: 100%; }
+      .topics-tree summary { display: block; background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.18); padding: 10px 12px; border-radius: 999px; color: #e7e7e7; font-weight: 600; }
+      .topics-tree summary:hover { background: rgba(255,255,255,0.16); }
+      .topics-tree summary::-webkit-details-marker { display: none; }
+      .topics-tree ul { background: rgba(0,0,0,0.42); border: 1px solid rgba(255,255,255,0.14); border-radius: 12px; padding: 10px 12px; margin-top: 8px; }
+      .topics-tree li { margin: 6px 0; }
+      .topics-tree a { font-size: 14px; }
+    }
+
+    /* Açılır çekmece animasyonu: detay açılınca hafif aşağı doğru belirir */
+    @keyframes drawerIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .topics-tree ul { animation: none; }
+    .topics-tree details[open] > ul { animation: drawerIn 180ms ease-out; }
+
+    /* Okuma paneli: alt tarafta geniş ekranlar için yatay düzen */
+    .reading-panel { display: none; margin-top: 8px; padding: 16px; background: rgba(0,0,0,0.52); border: 1px solid rgba(255,255,255,0.14); border-radius: 14px; }
+    .reading-panel.active { display: block; }
+    .reading-header { display: block; margin-bottom: 12px; }
+    .reading-image { display: none; }
+    .reading-text { display: flex; flex-direction: column; gap: 8px; }
+    .reading-title { font-size: clamp(22px, 2.6vw, 30px); font-weight: 800; color: #f1f1f1; letter-spacing: 0.4px; }
+    .reading-lead { font-size: clamp(14px, 1.6vw, 16px); color: #cfcfcf; line-height: 1.6; }
+
+    .related-heading { font-size: clamp(16px, 2vw, 20px); font-weight: 700; color: #e7e7e7; margin: 16px 0 8px; }
+    .related-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; align-items: stretch; }
+    .related-card { background: #0b0b0b; border: 1px solid rgba(255,255,255,0.14); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
+    .related-image { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+    .related-body { padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+    .related-title { font-weight: 700; color: #f1f1f1; }
+    .related-excerpt { color: #cfcfcf; }
+
+    /* Üstteki üç kutu: 8/16 ölçekleme → kompakt görünüm */
+    .related-top .related-title { font-size: 16px; }
+    .related-top .related-excerpt { font-size: 13px; }
+
+    /* Alttaki üç kutu: orijinal boyutlar → daha büyük içerik */
+    .related-bottom .related-title { font-size: 18px; }
+    .related-bottom .related-excerpt { font-size: 14px; }
+
+    /* Üst küçük kartlar: mevcut sütun sayısına uyan dinamik düzen (2:1 oran) */
+    .related-grid.related-top { display: grid; grid-template-columns: repeat(var(--related-cols, 3), 1fr); gap: 10px; align-items: stretch; }
+    .related-grid.related-top .related-card { display: grid; grid-template-columns: 25% 75%; align-items: stretch; aspect-ratio: 2 / 1; }
+    .related-grid.related-top .related-image { width: 100%; height: 100%; object-fit: cover; }
+    .related-grid.related-top .related-body { padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; overflow: hidden; }
+    .related-grid.related-top .related-title { font-size: 16px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .related-grid.related-top .related-excerpt { font-size: 13px; line-height: 1.4; color: #cfcfcf; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+    /* Mobil: üstte tek kart, altta iki kart dikey (tek sütun) */
+    @media (max-width: 560px) {
+      .related-grid.related-top { grid-template-columns: 1fr; }
+      .related-grid.related-bottom { grid-template-columns: 1fr; }
+    }
+    /* Okuma paneli aktifken üst grid'i gizlemek için */
+    .post-grid.hidden { display: none; }
+
+    /* Küçük (2:1) kutularda alt kısım: sol tarih+hashtag, sağ dinle */
+    .related-grid.related-top .related-footer { margin-top: auto; display: flex; align-items: center; justify-content: space-between; }
+    .related-grid.related-top .related-footer-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .related-grid.related-top .post-date { font-size: 12px; color: #bfbfbf; }
+    .related-grid.related-top .related-tags { display: inline-flex; gap: 6px; flex-wrap: wrap; }
+    .related-grid.related-top .related-tags .tag { font-size: 12px; padding: 2px 6px; border-radius: 10px; background: rgba(255,255,255,0.12); color: #dedede; }
+    .related-grid.related-top .listen-btn { font-size: 13px; display: inline-flex; gap: 6px; align-items: center; opacity: 0.9; }
+    .related-grid.related-top .listen-btn .icon { width: 18px; height: 18px; }
+
+    /* İki sütun: sol içerik, sağ index; konumları net belirt */
+    .content-columns > .post-grid { grid-column: 1; }
+    .content-columns > .reading-panel { grid-column: 1; }
+    .content-columns > .topics-panel { grid-column: 2; }
+    .content-columns > .sort-panel { grid-column: 2; }
+    /* Sağ paneli biraz aşağı al ve tam yükseklik ver */
+    .content-columns > .topics-panel { display: flex; flex-direction: column; height: 100%; margin-top: clamp(8px, 1.8vw, 18px); }
+
+    /* Sağ panelde Sırala çekmecesi */
+    .sort-panel { margin-top: 12px; }
+    .sort-panel.hidden { display: none; }
+    .sort-list { list-style: none; padding: 0; margin: 6px 0; display: grid; gap: 6px; }
+    .sort-list .sort-link { display: inline-block; padding: 6px 10px; border-radius: 10px; background: rgba(255,255,255,0.08); color: #e3e3e3; text-decoration: none; font-size: 14px; }
+    .sort-list .sort-link:hover { background: rgba(255,255,255,0.14); }
+
+    /* Mobil Footer - Sadece mobilde görünür */
+    .mobile-footer {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.9);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 12px 16px;
+      z-index: 1000;
+    }
+
+    .mobile-topics-container {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mobile-topic-btn {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.08);
+      color: #FFFFFF;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .mobile-topic-btn:hover {
+      background: rgba(255,255,255,0.15);
+      border-color: rgba(255,255,255,0.3);
+    }
+
+    .mobile-topic-btn.active {
+      background: rgba(255,255,255,0.2);
+      border-color: rgba(255,255,255,0.4);
+    }
+
+    /* Mobilde footer'ı göster */
+    @media (max-width: 768px) {
+      .mobile-footer {
+        display: block;
+      }
+      /* Mobilde içerik alt boşluk ekle (footer için) */
+      .blog-page {
+        padding-bottom: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="blog-page">
+    <header class="page-header">
+      <a class="blog-brand" href="/" aria-label="Ana sayfa">
+        <img src="/logo.png" alt="Ad Astra" />
+      </a>
+      <div class="hero-right">
+        <h1 class="blog-hero">Yazıları Dinle</h1>
+      </div>
+    </header>
+
+    <div class="content-columns">
+      <!-- Sol tarafta 3 eşit sütunda blog kartları -->
+      <section class="post-grid">
+      <!-- 3 blog yazısı kartı - yanyana eşit sütunlarda -->
+      <article class="post-card">
+        <img class="post-cover" src="/blog/4.png" alt="Sustainable SEO" />
+        <div class="post-body">
+          <div class="post-content">
+            <h2 class="post-title"><a class="post-link" href="#" aria-label="Sürdürülebilir SEO">Sürdürülebilir SEO</a></h2>
+            <p class="post-excerpt">Algoritma değişimlerine esnek yaklaşım ile kalıcı sıralamalar.</p>
+          </div>
+          <div class="post-footer">
+            <span class="post-date">17 Eki 2025</span>
+            <div class="post-hashtags">
+              <span class="hashtag">#seo</span>
+              <span class="hashtag">#trend</span>
+            </div>
+            <a class="listen-btn" href="#" aria-label="Yazıyı Dinle">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M4 12a8 8 0 0116 0"/>
+                <rect x="3" y="12" width="4" height="7" rx="2"/>
+                <rect x="17" y="12" width="4" height="7" rx="2"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <article class="post-card">
+        <img class="post-cover" src="/blog/5.png" alt="Micro Marketing" />
+        <div class="post-body">
+          <div class="post-content">
+            <h2 class="post-title"><a class="post-link" href="#" aria-label="Mikropazarlama ve Hiper-Segmentasyon">Mikropazarlama ve Hiper-Segmentasyon</a></h2>
+            <p class="post-excerpt">Her kullanıcıya özel yolculuklar ile dönüşüm artışı.</p>
+          </div>
+          <div class="post-footer">
+            <span class="post-date">08 Eki 2025</span>
+            <div class="post-hashtags">
+              <span class="hashtag">#pazarlama</span>
+              <span class="hashtag">#ai</span>
+            </div>
+            <a class="listen-btn" href="#" aria-label="Yazıyı Dinle">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M4 12a8 8 0 0116 0"/>
+                <rect x="3" y="12" width="4" height="7" rx="2"/>
+                <rect x="17" y="12" width="4" height="7" rx="2"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <article class="post-card">
+        <img class="post-cover" src="/blog/6.png" alt="Digital Canvas" />
+        <div class="post-body">
+          <div class="post-content">
+            <h2 class="post-title"><a class="post-link" href="#" aria-label="Dijital Kanvaslar">Dijital Kanvaslar</a></h2>
+            <p class="post-excerpt">Geleceğin görsel dilini minimal ve güçlü anlatımla kurmak.</p>
+          </div>
+          <div class="post-footer">
+            <span class="post-date">30 Eyl 2025</span>
+            <div class="post-hashtags">
+              <span class="hashtag">#tasarım</span>
+              <span class="hashtag">#gelecek</span>
+            </div>
+            <a class="listen-btn" href="#" aria-label="Yazıyı Dinle">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M4 12a8 8 0 0116 0"/>
+                <rect x="3" y="12" width="4" height="7" rx="2"/>
+                <rect x="17" y="12" width="4" height="7" rx="2"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+      </section>
+
+      <!-- Sağ tarafta index paneli - 4. sütun -->
+      <aside class="topics-panel" aria-label="Konular">
+        <h2 class="topics-title">Blog Konuları</h2>
+        <nav class="topics-tree">
+          <details>
+            <summary>Teknoloji</summary>
+            <ul>
+              <li><a href="#">Yapay Zekâ</a></li>
+              <li><a href="#">Arama</a></li>
+              <li><a href="#">Veri Bilimi</a></li>
+            </ul>
+          </details>
+          <details>
+            <summary>Dijital Pazarlama</summary>
+            <ul>
+              <li><a href="#">SEO</a></li>
+              <li><a href="#">Mikropazarlama</a></li>
+              <li><a href="#">İçerik Stratejisi</a></li>
+            </ul>
+          </details>
+          <details>
+            <summary>Grafik Tasarım</summary>
+            <ul>
+              <li><a href="#">Tipografi</a></li>
+              <li><a href="#">Minimalizm</a></li>
+              <li><a href="#">Renk Kuramı</a></li>
+            </ul>
+          </details>
+        </nav>
+        <a href="/" class="home-btn" aria-label="Ana sayfa">Ana sayfa</a>
+      </aside>
+    </div>
+  </main>
+  
+  <!-- Mobil Footer - Sadece mobilde görünür -->
+  <footer class="mobile-footer" aria-label="Mobil konu filtresi">
+    <div class="mobile-topics-container">
+      <button class="mobile-topic-btn active" data-topic="all">Tümü</button>
+      <button class="mobile-topic-btn" data-topic="strategy">Strateji</button>
+      <button class="mobile-topic-btn" data-topic="design">Tasarım</button>
+      <button class="mobile-topic-btn" data-topic="data">Veri</button>
+    </div>
+  </footer>
+  <script>
+    // Dil durumuna göre blog menüsündeki "Ana sayfa" bağlantı metnini güncelle
+    (function () {
+      try {
+        var lang = localStorage.getItem('lang') || document.documentElement.getAttribute('lang') || 'tr';
+        var homeBtn = document.querySelector('.home-btn');
+        var brandLink = document.querySelector('.blog-brand');
+
+        if (homeBtn) {
+          if (lang === 'en') {
+            homeBtn.textContent = 'Home';
+            homeBtn.setAttribute('aria-label', 'Home');
+          } else {
+            homeBtn.textContent = 'Ana sayfa';
+            homeBtn.setAttribute('aria-label', 'Ana sayfa');
+          }
+        }
+
+        if (brandLink) {
+          if (lang === 'en') {
+            brandLink.setAttribute('aria-label', 'Home');
+          } else {
+            brandLink.setAttribute('aria-label', 'Ana sayfa');
+          }
+        }
+      } catch (e) {
+        // Sessizce yut: etiket güncellemesi başarısız olursa sayfa yine çalışır
+      }
+    })();
+  </script>
+  <!-- Duplicate runtime blocks removed -->
+  <script>
+    // Konu seçimleri ve sıralama için basit JavaScript
+    (function () {
+      var isMobile = window.matchMedia('(max-width: 768px)').matches;
+      var topicsNav = document.querySelector('.topics-tree');
+      var sortPanel = document.getElementById('sort-panel');
+      var mobileFooter = document.querySelector('.mobile-footer');
+      var mobileTopicBtns = document.querySelectorAll('.mobile-topic-btn');
+      var selectedTopic = null;
+      var sortOrder = 'desc';
+
+      if (sortPanel) {
+        sortPanel.classList.remove('hidden');
+      }
+
+      function onTopicClick(e) {
+        e.preventDefault();
+        var topic = e.target.textContent.trim();
+        selectedTopic = topic;
+        console.log('Seçilen konu:', topic);
+        // Aktif butonu güncelle
+        if (isMobile) {
+          mobileTopicBtns.forEach(btn => btn.classList.remove('active'));
+          e.target.classList.add('active');
+        }
+        // Burada konuya göre filtreleme yapılabilir
+      }
+
+      function onMobileTopicClick(e) {
+        e.preventDefault();
+        var topic = e.target.getAttribute('data-topic');
+        selectedTopic = topic === 'all' ? null : topic;
+        console.log('Mobil seçilen konu:', topic);
+        // Aktif butonu güncelle
+        mobileTopicBtns.forEach(btn => btn.classList.remove('active'));
+        e.target.classList.add('active');
+        // Burada konuya göre filtreleme yapılabilir
+      }
+
+      function onSortClick(e) {
+        e.preventDefault();
+        var order = e.currentTarget.getAttribute('data-order') || 'desc';
+        sortOrder = order;
+        console.log('Sıralama:', order);
+        // Burada sıralama yapılabilir
+      }
+
+      // Masaüstü konu tıklamaları
+      if (topicsNav) {
+        Array.from(topicsNav.querySelectorAll('a')).forEach(function (a) { 
+          a.addEventListener('click', onTopicClick); 
+        });
+      }
+
+      // Mobil konu butonları
+      if (mobileTopicBtns) {
+        mobileTopicBtns.forEach(function (btn) { 
+          btn.addEventListener('click', onMobileTopicClick); 
+        });
+      }
+
+      // Sıralama tıklamaları
+      if (sortPanel) {
+        Array.from(sortPanel.querySelectorAll('.sort-link')).forEach(function (a) { 
+          a.addEventListener('click', onSortClick); 
+        });
+      }
+
+      // İlk yüklemede aktif butonu ayarla
+      if (mobileTopicBtns.length > 0) {
+        mobileTopicBtns[0].classList.add('active');
+      }
+    })();
+  </script>
+</body>
+</html>
