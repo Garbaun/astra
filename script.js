@@ -1044,55 +1044,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Mouse movement effect disabled: nav links remain static unless hovered
 
-    // Mouse wheel snapping: AÇIK. Tekerlek çevirmede tek adımda bölüm değiştir.
-    (function enableWheelSnap() {
-        const ENABLE_WHEEL_SNAP = false;
-        if (!ENABLE_WHEEL_SNAP) return;
-        const order = ['home', 'about', 'services', 'vision', 'blog', 'contact'];
-        let snapping = false;
-        let lastSnapTime = 0;
-        const snapCooldown = 350; // ms
 
-        function currentSectionIndex() {
-            return order.findIndex(id => {
-                const el = document.getElementById(id);
-                if (!el) return false;
-                const rect = el.getBoundingClientRect();
-                const mid = window.innerHeight * 0.5;
-                return rect.top <= mid && rect.bottom >= mid;
-            });
-        }
-
-        function snapTo(index) {
-            const now = Date.now();
-            if (snapping || (now - lastSnapTime) < snapCooldown) return;
-            const id = order[Math.max(0, Math.min(order.length - 1, index))];
-            const el = document.getElementById(id);
-            if (!el) return;
-            snapping = true;
-            lastSnapTime = now;
-            smoothScrollToElement(el);
-            // Aktif bölümü güncelle ve iletişimde logoyu gizle
-            try { setActiveNav(id); } catch (_) {}
-            setTimeout(() => { snapping = false; }, snapCooldown);
-        }
-
-        window.addEventListener('wheel', function(e) {
-            // Her teker hareketinde tek adım snap: doğal scroll'u durdur
-            const absDelta = Math.abs(e.deltaY);
-            if (absDelta < 5) return; // çok küçük hareketleri görmezden gel
-
-            const idx = currentSectionIndex();
-            if (idx === -1) return;
-
-            e.preventDefault();
-            if (e.deltaY > 0 && idx < order.length - 1) {
-                snapTo(idx + 1);
-            } else if (e.deltaY < 0 && idx > 0) {
-                snapTo(idx - 1);
-            }
-        }, { passive: false });
-    })();
 
     // About sonunda otomatik geçiş: DEVRE DIŞI
     (function enableAboutAutoAdvance() {
