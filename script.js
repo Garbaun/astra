@@ -1,4 +1,26 @@
 // Navigation System
+
+// Tarayıcının önceki konumu ve hash’e göre otomatik kaydırmasını devre dışı bırak (Global Scope - Hemen Çalışmalı)
+try {
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
+    // Sayfa yüklendiği an en başa (Home) zorla
+    window.scrollTo(0, 0);
+
+    if (window.location.hash) {
+        // Başlangıçta yanlış sayfaya (ör. #blog) atlamayı önlemek için hash’i temizle
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+} catch (_) {}
+
+// Sayfa tamamen yüklendiğinde tekrar en başa al (Garanti çözüm)
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        window.scrollTo(0, 0);
+    }, 10);
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     // Aktivasyon modu: 'mini_logo' olduğunda yalnızca mini-logo/nav/init kaynaklı aktivasyon yapılır
     let activationMode = 'mini_logo';
@@ -10,19 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         setActiveNav(id);
     };
-    // Tarayıcının önceki konumu ve hash’e göre otomatik kaydırmasını devre dışı bırak
-    try {
-        if ('scrollRestoration' in history) {
-            history.scrollRestoration = 'manual';
-        }
-        // Sayfa yenilendiğinde en başa (Home) zorla
-        window.scrollTo(0, 0);
 
-        if (window.location.hash) {
-            // Başlangıçta yanlış sayfaya (ör. #blog) atlamayı önlemek için hash’i temizle
-            history.replaceState(null, '', window.location.pathname + window.location.search);
-        }
-    } catch (_) {}
     const navLinks = document.querySelectorAll('.nav-link');
     const sections = document.querySelectorAll('.page-section');
     const logoLink = document.querySelector('.logo-link');
