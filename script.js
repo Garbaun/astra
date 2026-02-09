@@ -1,4 +1,4 @@
-﻿// Navigation System
+// Navigation System
 document.addEventListener('DOMContentLoaded', function() {
     // Aktivasyon modu: 'mini_logo' olduğunda yalnızca mini-logo/nav/init kaynaklı aktivasyon yapılır
     let activationMode = 'mini_logo';
@@ -15,6 +15,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if ('scrollRestoration' in history) {
             history.scrollRestoration = 'manual';
         }
+        // Sayfa yenilendiğinde en başa (Home) zorla
+        window.scrollTo(0, 0);
+
         if (window.location.hash) {
             // Başlangıçta yanlış sayfaya (ör. #blog) atlamayı önlemek için hash’i temizle
             history.replaceState(null, '', window.location.pathname + window.location.search);
@@ -287,6 +290,69 @@ document.addEventListener('DOMContentLoaded', function() {
                     ]
                 }
             }
+        },
+        ar: {
+            nav: {
+                home: 'الرئيسية',
+                about: 'من نحن',
+                services: 'خدماتنا',
+                vision: 'رؤيتنا',
+                blog: 'المدونة',
+                contact: 'تواصل معنا'
+            },
+            slogan: 'الطريق للوصول\nإلى النجوم',
+            slogans: {
+                about: 'نحن نبرمج\nالفن',
+                services: 'لوحات\nالمستقبل',
+                vision: 'منظور\nالغد',
+                blog: 'نبض\nالرقمية'
+            },
+            blogTags: {
+                all: 'الكل',
+                strategy: 'استراتيجية',
+                design: 'تصميم',
+                data: 'بيانات'
+            },
+            blogReadMore: 'اقرأ المزيد',
+            blogPosts: [
+                { title: 'عصر محركات البحث بالذكاء الاصطناعي: مكان علامتك التجارية في الخوارزمية.', excerpt: 'تعيد Google SGE ومحركات البحث الأخرى المدعومة بالذكاء الاصطناعي تعريف البحث. تعرف على كيفية تميز علامتك التجارية لتصبح مرئية في عمق الخوارزميات.', img: 'blog/1.png', alt: 'AI Search Era', tags: ['strategy','data'], content: 'يغير البحث المدعوم بالذكاء الاصطناعي الاكتشاف. للتميز، تحتاج العلامات التجارية إلى صلة دلالية، وبيانات منظمة، ومحتوى موثوق يصوغ النية—وليس مجرد كلمات رئيسية.\n\nاستثمر في المخطط (schema)، وإشارات E-E-A-T، والصفحات السريعة التي يمكن الوصول إليها. تعامل مع الخوارزمية كجمهور ديناميكي: قس، وتكيف، وحسن الرسم البياني للمحتوى الخاص بك باستمرار.' },
+                { title: 'الوجه المستقبلي للعلامة التجارية: تطور الهوية الرقمية.', excerpt: 'العلامة التجارية هي أكثر من مجرد شعار وشعار نصي. استكشف تطور الهوية الرقمية من الواقع الافتراضي إلى الذكاء الاصطناعي لتشكيل شخصية علامتك التجارية المستقبلية.', img: 'blog/2.png', alt: 'Futuristic Branding', tags: ['strategy','design'], content: 'تعيش الهوية الرقمية الآن عبر الشاشات، والعوالم، والسياقات. الاتساق يعني تصميم أنظمة—رموز، حركة، نبرة—تتوسع عبر الحقائق.\n\nالعلامات التجارية التي تتبنى الهوية المتكيفة تظل ذات مصداقية مع تحول التكنولوجيا، وتلتقي بالناس بإشارات مألوفة أينما كانوا.' },
+                { title: 'فن البيانات: إلهام من تحليلات التسويق.', excerpt: 'البيانات الضخمة تغذي التسويق. اكتشف كيف نحول البيانات الخام إلى استراتيجيات ذات مغزى وقصص مقنعة—البيانات كشكل فني.', img: 'blog/3.png', alt: 'Data as Art', tags: ['data','strategy'], content: 'تصبح البيانات بصيرة عندما توضع في إطار هادف. اطرح أسئلة أفضل، وقلل الضوضاء، وتصور العلاقات للكشف عما يهم.\n\nمن الإسناد إلى تحليل المجموعات، الهدف واحد: جعل القرارات أوضح وأسرع للفرق والعملاء.' },
+                { title: 'SEO المستدام: البقاء مرناً ضد تحولات الخوارزمية.', excerpt: 'تتغير خوارزميات SEO باستمرار. أمّن تصنيفاتك باستراتيجيات مرنة وتنبأ باتجاهات SEO المستقبلية.', img: 'blog/4.png', alt: 'Sustainable SEO', tags: ['strategy','data'], content: 'تكافئ تغييرات الخوارزمية المواقع التي تخدم المستخدمين بشكل جيد. ركز على جودة المحتوى، والعمق الموضوعي، والنظافة التقنية مثل Core Web Vitals.\n\nابنِ حركة مرور مرنة بمراكز دائمة الخضرة، وروابط داخلية، وتحسينات تحريرية مستمرة بدلاً من الحيل لمرة واحدة.' },
+                { title: 'التسويق الجزئي والتجزئة الفائقة: تجربة رقمية مخصصة لكل عميل.', excerpt: 'انتهى عصر الحملات العامة. صمم رحلات مخصصة مع التسويق الجزئي المدعوم بالذكاء الاصطناعي لزيادة التحويلات.', img: 'blog/5.png', alt: 'Micromarketing', tags: ['strategy','data'], content: 'يطابق التسويق الجزئي اللحظات بالرسائل. ببيانات مصرح بها وذكاء اصطناعي، خصص العروض، والتوقيت، والإبداع لكل شريحة.\n\nاحترم الخصوصية، وأضف قيمة، وقس الارتفاع. عندما يبدو التخصيص مفيداً، يتبع التحويل بشكل طبيعي.' },
+                { title: 'مستقبل التفاعل الرقمي: الميتافيرس والعلامات التجارية.', excerpt: 'يفتح الميتافيرس حدوداً جديدة. أنشئ تجارب للعلامة التجارية، وصمم منتجات رقمية واشترك مع مستهلكي الجيل القادم.', img: 'blog/6.png', alt: 'Metaverse and Brands', tags: ['strategy','design'], content: 'تتطلب الوسائط الجديدة سلوكيات جديدة. في المساحات الغامرة، صمم للحضور، والمجتمع، والإبداع المشترك بدلاً من الاستهلاك السلبي.\n\nالعلامات التجارية التي تجرب بمسؤولية ستتعلم أسرع وتكسب الثقة مع نضوج النظام البيئي.' },
+                { title: 'تسويق المحتوى 2.0: الذكاء الاصطناعي التليدي وفن سرد القصص.', excerpt: 'يحول الذكاء الاصطناعي التليدي إنشاء المحتوى. ابنِ محتوى فعالاً، ومخصصاً وقابلاً للتوسع دون فقدان اللمسة البشرية.', img: 'blog/7.png', alt: 'Content Marketing 2.0', tags: ['strategy','design'], content: 'يسرع الذكاء الاصطناعي التليدي التفكير والإنتاج. أبقِ البشر في الحلقة للاستراتيجية، والصوت، والأخلاق.\n\nاجمع بين القوالب والتفكير الأصلي والخبرة الحقيقية لبناء محتوى مفيد، ومميز، وجدير بالثقة.' }
+            ],
+            visionContent: null, // Static HTML used for AR
+            tips: {
+                label: 'نصيحة',
+                tip1: {
+                    heading: 'ركز على المستقبل',
+                    items: [
+                        'نصيحة 1: كل تحد يخفي فرصة. التحول الرقمي ليس مجرد عملية، بل بداية جديدة لعلامتك التجارية.',
+                        'نصيحة 2: فكر بشكل كبير، وابدأ صغيراً. حتى المشاريع الأكثر طموحاً تبدأ بالخطوة الأولى.',
+                        'نصيحة 3: لا تخف من ارتكاب الأخطاء؛ الرقمية هي فن التعلم المستمر والتكيف.'
+                    ]
+                },
+                tip2: {
+                    heading: 'تحدث بالبيانات، وتفاعل بالفن',
+                    items: [
+                        'نصيحة 1: لا تعرف جمهورك فقط، بل افهمهم. تحليلات البيانات هي خريطة رحلتهم الرقمية.',
+                        'نصيحة 2: لا تلتزم بمنصة واحدة. اسرد قصة علامتك التجارية عبر القنوات الرقمية الأنسب بنهج شامل.',
+                        'نصيحة 3: المحتوى هو الملك، لكن التفاعل هو الملكة. أنشئ محتوى قيماً، لكن لا تنس الحفاظ على حوار مستمر مع جمهورك.',
+                        'نصيحة 4: اجعل اختبار A/B عادة. التسويق الرقمي هو عملية تجريب وتعلم مستمر.'
+                    ]
+                },
+                tip3: {
+                    heading: 'قل المزيد بأقل',
+                    items: [
+                        'نصيحة 1: انظر للبساطة كمصدر للقوة. التصميم الخالي من العناصر غير الضرورية يوصل الرسالة بوضوح أكبر.',
+                        'نصيحة 2: المساحة البيضاء هي نفس التصميم. استخدم المساحة السلبية بفعالية لإضافة عمق وتركيز لصورك.',
+                        'نصيحة 3: الطباعة هي صوت العلامة التجارية. يجب أن تعكس خيارات الخطوط هوية العلامة التجارية والرسالة التي تريد إيصالها بدقة.',
+                        'نصيحة 4: استخدم لوحة الألوان الخاصة بك بشكل استراتيجي. أنشئ لغة بصرية مستقبلية وملفتة للنظر باستخدام قليل ودقيق للألوان.'
+                    ]
+                }
+            }
         }
     };
 
@@ -469,17 +535,44 @@ document.addEventListener('DOMContentLoaded', function() {
             renderBlogGallery(lang);
         } catch (_) {}
 
-        // About içerik görünürlüğü (TR/EN)
+        // About içerik görünürlüğü (TR/EN/AR)
         try {
             const aboutTr = document.querySelector('#about .about-content');
             const aboutEn = document.querySelector('#about .about-content-en');
-            if (aboutTr && aboutEn) {
+            const aboutAr = document.querySelector('#about .about-content-ar');
+            
+            if (aboutTr && aboutEn && aboutAr) {
+                aboutTr.classList.add('ui-hidden');
+                aboutEn.classList.add('ui-hidden');
+                aboutAr.classList.add('ui-hidden');
+                
+                if (lang === 'en') aboutEn.classList.remove('ui-hidden');
+                else if (lang === 'ar') aboutAr.classList.remove('ui-hidden');
+                else aboutTr.classList.remove('ui-hidden');
+            } else if (aboutTr && aboutEn) {
                 if (lang === 'en') {
                     aboutEn.classList.remove('ui-hidden');
                     aboutTr.classList.add('ui-hidden');
                 } else {
                     aboutTr.classList.remove('ui-hidden');
                     aboutEn.classList.add('ui-hidden');
+                }
+            }
+        } catch (_) {}
+
+        // Vision görünürlüğü (TR/EN/AR)
+        try {
+            const visionTr = document.querySelector('#vision .vision-content');
+            const visionAr = document.querySelector('#vision .content-container.left-aligned.vision-content-ar') || 
+                             document.querySelector('.vision-content-ar');
+            
+            if (visionTr && visionAr) {
+                if (lang === 'ar') {
+                    visionTr.classList.add('ui-hidden');
+                    visionAr.classList.remove('ui-hidden');
+                } else {
+                    visionTr.classList.remove('ui-hidden');
+                    visionAr.classList.add('ui-hidden');
                 }
             }
         } catch (_) {}
@@ -505,11 +598,21 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        // Services içerik görünürlüğü (TR/EN)
+        // Services içerik görünürlüğü (TR/EN/AR)
         try {
             const servicesTr = document.querySelector('#services .services-content');
             const servicesEn = document.querySelector('#services .services-content-en');
-            if (servicesTr && servicesEn) {
+            const servicesAr = document.querySelector('#services .services-content-ar');
+            
+            if (servicesTr && servicesEn && servicesAr) {
+                servicesTr.classList.add('ui-hidden');
+                servicesEn.classList.add('ui-hidden');
+                servicesAr.classList.add('ui-hidden');
+
+                if (lang === 'en') servicesEn.classList.remove('ui-hidden');
+                else if (lang === 'ar') servicesAr.classList.remove('ui-hidden');
+                else servicesTr.classList.remove('ui-hidden');
+            } else if (servicesTr && servicesEn) {
                 if (lang === 'en') {
                     servicesEn.classList.remove('ui-hidden');
                     servicesTr.classList.add('ui-hidden');
@@ -520,8 +623,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } catch (_) {}
 
-        // HTML lang özniteliğini güncelle
-        try { document.documentElement.setAttribute('lang', lang); } catch (_) {}
+        // HTML lang ve dir özniteliğini güncelle
+        try { 
+            document.documentElement.setAttribute('lang', lang); 
+            document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+        } catch (_) {}
 
         // Tips içerikleri
         if (dict.tips) {
@@ -628,6 +734,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     // İlk yüklemede ana sayfa aktif
     activateNav('home', 'init');
+    window.scrollTo(0, 0);
+    // Siyah ekranın kalkması için loaded sınıfını ekle
+    setTimeout(() => {
+        document.body.classList.add('loaded');
+    }, 100);
 
     // Aktif bölümde hero’yu sabitleyen sınıfı senkronize et
     (function syncFixedHeroWithActiveSection() {
