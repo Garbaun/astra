@@ -432,7 +432,13 @@ html[dir="rtl"] .main-slogan, html[dir="rtl"] .section-slogan { left: auto; righ
 }
 .hero-fill .content-container { min-height: 100vh; }
 .hero-fill .content-container { position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 4; display: flex; flex-direction: column; justify-content: center; }
-html { overflow-x: hidden; overflow-y: auto; height: 100%; scrollbar-color: #4a4a4a #0b0b0b; scrollbar-width: thin; }
+html { overflow-x: hidden; overflow-y: auto; height: 100%; }
+@supports (scrollbar-width: thin) {
+    html {
+        scrollbar-color: #4a4a4a #0b0b0b;
+        scrollbar-width: thin;
+    }
+}
 
 /* WebKit Scrollbar Support (Fallback for Chrome/Safari) */
 ::-webkit-scrollbar {
