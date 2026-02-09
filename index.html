@@ -1,53 +1,121 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adastra - Yıldızlara Ulaşan Algoritmalar</title>
     <link rel="canonical" href="https://adastrabcv.com/">
     <!-- SEO: Sayfa açıklaması -->
-    <meta name="description" content="Adastra, dijital mimari, veri heykeli ve yaratıcı algoritmalarla markalara benzersiz dijital deneyimler tasarlar. Blog yazıları, vizyon ve hizmetlerle bütünsel bir dijital yaklaşım sunar.">
+    <meta name="description"
+        content="Adastra, dijital mimari, veri heykeli ve yaratıcı algoritmalarla markalara benzersiz dijital deneyimler tasarlar. Blog yazıları, vizyon ve hizmetlerle bütünsel bir dijital yaklaşım sunar.">
     <!-- Open Graph (Facebook/LinkedIn) -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://adastrabcv.com/">
     <meta property="og:title" content="Adastra - Yıldızlara Ulaşan Algoritmalar">
-    <meta property="og:description" content="Dijital mimari ve yaratıcı algoritmalarla etkileyici deneyimler. Hizmetler, vizyon ve blog içerikleriyle markanıza değer katın.">
+    <meta property="og:description"
+        content="Dijital mimari ve yaratıcı algoritmalarla etkileyici deneyimler. Hizmetler, vizyon ve blog içerikleriyle markanıza değer katın.">
     <meta property="og:image" content="https://adastrabcv.com/mainpage.png">
     <meta property="og:locale" content="tr_TR">
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Adastra - Yıldızlara Ulaşan Algoritmalar">
-    <meta name="twitter:description" content="Dijital mimari, veri heykeli ve yaratıcı algoritmalarla benzersiz dijital deneyimler.">
+    <meta name="twitter:description"
+        content="Dijital mimari, veri heykeli ve yaratıcı algoritmalarla benzersiz dijital deneyimler.">
     <meta name="twitter:image" content="https://adastrabcv.com/mainpage.png">
-    <link rel="preload" href="styles.css" as="style" onload="this.rel='stylesheet'">
-    <link rel="preload" href="backgrounds.css" as="style" onload="this.rel='stylesheet'">
-    <noscript>
-        <link rel="stylesheet" href="styles.css">
-        <link rel="stylesheet" href="backgrounds.css">
-    </noscript>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="backgrounds.css">
     <link rel="preload" href="mainpage.png" as="image">
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@300;400;700&family=Rajdhani:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@300;400;700&family=Rajdhani:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <!-- Favicon -->
     <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <script>
+        // Force manual scroll restoration immediately
+        if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+        // Force reset to top before painting
+        window.scrollTo(0, 0);
+        // Clear hash immediately to prevent browser jump
+        try {
+            if (window.location.hash) {
+                history.replaceState(null, null, window.location.pathname + window.location.search);
+            }
+        } catch (_) {}
+        // Force scroll to top before unload (refresh)
+        window.onbeforeunload = function () {
+            window.scrollTo(0, 0);
+        }
+        // Fallback for load event
+        window.addEventListener('load', function() {
+            window.scrollTo(0, 0);
+        });
+    </script>
+    <style>
+        html {
+            scroll-behavior: auto !important;
+            overflow: hidden;
+            /* Prevent scrolling entirely during load */
+            height: 100%;
+        }
+
+        body {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease-in;
+            overflow: hidden;
+            /* Double lock */
+            height: 100%;
+        }
+
+        /* CRITICAL FIX: Hide all sections except home until loaded to physically prevent scrolling down */
+        body:not(.loaded) .page-section:not(#home) {
+            display: none !important;
+        }
+
+        /* Ensure html tracks body scroll if needed, but usually body overflow is enough or html overflow */
+        html.loaded {
+            overflow-y: visible;
+            /* Use window scroll */
+            overflow-x: hidden;
+            height: auto;
+        }
+
+        body.loaded {
+            opacity: 1;
+            pointer-events: auto;
+            overflow-y: visible;
+            overflow-x: hidden;
+            height: auto;
+        }
+    </style>
 </head>
+
 <body data-active-section="home">
     <!-- Fixed Logo -->
     <div class="logo">
         <a href="#home" class="logo-link">
-            <img src="logo.png" alt="Adastra" class="logo-image">
+            <img src="aa-logo.png" alt="Adastra" class="logo-image">
         </a>
     </div>
 
     <!-- Language Switcher -->
     <div class="language-switcher" aria-label="Site Dili">
-        <button class="lang-btn" data-lang="en" aria-label="English">🇬🇧</button>
-        <button class="lang-btn" data-lang="tr" aria-label="Türkçe">🇹🇷</button>
-        <button class="lang-btn" data-lang="ar" aria-label="العربية">🇸🇦</button>
+        <button class="lang-btn" data-lang="en" aria-label="English">EN</button>
+        <button class="lang-btn" data-lang="tr" aria-label="Türkçe">TR</button>
+        <button class="lang-btn" data-lang="ar" aria-label="العربية">AR</button>
     </div>
+
+    <!-- Hamburger Menu Button -->
+    <button class="hamburger-menu" aria-label="Menüyü Aç">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </button>
 
     <!-- Navigation Links -->
     <nav class="nav-container">
@@ -80,13 +148,16 @@ YOLU"></h1>
                 <div class="content-container home-content tips-container">
                     <!-- İpuçları Bölümü -->
                     <div class="tip-item tip-1">
-            <img src="tip1.png" alt="Motivasyon İpuçları görseli" class="tip-image" loading="lazy">
+                        <img src="tip1.png" alt="Motivasyon İpuçları görseli" class="tip-image" loading="lazy">
                         <div class="tip-content">
                             <h3 class="tip-heading">Geleceğe Odaklan</h3>
                             <ul class="tip-list">
-                                <li><strong>İpucu 1:</strong> Her zorlukta bir fırsat gizlidir. Dijital dönüşüm, sadece bir süreç değil, markanız için yeni bir başlangıçtır.</li>
-                                <li><strong>İpucu 2:</strong> Büyük düşün, küçük başla. En iddialı projeler bile, ilk adımı atmakla başlar.</li>
-                                <li><strong>İpucu 3:</strong> Hata yapmaktan korkma; dijital, sürekli öğrenme ve adapte olma sanatıdır.</li>
+                                <li><strong>İpucu 1:</strong> Her zorlukta bir fırsat gizlidir. Dijital dönüşüm, sadece
+                                    bir süreç değil, markanız için yeni bir başlangıçtır.</li>
+                                <li><strong>İpucu 2:</strong> Büyük düşün, küçük başla. En iddialı projeler bile, ilk
+                                    adımı atmakla başlar.</li>
+                                <li><strong>İpucu 3:</strong> Hata yapmaktan korkma; dijital, sürekli öğrenme ve adapte
+                                    olma sanatıdır.</li>
                             </ul>
                         </div>
                     </div>
@@ -96,10 +167,14 @@ YOLU"></h1>
                         <div class="tip-content">
                             <h3 class="tip-heading">Veriyle Konuş, Sanatla Etkile.</h3>
                             <ul class="tip-list">
-                                <li><strong>İpucu 1:</strong> Hedef kitleni sadece tanıma, anla. Veri analizleri, onların dijital yolculuklarının haritasıdır.</li>
-                                <li><strong>İpucu 2:</strong> Tek bir platforma bağlı kalma. Markanın hikayesini, en uygun dijital kanallarda, bütünsel bir yaklaşımla anlat.</li>
-                                <li><strong>İpucu 3:</strong> İçerik kraldır, ancak etkileşim kraliçedir. Değer yaratan içerikler üret, ancak kitlenle sürekli diyalog kurmayı unutma.</li>
-                                <li><strong>İpucu 4:</strong> A/B testlerini bir alışkanlık haline getir. Dijital pazarlama, sürekli deneme ve öğrenme sürecidir.</li>
+                                <li><strong>İpucu 1:</strong> Hedef kitleni sadece tanıma, anla. Veri analizleri,
+                                    onların dijital yolculuklarının haritasıdır.</li>
+                                <li><strong>İpucu 2:</strong> Tek bir platforma bağlı kalma. Markanın hikayesini, en
+                                    uygun dijital kanallarda, bütünsel bir yaklaşımla anlat.</li>
+                                <li><strong>İpucu 3:</strong> İçerik kraldır, ancak etkileşim kraliçedir. Değer yaratan
+                                    içerikler üret, ancak kitlenle sürekli diyalog kurmayı unutma.</li>
+                                <li><strong>İpucu 4:</strong> A/B testlerini bir alışkanlık haline getir. Dijital
+                                    pazarlama, sürekli deneme ve öğrenme sürecidir.</li>
                             </ul>
                         </div>
                     </div>
@@ -109,10 +184,14 @@ YOLU"></h1>
                         <div class="tip-content">
                             <h3 class="tip-heading">Azda Çok Şey Anlat.</h3>
                             <ul class="tip-list">
-                                <li><strong>İpucu 1:</strong> Sadeliği gücün kaynağı olarak gör. Gereksiz elementlerden arınmış bir tasarım, mesajı daha net iletir.</li>
-                                <li><strong>İpucu 2:</strong> Boşluk, tasarımın nefesidir. Negatif alanı etkili kullanarak görsellerine derinlik ve odak kat.</li>
-                                <li><strong>İpucu 3:</strong> Tipografi, markanın sesidir. Font seçimlerin, markanın kimliğini ve vermek istediği mesajı doğru yansıtmalı.</li>
-                                <li><strong>İpucu 4:</strong> Renk paletini stratejik kullan. Az ve öz renklerle, fütüristik ve çarpıcı bir görsel dil yarat.</li>
+                                <li><strong>İpucu 1:</strong> Sadeliği gücün kaynağı olarak gör. Gereksiz elementlerden
+                                    arınmış bir tasarım, mesajı daha net iletir.</li>
+                                <li><strong>İpucu 2:</strong> Boşluk, tasarımın nefesidir. Negatif alanı etkili
+                                    kullanarak görsellerine derinlik ve odak kat.</li>
+                                <li><strong>İpucu 3:</strong> Tipografi, markanın sesidir. Font seçimlerin, markanın
+                                    kimliğini ve vermek istediği mesajı doğru yansıtmalı.</li>
+                                <li><strong>İpucu 4:</strong> Renk paletini stratejik kullan. Az ve öz renklerle,
+                                    fütüristik ve çarpıcı bir görsel dil yarat.</li>
                             </ul>
                         </div>
                     </div>
@@ -125,9 +204,12 @@ YOLU"></h1>
                         <div class="tip-content">
                             <h3 class="tip-heading">التركيز على المستقبل.</h3>
                             <ul class="tip-list">
-                                <li><strong>نصيحة 1:</strong> كل تحدٍ يحمل في طياته فرصة. التحول الرقمي ليس مجرد عملية، بل هو بداية جديدة لعلامتك التجارية.</li>
-                                <li><strong>نصيحة 2:</strong> فكر بشكل كبير، وابدأ بخطوات صغيرة. حتى أكثر المشاريع طموحًا تبدأ بالخطوة الأولى.</li>
-                                <li><strong>نصيحة 3:</strong> لا تخف من ارتكاب الأخطاء؛ الرقمية هي فن التعلم والتكيف المستمر.</li>
+                                <li><strong>نصيحة 1:</strong> كل تحدٍ يحمل في طياته فرصة. التحول الرقمي ليس مجرد عملية،
+                                    بل هو بداية جديدة لعلامتك التجارية.</li>
+                                <li><strong>نصيحة 2:</strong> فكر بشكل كبير، وابدأ بخطوات صغيرة. حتى أكثر المشاريع
+                                    طموحًا تبدأ بالخطوة الأولى.</li>
+                                <li><strong>نصيحة 3:</strong> لا تخف من ارتكاب الأخطاء؛ الرقمية هي فن التعلم والتكيف
+                                    المستمر.</li>
                             </ul>
                         </div>
                     </div>
@@ -137,10 +219,14 @@ YOLU"></h1>
                         <div class="tip-content">
                             <h3 class="tip-heading">تحدث بالبيانات، وألهم بالفن.</h3>
                             <ul class="tip-list">
-                                <li><strong>نصيحة 1:</strong> لا تعرف جمهورك فحسب، بل افهمهم. تحليل البيانات هو خريطة رحلتهم الرقمية.</li>
-                                <li><strong>نصيحة 2:</strong> لا تلتزم بمنصة واحدة. اسرد قصة علامتك التجارية عبر القنوات الرقمية الأنسب بنهج شامل.</li>
-                                <li><strong>نصيحة 3:</strong> المحتوى هو الملك، لكن التفاعل هو الملكة. أنشئ محتوى ذا قيمة، لكن لا تنسَ الحفاظ على حوار مستمر مع جمهورك.</li>
-                                <li><strong>نصيحة 4:</strong> اجعل اختبارات A/B عادة. التسويق الرقمي هو عملية تجريب وتعلم مستمرة.</li>
+                                <li><strong>نصيحة 1:</strong> لا تعرف جمهورك فحسب، بل افهمهم. تحليل البيانات هو خريطة
+                                    رحلتهم الرقمية.</li>
+                                <li><strong>نصيحة 2:</strong> لا تلتزم بمنصة واحدة. اسرد قصة علامتك التجارية عبر القنوات
+                                    الرقمية الأنسب بنهج شامل.</li>
+                                <li><strong>نصيحة 3:</strong> المحتوى هو الملك، لكن التفاعل هو الملكة. أنشئ محتوى ذا
+                                    قيمة، لكن لا تنسَ الحفاظ على حوار مستمر مع جمهورك.</li>
+                                <li><strong>نصيحة 4:</strong> اجعل اختبارات A/B عادة. التسويق الرقمي هو عملية تجريب
+                                    وتعلم مستمرة.</li>
                             </ul>
                         </div>
                     </div>
@@ -150,10 +236,14 @@ YOLU"></h1>
                         <div class="tip-content">
                             <h3 class="tip-heading">قل المزيد بكلمات أقل.</h3>
                             <ul class="tip-list">
-                                <li><strong>نصيحة 1:</strong> انظر إلى البساطة كمصدر للقوة. التصميم الخالي من العناصر غير الضرورية يوصل الرسالة بوضوح أكبر.</li>
-                                <li><strong>نصيحة 2:</strong> المساحة البيضاء هي نَفَس التصميم. استخدم المساحة السلبية بفعالية لإضفاء عمق وتركيز على صورك.</li>
-                                <li><strong>نصيحة 3:</strong> الطباعة هي صوت العلامة التجارية. يجب أن يعكس اختيارك للخط هوية العلامة التجارية والرسالة التي تريد نقلها بدقة.</li>
-                                <li><strong>نصيحة 4:</strong> استخدم لوحة الألوان الخاصة بك بشكل استراتيجي. اخلق لغة بصرية مستقبلية ومميزة باستخدام مقتصد ودقيق للألوان.</li>
+                                <li><strong>نصيحة 1:</strong> انظر إلى البساطة كمصدر للقوة. التصميم الخالي من العناصر
+                                    غير الضرورية يوصل الرسالة بوضوح أكبر.</li>
+                                <li><strong>نصيحة 2:</strong> المساحة البيضاء هي نَفَس التصميم. استخدم المساحة السلبية
+                                    بفعالية لإضفاء عمق وتركيز على صورك.</li>
+                                <li><strong>نصيحة 3:</strong> الطباعة هي صوت العلامة التجارية. يجب أن يعكس اختيارك للخط
+                                    هوية العلامة التجارية والرسالة التي تريد نقلها بدقة.</li>
+                                <li><strong>نصيحة 4:</strong> استخدم لوحة الألوان الخاصة بك بشكل استراتيجي. اخلق لغة
+                                    بصرية مستقبلية ومميزة باستخدام مقتصد ودقيق للألوان.</li>
                             </ul>
                         </div>
                     </div>
@@ -182,49 +272,73 @@ KODLUYORUZ"></h1>
                     <div class="section-divider"></div>
 
                     <div class="split-block">
-                <img src="dijital-mimar.png" alt="Dijitalin Mimarları" class="section-image" loading="lazy">
+                        <img src="dijital-mimar.png" alt="Dijitalin Mimarları" class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">Dijitalin Mimarları</h3>
-                            <p>Dijital evrenin uçsuz bucaksız potansiyelinde, her marka kendi galaksisini yaratma gücüne sahiptir. Ancak bu yolculukta, sıradanlığın ötesine geçmek, görünenin ardındaki olasılıkları keşfetmek gerekir. İşte Adastra tam da bu noktada devreye girer. Biz, yalnızca bir reklam ajansı değil; algoritmaları sanatla, veriyi vizyonla birleştiren bir dijital mimarlık stüdyosuyuz. Her pikselde bir strateji, her hikayede bir etki yaratarak, yarının pazarlamasını bugünden şekillendiriyoruz.</p>
+                            <p>Dijital evrenin uçsuz bucaksız potansiyelinde, her marka kendi galaksisini yaratma gücüne
+                                sahiptir. Ancak bu yolculukta, sıradanlığın ötesine geçmek, görünenin ardındaki
+                                olasılıkları keşfetmek gerekir. İşte Adastra tam da bu noktada devreye girer. Biz,
+                                yalnızca bir reklam ajansı değil; algoritmaları sanatla, veriyi vizyonla birleştiren bir
+                                dijital mimarlık stüdyosuyuz. Her pikselde bir strateji, her hikayede bir etki
+                                yaratarak, yarının pazarlamasını bugünden şekillendiriyoruz.</p>
                         </div>
                     </div>
 
                     <div class="section-divider"></div>
                     <div class="split-block">
-                <img src="felsefe-temeli.png" alt="Felsefemizin Temeli" class="section-image" loading="lazy">
+                        <img src="felsefe-temeli.png" alt="Felsefemizin Temeli" class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">Felsefemizin Temeli: Yaratıcılık Bilimle Buluşuyor</h3>
-                            <p>Adastra'da pazarlamayı bir bilim gibi ele alırken, her kampanyayı bir sanat eseri titizliğiyle işleriz. Rakamların soğuk dilini, insan ruhuna dokunan hikayelere çeviririz. En karmaşık SEO algoritmalarını deşifre eder, pazarlama analizlerinin her detayını sanatsal bir titizlikle işleyerek, veriyi somut ve ölçülebilir sonuçlara dönüştürme konusunda uzmanız.</p>
-                            <p>Veri, bizim ilham kaynağımızdır; sanat ise dışavurum biçimimiz. Bu denge, markaların sadece görünür olmasını değil, aynı zamanda anlamlı ve kalıcı bir bağ kurmasını sağlar.</p>
+                            <p>Adastra'da pazarlamayı bir bilim gibi ele alırken, her kampanyayı bir sanat eseri
+                                titizliğiyle işleriz. Rakamların soğuk dilini, insan ruhuna dokunan hikayelere
+                                çeviririz. En karmaşık SEO algoritmalarını deşifre eder, pazarlama analizlerinin her
+                                detayını sanatsal bir titizlikle işleyerek, veriyi somut ve ölçülebilir sonuçlara
+                                dönüştürme konusunda uzmanız.</p>
+                            <p>Veri, bizim ilham kaynağımızdır; sanat ise dışavurum biçimimiz. Bu denge, markaların
+                                sadece görünür olmasını değil, aynı zamanda anlamlı ve kalıcı bir bağ kurmasını sağlar.
+                            </p>
                         </div>
                     </div>
 
                     <div class="section-divider"></div>
                     <div class="split-block">
-                <img src="minimal.png" alt="Minimalist Çözümler" class="section-image" loading="lazy">
+                        <img src="minimal.png" alt="Minimalist Çözümler" class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">Minimalist Çözümler, Maksimum Etki</h3>
-                            <p>Dijital dünyada gürültüyü değil, yankıyı hedefleriz. Yaklaşımımız, özgünlük üzerine kuruludur: Kopyalanamayan, taklit edilemeyen çözümler üretiriz. Her marka, Adastra ile kendi dijital imzasını bulur.</p>
-                            <p>Minimalizmde derinlik ararız: Az kelimeyle çok şey anlatan, sade tasarımlarla maksimum etki yaratan çözümler sunarız. Karmaşıklığı basitleştirerek, markaların mesajını net ve güçlü bir şekilde iletiriz.</p>
-                            <p>Biz, sürekli değişen dijital evrende, trendleri takip etmek yerine, onları yaratırız. Geleceği okur, algoritmaları yeniden yazarız. Çünkü her proje, bir keşif yolculuğudur. Sürekli dener, öğrenir ve geliştiririz; Ad astra, per aspera (Zorluklardan geçerek yıldızlara).</p>
+                            <p>Dijital dünyada gürültüyü değil, yankıyı hedefleriz. Yaklaşımımız, özgünlük üzerine
+                                kuruludur: Kopyalanamayan, taklit edilemeyen çözümler üretiriz. Her marka, Adastra ile
+                                kendi dijital imzasını bulur.</p>
+                            <p>Minimalizmde derinlik ararız: Az kelimeyle çok şey anlatan, sade tasarımlarla maksimum
+                                etki yaratan çözümler sunarız. Karmaşıklığı basitleştirerek, markaların mesajını net ve
+                                güçlü bir şekilde iletiriz.</p>
+                            <p>Biz, sürekli değişen dijital evrende, trendleri takip etmek yerine, onları yaratırız.
+                                Geleceği okur, algoritmaları yeniden yazarız. Çünkü her proje, bir keşif yolculuğudur.
+                                Sürekli dener, öğrenir ve geliştiririz; Ad astra, per aspera (Zorluklardan geçerek
+                                yıldızlara).</p>
                         </div>
                     </div>
 
                     <div class="section-divider"></div>
                     <div class="split-block">
-                <img src="hikayemiz.png" alt="Hikayemiz" class="section-image" loading="lazy">
+                        <img src="hikayemiz.png" alt="Hikayemiz" class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">Hikayemiz: Geleceğe Yönelen Adımlar</h3>
-                            <p>Adastra'nın yolculuğu, dijitalin sunduğu sonsuz potansiyele olan inancımızla başladı. Markaların dijitaldeki varlıklarını sadece bir zorunluluk değil, bir sanatsal ifade ve büyüme aracı olarak görmelerini istedik. Bugüne kadar birçok markanın dijital dönüşümünde ve büyüme hikayesinde yer alarak, onların kendi yıldızlarına ulaşmalarına rehberlik ettik.</p>
+                            <p>Adastra'nın yolculuğu, dijitalin sunduğu sonsuz potansiyele olan inancımızla başladı.
+                                Markaların dijitaldeki varlıklarını sadece bir zorunluluk değil, bir sanatsal ifade ve
+                                büyüme aracı olarak görmelerini istedik. Bugüne kadar birçok markanın dijital
+                                dönüşümünde ve büyüme hikayesinde yer alarak, onların kendi yıldızlarına ulaşmalarına
+                                rehberlik ettik.</p>
                         </div>
                     </div>
 
                     <div class="section-divider"></div>
                     <div class="split-block">
-                <img src="davet.png" alt="Davet" class="section-image" loading="lazy">
+                        <img src="davet.png" alt="Davet" class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">Davet: Senin Hikayen Nerede Başlayacak?</h3>
-                            <p>Eğer sen de markanın dijitalde sadece var olmakla yetinmeyip, geleceği şekillendiren bir etki yaratmasını istiyorsan, doğru yerdesin. Bizimle iletişime geç ve senin hikayeni birlikte kodlamaya başlayalım.</p>
+                            <p>Eğer sen de markanın dijitalde sadece var olmakla yetinmeyip, geleceği şekillendiren bir
+                                etki yaratmasını istiyorsan, doğru yerdesin. Bizimle iletişime geç ve senin hikayeni
+                                birlikte kodlamaya başlayalım.</p>
                         </div>
                     </div>
                     <div class="section-divider"></div>
@@ -237,49 +351,72 @@ KODLUYORUZ"></h1>
                     <div class="section-divider"></div>
 
                     <div class="split-block">
-                <img src="dijital-mimar.png" alt="Architects of the Digital" class="section-image" loading="lazy">
+                        <img src="dijital-mimar.png" alt="Architects of the Digital" class="section-image"
+                            loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">Introduction: Architects of the Digital.</h3>
-                            <p>In the boundless potential of the digital universe, every brand holds the power to create its own galaxy. Yet, on this journey, one must move beyond the ordinary, exploring the possibilities hidden beneath the surface. This is where Adastra intervenes. We are not just an advertising agency; we are a digital architecture studio that merges algorithms with art, and data with vision. We craft a strategy into every pixel and an impact into every story, shaping the marketing of tomorrow, today.</p>
+                            <p>In the boundless potential of the digital universe, every brand holds the power to create
+                                its own galaxy. Yet, on this journey, one must move beyond the ordinary, exploring the
+                                possibilities hidden beneath the surface. This is where Adastra intervenes. We are not
+                                just an advertising agency; we are a digital architecture studio that merges algorithms
+                                with art, and data with vision. We craft a strategy into every pixel and an impact into
+                                every story, shaping the marketing of tomorrow, today.</p>
                         </div>
                     </div>
 
                     <div class="section-divider"></div>
                     <div class="split-block">
-                <img src="felsefe-temeli.png" alt="Our Core Philosophy" class="section-image" loading="lazy">
+                        <img src="felsefe-temeli.png" alt="Our Core Philosophy" class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">Our Core Philosophy: Where Creativity Meets Science.</h3>
-                            <p>At Adastra, we treat marketing as a science, yet we execute every campaign with the precision of a masterpiece. We translate the cold language of numbers into stories that resonate with the human spirit. We are experts at deciphering the most complex SEO algorithms and meticulously processing every detail of marketing analytics, transforming data into tangible, measurable results.</p>
-                            <p>Data is our source of inspiration; art is our form of expression. This balance ensures brands are not only visible but also build meaningful and lasting connections.</p>
+                            <p>At Adastra, we treat marketing as a science, yet we execute every campaign with the
+                                precision of a masterpiece. We translate the cold language of numbers into stories that
+                                resonate with the human spirit. We are experts at deciphering the most complex SEO
+                                algorithms and meticulously processing every detail of marketing analytics, transforming
+                                data into tangible, measurable results.</p>
+                            <p>Data is our source of inspiration; art is our form of expression. This balance ensures
+                                brands are not only visible but also build meaningful and lasting connections.</p>
                         </div>
                     </div>
 
                     <div class="section-divider"></div>
                     <div class="split-block">
-                <img src="minimal.png" alt="Minimalist Solutions" class="section-image" loading="lazy">
+                        <img src="minimal.png" alt="Minimalist Solutions" class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">Our Approach: Minimalist Solutions, Maximum Impact.</h3>
-                            <p>In the digital world, we aim for resonance, not just noise. Our approach is founded on originality: we produce solutions that cannot be copied or imitated. Every brand finds its own digital signature with Adastra.</p>
-                            <p>We seek depth in minimalism: we deliver solutions that convey much with few words, generating maximum impact through simple designs. We simplify complexity, ensuring brands communicate their message clearly and powerfully.</p>
-                            <p>We don't follow trends; we create them in the constantly evolving digital universe. We read the future and rewrite algorithms. Because every project is a journey of discovery. We constantly experiment, learn, and improve; <em>Ad astra, per aspera</em> (To the stars, through difficulties).</p>
+                            <p>In the digital world, we aim for resonance, not just noise. Our approach is founded on
+                                originality: we produce solutions that cannot be copied or imitated. Every brand finds
+                                its own digital signature with Adastra.</p>
+                            <p>We seek depth in minimalism: we deliver solutions that convey much with few words,
+                                generating maximum impact through simple designs. We simplify complexity, ensuring
+                                brands communicate their message clearly and powerfully.</p>
+                            <p>We don't follow trends; we create them in the constantly evolving digital universe. We
+                                read the future and rewrite algorithms. Because every project is a journey of discovery.
+                                We constantly experiment, learn, and improve; <em>Ad astra, per aspera</em> (To the
+                                stars, through difficulties).</p>
                         </div>
                     </div>
 
                     <div class="section-divider"></div>
                     <div class="split-block">
-                <img src="hikayemiz.png" alt="Our Story" class="section-image" loading="lazy">
+                        <img src="hikayemiz.png" alt="Our Story" class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">Our Story: Steps Towards the Future.</h3>
-                            <p>Adastra's journey began with our belief in the infinite potential of the digital. We aimed for brands to see their digital presence not just as a necessity, but as an artistic expression and a vehicle for growth. To date, we have been part of many brands' digital transformation and growth stories, guiding them to reach their own stars.</p>
+                            <p>Adastra's journey began with our belief in the infinite potential of the digital. We
+                                aimed for brands to see their digital presence not just as a necessity, but as an
+                                artistic expression and a vehicle for growth. To date, we have been part of many brands'
+                                digital transformation and growth stories, guiding them to reach their own stars.</p>
                         </div>
                     </div>
 
                     <div class="section-divider"></div>
                     <div class="split-block">
-                <img src="davet.png" alt="The Invitation" class="section-image" loading="lazy">
+                        <img src="davet.png" alt="The Invitation" class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">The Invitation: Where Will Your Story Begin?</h3>
-                            <p>If you want your brand to not merely exist digitally, but to create an impact that shapes the future, you are in the right place. Get in touch with us, and let's start coding your story together.</p>
+                            <p>If you want your brand to not merely exist digitally, but to create an impact that shapes
+                                the future, you are in the right place. Get in touch with us, and let's start coding
+                                your story together.</p>
                         </div>
                     </div>
 
@@ -293,7 +430,11 @@ KODLUYORUZ"></h1>
                         <img src="dijital-mimar.png" alt="معماريو العالم الرقمي" class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">مقدمة: معماريو العالم الرقمي.</h3>
-                            <p>في الإمكانات اللامحدودة للكون الرقمي، تمتلك كل علامة تجارية القوة لإنشاء مجرتها الخاصة. ومع ذلك، في هذه الرحلة، يجب على المرء تجاوز المألوف، واستكشاف الاحتمالات المخبأة تحت السطح. هنا تتدخل Adastra. نحن لسنا مجرد وكالة إعلانية؛ نحن استوديو للهندسة المعمارية الرقمية يدمج الخوارزميات بالفن، والبيانات بالرؤية. نحن نصوغ استراتيجية في كل بكسل وتأثيرًا في كل قصة، ونشكل تسويق الغد، اليوم.</p>
+                            <p>في الإمكانات اللامحدودة للكون الرقمي، تمتلك كل علامة تجارية القوة لإنشاء مجرتها الخاصة.
+                                ومع ذلك، في هذه الرحلة، يجب على المرء تجاوز المألوف، واستكشاف الاحتمالات المخبأة تحت
+                                السطح. هنا تتدخل Adastra. نحن لسنا مجرد وكالة إعلانية؛ نحن استوديو للهندسة المعمارية
+                                الرقمية يدمج الخوارزميات بالفن، والبيانات بالرؤية. نحن نصوغ استراتيجية في كل بكسل
+                                وتأثيرًا في كل قصة، ونشكل تسويق الغد، اليوم.</p>
                         </div>
                     </div>
                     <div class="section-divider"></div>
@@ -301,8 +442,12 @@ KODLUYORUZ"></h1>
                         <img src="felsefe-temeli.png" alt="فلسفتنا الجوهرية" class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">فلسفتنا الجوهرية: حيث يلتقي الإبداع بالعلم.</h3>
-                            <p>في Adastra، نتعامل مع التسويق كعلم، ومع ذلك ننفذ كل حملة بدقة التحفة الفنية. نترجم لغة الأرقام الباردة إلى قصص تتردد صداها مع الروح البشرية. نحن خبراء في فك رموز خوارزميات تحسين محركات البحث الأكثر تعقيدًا ومعالجة كل تفاصيل تحليلات التسويق بدقة، وتحويل البيانات إلى نتائج ملموسة وقابلة للقياس.</p>
-                            <p>البيانات هي مصدر إلهامنا؛ الفن هو شكل تعبيرنا. يضمن هذا التوازن أن العلامات التجارية ليست مرئية فحسب، بل تبني أيضًا روابط هادفة ودائمة.</p>
+                            <p>في Adastra، نتعامل مع التسويق كعلم، ومع ذلك ننفذ كل حملة بدقة التحفة الفنية. نترجم لغة
+                                الأرقام الباردة إلى قصص تتردد صداها مع الروح البشرية. نحن خبراء في فك رموز خوارزميات
+                                تحسين محركات البحث الأكثر تعقيدًا ومعالجة كل تفاصيل تحليلات التسويق بدقة، وتحويل
+                                البيانات إلى نتائج ملموسة وقابلة للقياس.</p>
+                            <p>البيانات هي مصدر إلهامنا؛ الفن هو شكل تعبيرنا. يضمن هذا التوازن أن العلامات التجارية ليست
+                                مرئية فحسب، بل تبني أيضًا روابط هادفة ودائمة.</p>
                         </div>
                     </div>
                     <div class="section-divider"></div>
@@ -310,9 +455,15 @@ KODLUYORUZ"></h1>
                         <img src="minimal.png" alt="حلول بسيطة" class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">نهجنا: حلول بسيطة، تأثير أقصى.</h3>
-                            <p>في العالم الرقمي، نهدف إلى الصدى، وليس الضجيج فقط. يعتمد نهجنا على الأصالة: نحن ننتج حلولًا لا يمكن نسخها أو تقليدها. تجد كل علامة تجارية توقيعها الرقمي الخاص مع Adastra.</p>
-                            <p>نبحث عن العمق في البساطة: نقدم حلولًا تنقل الكثير بكلمات قليلة، وتولد أقصى تأثير من خلال تصميمات بسيطة. نحن نبسط التعقيد، مما يضمن أن العلامات التجارية تنقل رسالتها بوضوح وقوة.</p>
-                            <p>نحن لا نتبع الاتجاهات؛ نحن نخلقها في الكون الرقمي المتطور باستمرار. نقرأ المستقبل ونعيد كتابة الخوارزميات. لأن كل مشروع هو رحلة اكتشاف. نحن نجرب ونتعلم ونتحسن باستمرار؛ <em>Ad astra, per aspera</em> (إلى النجوم، عبر الصعوبات).</p>
+                            <p>في العالم الرقمي، نهدف إلى الصدى، وليس الضجيج فقط. يعتمد نهجنا على الأصالة: نحن ننتج
+                                حلولًا لا يمكن نسخها أو تقليدها. تجد كل علامة تجارية توقيعها الرقمي الخاص مع Adastra.
+                            </p>
+                            <p>نبحث عن العمق في البساطة: نقدم حلولًا تنقل الكثير بكلمات قليلة، وتولد أقصى تأثير من خلال
+                                تصميمات بسيطة. نحن نبسط التعقيد، مما يضمن أن العلامات التجارية تنقل رسالتها بوضوح وقوة.
+                            </p>
+                            <p>نحن لا نتبع الاتجاهات؛ نحن نخلقها في الكون الرقمي المتطور باستمرار. نقرأ المستقبل ونعيد
+                                كتابة الخوارزميات. لأن كل مشروع هو رحلة اكتشاف. نحن نجرب ونتعلم ونتحسن باستمرار؛ <em>Ad
+                                    astra, per aspera</em> (إلى النجوم، عبر الصعوبات).</p>
                         </div>
                     </div>
                     <div class="section-divider"></div>
@@ -320,7 +471,10 @@ KODLUYORUZ"></h1>
                         <img src="hikayemiz.png" alt="قصتنا" class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">قصتنا: خطوات نحو المستقبل.</h3>
-                            <p>بدأت رحلة Adastra بإيماننا بالإمكانات اللانهائية للعالم الرقمي. كنا نهدف إلى أن ترى العلامات التجارية وجودها الرقمي ليس مجرد ضرورة، بل كتعبير فني ووسيلة للنمو. حتى الآن، كنا جزءًا من العديد من قصص التحول والنمو الرقمي للعلامات التجارية، وقمنا بتوجيهها للوصول إلى نجومها الخاصة.</p>
+                            <p>بدأت رحلة Adastra بإيماننا بالإمكانات اللانهائية للعالم الرقمي. كنا نهدف إلى أن ترى
+                                العلامات التجارية وجودها الرقمي ليس مجرد ضرورة، بل كتعبير فني ووسيلة للنمو. حتى الآن،
+                                كنا جزءًا من العديد من قصص التحول والنمو الرقمي للعلامات التجارية، وقمنا بتوجيهها للوصول
+                                إلى نجومها الخاصة.</p>
                         </div>
                     </div>
                     <div class="section-divider"></div>
@@ -328,7 +482,8 @@ KODLUYORUZ"></h1>
                         <img src="davet.png" alt="الدعوة" class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">الدعوة: أين ستبدأ قصتك؟</h3>
-                            <p>إذا كنت تريد أن لا تكتفي علامتك التجارية بالوجود الرقمي فحسب، بل أن تخلق تأثيرًا يشكل المستقبل، فأنت في المكان الصحي. تواصل معنا، ولنبدأ في كتابة قصتك معًا.</p>
+                            <p>إذا كنت تريد أن لا تكتفي علامتك التجارية بالوجود الرقمي فحسب، بل أن تخلق تأثيرًا يشكل
+                                المستقبل، فأنت في المكان الصحي. تواصل معنا، ولنبدأ في كتابة قصتك معًا.</p>
                         </div>
                     </div>
                     <div class="section-divider"></div>
@@ -354,10 +509,15 @@ KODLUYORUZ"></h1>
 
                     <!-- Giriş -->
                     <div class="split-block">
-                <img src="dijital-sanat.png" alt="Giriş: Dijitalin Sınırlarını Sanatla Aşmak" class="section-image" loading="lazy">
+                        <img src="dijital-sanat.png" alt="Giriş: Dijitalin Sınırlarını Sanatla Aşmak"
+                            class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">Giriş: Dijitalin Sınırlarını Sanatla Aşmak.</h3>
-                            <p>Adastra'da her hizmet, markanızın dijitalde birer başyapıt yaratması için tasarlanmış özel bir araçtır. Biz, yalnızca görevleri yerine getirmekle kalmaz; her projeye sanatsal bir vizyon ve veri odaklı bir strateji ile yaklaşarak, markanızın geleceğin kanvaslarında en parlak yıldız olmasını sağlarız. İşte dijital evrendeki uzmanlık alanlarımız ve sizin için yarattığımız çözümler:</p>
+                            <p>Adastra'da her hizmet, markanızın dijitalde birer başyapıt yaratması için tasarlanmış
+                                özel bir araçtır. Biz, yalnızca görevleri yerine getirmekle kalmaz; her projeye sanatsal
+                                bir vizyon ve veri odaklı bir strateji ile yaklaşarak, markanızın geleceğin
+                                kanvaslarında en parlak yıldız olmasını sağlarız. İşte dijital evrendeki uzmanlık
+                                alanlarımız ve sizin için yarattığımız çözümler:</p>
                         </div>
                     </div>
 
@@ -365,11 +525,17 @@ KODLUYORUZ"></h1>
 
                     <!-- 1. SEO -->
                     <div class="split-block">
-                <img src="veri-heykeli.png" alt="Veri Heykeltıraşlığı: SEO" class="section-image" loading="lazy">
+                        <img src="veri-heykeli.png" alt="Veri Heykeltıraşlığı: SEO" class="section-image"
+                            loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">1. Veri Heykeltıraşlığı: Arama Motoru Optimizasyonu (SEO)</h3>
-                            <p>Dijital dünyanın görünmez güçlerini, yani arama motoru algoritmalarını derinlemesine anlıyoruz. Markanızın organik görünürlüğünü artırmak için teknik SEO, anahtar kelime sanatı ve içerik optimizasyonunu birleştirerek, arama sonuçlarında zirveye çıkmanızı sağlıyoruz. Veriyi şekillendiriyor, markanız için kalıcı bir dijital miras inşa ediyoruz.</p>
-                            <p><strong>Anahtar Vurgular:</strong> Organik Trafik Artışı, Algoritma Analizi, Teknik SEO Çözümleri, İçerik Stratejisi.</p>
+                            <p>Dijital dünyanın görünmez güçlerini, yani arama motoru algoritmalarını derinlemesine
+                                anlıyoruz. Markanızın organik görünürlüğünü artırmak için teknik SEO, anahtar kelime
+                                sanatı ve içerik optimizasyonunu birleştirerek, arama sonuçlarında zirveye çıkmanızı
+                                sağlıyoruz. Veriyi şekillendiriyor, markanız için kalıcı bir dijital miras inşa
+                                ediyoruz.</p>
+                            <p><strong>Anahtar Vurgular:</strong> Organik Trafik Artışı, Algoritma Analizi, Teknik SEO
+                                Çözümleri, İçerik Stratejisi.</p>
                         </div>
                     </div>
 
@@ -377,11 +543,16 @@ KODLUYORUZ"></h1>
 
                     <!-- 2. Sosyal Medya -->
                     <div class="split-block">
-                <img src="dijital-kanvas.png" alt="Dijital Kanvaslar: Sosyal Medya Pazarlaması" class="section-image" loading="lazy">
+                        <img src="dijital-kanvas.png" alt="Dijital Kanvaslar: Sosyal Medya Pazarlaması"
+                            class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">2. Dijital Kanvaslar: Sosyal Medya Pazarlaması</h3>
-                            <p>Sosyal medya platformlarını, markanızın hikayesini anlatacağı dinamik kanvaslara dönüştürüyoruz. Hedef kitlenizle anlamlı bağlantılar kuran yaratıcı içerikler, topluluk yönetimi ve veri odaklı reklam kampanyalarıyla markanızın sosyal medyadaki varlığını bir sanat eserine çeviriyoruz.</p>
-                            <p><strong>Anahtar Vurgular:</strong> Stratejik İçerik Oluşturma, Topluluk Yönetimi, Sosyal Medya Reklamcılığı (Paid Social), Etkileşim Artışı.</p>
+                            <p>Sosyal medya platformlarını, markanızın hikayesini anlatacağı dinamik kanvaslara
+                                dönüştürüyoruz. Hedef kitlenizle anlamlı bağlantılar kuran yaratıcı içerikler, topluluk
+                                yönetimi ve veri odaklı reklam kampanyalarıyla markanızın sosyal medyadaki varlığını bir
+                                sanat eserine çeviriyoruz.</p>
+                            <p><strong>Anahtar Vurgular:</strong> Stratejik İçerik Oluşturma, Topluluk Yönetimi, Sosyal
+                                Medya Reklamcılığı (Paid Social), Etkileşim Artışı.</p>
                         </div>
                     </div>
 
@@ -389,11 +560,16 @@ KODLUYORUZ"></h1>
 
                     <!-- 3. PPC/SEM -->
                     <div class="split-block">
-                <img src="algoritma-senf.png" alt="Algoritma Senfonisi: Ücretli Reklamcılık (PPC/SEM)" class="section-image" loading="lazy">
+                        <img src="algoritma-senf.png" alt="Algoritma Senfonisi: Ücretli Reklamcılık (PPC/SEM)"
+                            class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">3. Algoritma Senfonisi: Ücretli Reklamcılık (PPC/SEM)</h3>
-                            <p>Google Ads, YouTube, Programatik reklamcılık gibi platformlarda bütçenizi en verimli şekilde kullanarak, nokta atışı kampanyalar tasarlarız. Algoritmaların dilini konuşur, her tıklamayı, her gösterimi ve her dönüşümü bir senfoninin notaları gibi hassasiyetle yöneterek yatırım getirinizi (ROI) maksimize ederiz.</p>
-                            <p><strong>Anahtar Vurgular:</strong> Google Ads Optimizasyonu, Dönüşüm Odaklı Kampanyalar, Remarketing Stratejileri, Maliyet/Fayda Analizi.</p>
+                            <p>Google Ads, YouTube, Programatik reklamcılık gibi platformlarda bütçenizi en verimli
+                                şekilde kullanarak, nokta atışı kampanyalar tasarlarız. Algoritmaların dilini konuşur,
+                                her tıklamayı, her gösterimi ve her dönüşümü bir senfoninin notaları gibi hassasiyetle
+                                yöneterek yatırım getirinizi (ROI) maksimize ederiz.</p>
+                            <p><strong>Anahtar Vurgular:</strong> Google Ads Optimizasyonu, Dönüşüm Odaklı Kampanyalar,
+                                Remarketing Stratejileri, Maliyet/Fayda Analizi.</p>
                         </div>
                     </div>
 
@@ -401,11 +577,16 @@ KODLUYORUZ"></h1>
 
                     <!-- 4. İçerik Pazarlaması -->
                     <div class="split-block">
-                <img src="hikaye-mimar.png" alt="Hikaye Mimarlığı: İçerik Pazarlaması" class="section-image" loading="lazy">
+                        <img src="hikaye-mimar.png" alt="Hikaye Mimarlığı: İçerik Pazarlaması" class="section-image"
+                            loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">4. Hikaye Mimarlığı: İçerik Pazarlaması</h3>
-                            <p>Markanızın felsefesini ve değerini yansıtan, ilgi çekici ve bilgilendirici içerikler üretiyoruz. Blog yazılarından infografiklere, videolardan e-kitaplara kadar her türlü içeriği, hedef kitlenizle duygusal ve entelektüel bir bağ kuracak şekilde kurgularız. İçerik, bizim için sadece bilgi değil, bir deneyimdir.</p>
-                            <p><strong>Anahtar Vurgular:</strong> Değer Odaklı İçerik, Hikaye Anlatımı (Storytelling), Blog Yönetimi, Video İçerik Stratejileri.</p>
+                            <p>Markanızın felsefesini ve değerini yansıtan, ilgi çekici ve bilgilendirici içerikler
+                                üretiyoruz. Blog yazılarından infografiklere, videolardan e-kitaplara kadar her türlü
+                                içeriği, hedef kitlenizle duygusal ve entelektüel bir bağ kuracak şekilde kurgularız.
+                                İçerik, bizim için sadece bilgi değil, bir deneyimdir.</p>
+                            <p><strong>Anahtar Vurgular:</strong> Değer Odaklı İçerik, Hikaye Anlatımı (Storytelling),
+                                Blog Yönetimi, Video İçerik Stratejileri.</p>
                         </div>
                     </div>
 
@@ -413,20 +594,29 @@ KODLUYORUZ"></h1>
 
                     <!-- 5. Web Geliştirme ve CRO -->
                     <div class="split-block">
-                <img src="dijital-deneyim.png" alt="Dijital Deneyim Tasarımı: Web Geliştirme ve CRO" class="section-image" loading="lazy">
+                        <img src="dijital-deneyim.png" alt="Dijital Deneyim Tasarımı: Web Geliştirme ve CRO"
+                            class="section-image" loading="lazy">
                         <div class="section-copy">
-                            <h3 class="section-heading">5. Dijital Deneyim Tasarımı: Web Geliştirme ve Dönüşüm Optimizasyonu (CRO)</h3>
-                            <p>Markanızın dijitaldeki ilk izlenimi olan web sitesini, sadece estetik değil, aynı zamanda kullanıcı deneyimi ve dönüşüm odaklı bir şahesere dönüştürüyoruz. Hızlı, mobil uyumlu ve sezgisel tasarımlarla ziyaretçilerinizi müşteriye çevirirken, her bir tıklamayı analiz ederek sürekli optimize ederiz.</p>
-                            <p><strong>Anahtar Vurgular:</strong> Kullanıcı Dostu Arayüz (UI/UX), Mobil Uyumluluk, Dönüşüm Hunisi Optimizasyonu, Performans Geliştirme.</p>
+                            <h3 class="section-heading">5. Dijital Deneyim Tasarımı: Web Geliştirme ve Dönüşüm
+                                Optimizasyonu (CRO)</h3>
+                            <p>Markanızın dijitaldeki ilk izlenimi olan web sitesini, sadece estetik değil, aynı zamanda
+                                kullanıcı deneyimi ve dönüşüm odaklı bir şahesere dönüştürüyoruz. Hızlı, mobil uyumlu ve
+                                sezgisel tasarımlarla ziyaretçilerinizi müşteriye çevirirken, her bir tıklamayı analiz
+                                ederek sürekli optimize ederiz.</p>
+                            <p><strong>Anahtar Vurgular:</strong> Kullanıcı Dostu Arayüz (UI/UX), Mobil Uyumluluk,
+                                Dönüşüm Hunisi Optimizasyonu, Performans Geliştirme.</p>
                         </div>
                     </div>
 
                     <div class="section-divider"></div>
                     <div class="split-block">
-                <img src="dijital-mimar.png" alt="Senin İçin Hangi Kanvası Hazırlayalım?" class="section-image" loading="lazy">
+                        <img src="dijital-mimar.png" alt="Senin İçin Hangi Kanvası Hazırlayalım?" class="section-image"
+                            loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">Senin İçin Hangi Kanvası Hazırlayalım?</h3>
-                            <p>Markanızın geleceği, Adastra'nın dijital sanat atölyesinde şekilleniyor. Hangi hizmetlerimizin sizi yıldızlara taşıyacağını keşfetmek için bize ulaşın ve markanız için eşsiz bir dijital şaheser yaratmaya başlayalım.</p>
+                            <p>Markanızın geleceği, Adastra'nın dijital sanat atölyesinde şekilleniyor. Hangi
+                                hizmetlerimizin sizi yıldızlara taşıyacağını keşfetmek için bize ulaşın ve markanız için
+                                eşsiz bir dijital şaheser yaratmaya başlayalım.</p>
                         </div>
                     </div>
                     <div class="section-divider"></div>
@@ -438,10 +628,15 @@ KODLUYORUZ"></h1>
 
                     <!-- Intro -->
                     <div class="split-block">
-                <img src="dijital-sanat.png" alt="Intro: Pushing Digital’s Boundaries with Art" class="section-image" loading="lazy">
+                        <img src="dijital-sanat.png" alt="Intro: Pushing Digital’s Boundaries with Art"
+                            class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">Introduction: Pushing Digital’s Boundaries with Art.</h3>
-                            <p>At Adastra, every service is a dedicated tool designed to help your brand craft a masterpiece in the digital realm. We don’t just execute tasks; we approach each project with artistic vision and data‑driven strategy so your brand shines brightest on the canvases of the future. Here are our domains of expertise and the solutions we create for you:</p>
+                            <p>At Adastra, every service is a dedicated tool designed to help your brand craft a
+                                masterpiece in the digital realm. We don’t just execute tasks; we approach each project
+                                with artistic vision and data‑driven strategy so your brand shines brightest on the
+                                canvases of the future. Here are our domains of expertise and the solutions we create
+                                for you:</p>
                         </div>
                     </div>
 
@@ -449,11 +644,15 @@ KODLUYORUZ"></h1>
 
                     <!-- 1. SEO -->
                     <div class="split-block">
-                <img src="veri-heykeli.png" alt="Data Sculpting: SEO" class="section-image" loading="lazy">
+                        <img src="veri-heykeli.png" alt="Data Sculpting: SEO" class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">1. Data Sculpting: Search Engine Optimization (SEO)</h3>
-                            <p>We deeply understand the unseen forces of the digital world — search engine algorithms. By combining technical SEO, the art of keywords, and content optimization, we increase your brand’s organic visibility and help you reach the top of search results. We shape data and build a lasting digital legacy for your brand.</p>
-                            <p><strong>Key Highlights:</strong> Organic Traffic Growth, Algorithm Analysis, Technical SEO Solutions, Content Strategy.</p>
+                            <p>We deeply understand the unseen forces of the digital world — search engine algorithms.
+                                By combining technical SEO, the art of keywords, and content optimization, we increase
+                                your brand’s organic visibility and help you reach the top of search results. We shape
+                                data and build a lasting digital legacy for your brand.</p>
+                            <p><strong>Key Highlights:</strong> Organic Traffic Growth, Algorithm Analysis, Technical
+                                SEO Solutions, Content Strategy.</p>
                         </div>
                     </div>
 
@@ -461,11 +660,15 @@ KODLUYORUZ"></h1>
 
                     <!-- 2. Social Media -->
                     <div class="split-block">
-                <img src="dijital-kanvas.png" alt="Digital Canvases: Social Media Marketing" class="section-image" loading="lazy">
+                        <img src="dijital-kanvas.png" alt="Digital Canvases: Social Media Marketing"
+                            class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">2. Digital Canvases: Social Media Marketing</h3>
-                            <p>We transform social platforms into dynamic canvases where your brand’s story unfolds. Through creative content, community management, and data‑driven ad campaigns, we turn your social presence into a work of art that builds meaningful connections.</p>
-                            <p><strong>Key Highlights:</strong> Strategic Content Creation, Community Management, Paid Social Advertising, Engagement Growth.</p>
+                            <p>We transform social platforms into dynamic canvases where your brand’s story unfolds.
+                                Through creative content, community management, and data‑driven ad campaigns, we turn
+                                your social presence into a work of art that builds meaningful connections.</p>
+                            <p><strong>Key Highlights:</strong> Strategic Content Creation, Community Management, Paid
+                                Social Advertising, Engagement Growth.</p>
                         </div>
                     </div>
 
@@ -473,11 +676,15 @@ KODLUYORUZ"></h1>
 
                     <!-- 3. PPC/SEM -->
                     <div class="split-block">
-                <img src="algoritma-senf.png" alt="Algorithm Symphony: Paid Advertising (PPC/SEM)" class="section-image" loading="lazy">
+                        <img src="algoritma-senf.png" alt="Algorithm Symphony: Paid Advertising (PPC/SEM)"
+                            class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">3. Algorithm Symphony: Paid Advertising (PPC/SEM)</h3>
-                            <p>Across platforms like Google Ads, YouTube, and Programmatic, we design pinpoint campaigns that use your budget with maximum efficiency. We speak the language of algorithms and manage every click, impression, and conversion with precision — maximizing your ROI.</p>
-                            <p><strong>Key Highlights:</strong> Google Ads Optimization, Conversion‑Focused Campaigns, Remarketing Strategies, Cost‑Benefit Analysis.</p>
+                            <p>Across platforms like Google Ads, YouTube, and Programmatic, we design pinpoint campaigns
+                                that use your budget with maximum efficiency. We speak the language of algorithms and
+                                manage every click, impression, and conversion with precision — maximizing your ROI.</p>
+                            <p><strong>Key Highlights:</strong> Google Ads Optimization, Conversion‑Focused Campaigns,
+                                Remarketing Strategies, Cost‑Benefit Analysis.</p>
                         </div>
                     </div>
 
@@ -485,11 +692,16 @@ KODLUYORUZ"></h1>
 
                     <!-- 4. Content Marketing -->
                     <div class="split-block">
-                <img src="hikaye-mimar.png" alt="Story Architecture: Content Marketing" class="section-image" loading="lazy">
+                        <img src="hikaye-mimar.png" alt="Story Architecture: Content Marketing" class="section-image"
+                            loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">4. Story Architecture: Content Marketing</h3>
-                            <p>We produce engaging, insightful content that reflects your brand’s philosophy and value. From blog posts to infographics, videos to e‑books, we craft content that builds an emotional and intellectual bond with your audience. For us, content is not just information — it’s an experience.</p>
-                            <p><strong>Key Highlights:</strong> Value‑Driven Content, Storytelling, Blog Management, Video Content Strategies.</p>
+                            <p>We produce engaging, insightful content that reflects your brand’s philosophy and value.
+                                From blog posts to infographics, videos to e‑books, we craft content that builds an
+                                emotional and intellectual bond with your audience. For us, content is not just
+                                information — it’s an experience.</p>
+                            <p><strong>Key Highlights:</strong> Value‑Driven Content, Storytelling, Blog Management,
+                                Video Content Strategies.</p>
                         </div>
                     </div>
 
@@ -497,20 +709,29 @@ KODLUYORUZ"></h1>
 
                     <!-- 5. Web Dev & CRO -->
                     <div class="split-block">
-                <img src="dijital-deneyim.png" alt="Digital Experience Design: Web Development and CRO" class="section-image" loading="lazy">
+                        <img src="dijital-deneyim.png" alt="Digital Experience Design: Web Development and CRO"
+                            class="section-image" loading="lazy">
                         <div class="section-copy">
-                            <h3 class="section-heading">5. Digital Experience Design: Web Development and Conversion Optimization (CRO)</h3>
-                            <p>Your website is your brand’s first impression in digital. We turn it into a masterpiece that is both visually compelling and conversion‑focused. With fast, mobile‑friendly, intuitive design, we turn visitors into customers and continuously optimize by analyzing every click.</p>
-                            <p><strong>Key Highlights:</strong> User‑Friendly UI/UX, Mobile Compatibility, Funnel Optimization, Performance Improvements.</p>
+                            <h3 class="section-heading">5. Digital Experience Design: Web Development and Conversion
+                                Optimization (CRO)</h3>
+                            <p>Your website is your brand’s first impression in digital. We turn it into a masterpiece
+                                that is both visually compelling and conversion‑focused. With fast, mobile‑friendly,
+                                intuitive design, we turn visitors into customers and continuously optimize by analyzing
+                                every click.</p>
+                            <p><strong>Key Highlights:</strong> User‑Friendly UI/UX, Mobile Compatibility, Funnel
+                                Optimization, Performance Improvements.</p>
                         </div>
                     </div>
 
                     <div class="section-divider"></div>
                     <div class="split-block">
-                <img src="dijital-mimar.png" alt="Which Canvas Shall We Prepare For You?" class="section-image" loading="lazy">
+                        <img src="dijital-mimar.png" alt="Which Canvas Shall We Prepare For You?" class="section-image"
+                            loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">Which Canvas Shall We Prepare For You?</h3>
-                            <p>Your brand’s future takes shape in Adastra’s digital art studio. Contact us to discover which of our services will carry you to the stars, and let’s begin crafting a unique digital masterpiece for your brand.</p>
+                            <p>Your brand’s future takes shape in Adastra’s digital art studio. Contact us to discover
+                                which of our services will carry you to the stars, and let’s begin crafting a unique
+                                digital masterpiece for your brand.</p>
                         </div>
                     </div>
                     <div class="section-divider"></div>
@@ -522,10 +743,14 @@ KODLUYORUZ"></h1>
 
                     <!-- Intro -->
                     <div class="split-block">
-                        <img src="dijital-sanat.png" alt="مقدمة: تجاوز الحدود الرقمية بالفن" class="section-image" loading="lazy">
+                        <img src="dijital-sanat.png" alt="مقدمة: تجاوز الحدود الرقمية بالفن" class="section-image"
+                            loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">مقدمة: تجاوز الحدود الرقمية بالفن.</h3>
-                            <p>في Adastra، كل خدمة هي أداة مخصصة مصممة لمساعدة علامتك التجارية على صياغة تحفة فنية في العالم الرقمي. نحن لا ننفذ المهام فحسب؛ بل نتعامل مع كل مشروع برؤية فنية واستراتيجية تعتمد على البيانات حتى تتألق علامتك التجارية بأقصى درجات الإشراق على لوحات المستقبل. إليك مجالات خبرتنا والحلول التي نبتكرها لك:</p>
+                            <p>في Adastra، كل خدمة هي أداة مخصصة مصممة لمساعدة علامتك التجارية على صياغة تحفة فنية في
+                                العالم الرقمي. نحن لا ننفذ المهام فحسب؛ بل نتعامل مع كل مشروع برؤية فنية واستراتيجية
+                                تعتمد على البيانات حتى تتألق علامتك التجارية بأقصى درجات الإشراق على لوحات المستقبل.
+                                إليك مجالات خبرتنا والحلول التي نبتكرها لك:</p>
                         </div>
                     </div>
 
@@ -533,11 +758,16 @@ KODLUYORUZ"></h1>
 
                     <!-- 1. SEO -->
                     <div class="split-block">
-                        <img src="veri-heykeli.png" alt="نحت البيانات: تحسين محركات البحث" class="section-image" loading="lazy">
+                        <img src="veri-heykeli.png" alt="نحت البيانات: تحسين محركات البحث" class="section-image"
+                            loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">1. نحت البيانات: تحسين محركات البحث (SEO)</h3>
-                            <p>نحن نفهم بعمق القوى غير المرئية للعالم الرقمي — خوارزميات محركات البحث. من خلال الجمع بين تحسين محركات البحث التقني، وفن الكلمات الرئيسية، وتحسين المحتوى، نزيد من الظهور العضوي لعلامتك التجارية ونساعدك في الوصول إلى قمة نتائج البحث. نشكل البيانات ونبني إرثًا رقميًا دائمًا لعلامتك التجارية.</p>
-                            <p><strong>أبرز النقاط:</strong> نمو حركة المرور العضوية، تحليل الخوارزميات، حلول تحسين محركات البحث التقنية، استراتيجية المحتوى.</p>
+                            <p>نحن نفهم بعمق القوى غير المرئية للعالم الرقمي — خوارزميات محركات البحث. من خلال الجمع بين
+                                تحسين محركات البحث التقني، وفن الكلمات الرئيسية، وتحسين المحتوى، نزيد من الظهور العضوي
+                                لعلامتك التجارية ونساعدك في الوصول إلى قمة نتائج البحث. نشكل البيانات ونبني إرثًا رقميًا
+                                دائمًا لعلامتك التجارية.</p>
+                            <p><strong>أبرز النقاط:</strong> نمو حركة المرور العضوية، تحليل الخوارزميات، حلول تحسين
+                                محركات البحث التقنية، استراتيجية المحتوى.</p>
                         </div>
                     </div>
 
@@ -545,11 +775,15 @@ KODLUYORUZ"></h1>
 
                     <!-- 2. Social Media -->
                     <div class="split-block">
-                        <img src="dijital-kanvas.png" alt="اللوحات الرقمية: تسويق وسائل التواصل الاجتماعي" class="section-image" loading="lazy">
+                        <img src="dijital-kanvas.png" alt="اللوحات الرقمية: تسويق وسائل التواصل الاجتماعي"
+                            class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">2. اللوحات الرقمية: تسويق وسائل التواصل الاجتماعي</h3>
-                            <p>نحول منصات التواصل الاجتماعي إلى لوحات ديناميكية حيث تتكشف قصة علامتك التجارية. من خلال المحتوى الإبداعي، وإدارة المجتمع، والحملات الإعلانية المعتمدة على البيانات، نحول وجودك الاجتماعي إلى عمل فني يبني روابط هادفة.</p>
-                            <p><strong>أبرز النقاط:</strong> إنشاء محتوى استراتيجي، إدارة المجتمع، الإعلانات الاجتماعية المدفوعة، زيادة التفاعل.</p>
+                            <p>نحول منصات التواصل الاجتماعي إلى لوحات ديناميكية حيث تتكشف قصة علامتك التجارية. من خلال
+                                المحتوى الإبداعي، وإدارة المجتمع، والحملات الإعلانية المعتمدة على البيانات، نحول وجودك
+                                الاجتماعي إلى عمل فني يبني روابط هادفة.</p>
+                            <p><strong>أبرز النقاط:</strong> إنشاء محتوى استراتيجي، إدارة المجتمع، الإعلانات الاجتماعية
+                                المدفوعة، زيادة التفاعل.</p>
                         </div>
                     </div>
 
@@ -557,11 +791,15 @@ KODLUYORUZ"></h1>
 
                     <!-- 3. PPC/SEM -->
                     <div class="split-block">
-                        <img src="algoritma-senf.png" alt="سمفونية الخوارزمية: الإعلانات المدفوعة" class="section-image" loading="lazy">
+                        <img src="algoritma-senf.png" alt="سمفونية الخوارزمية: الإعلانات المدفوعة" class="section-image"
+                            loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">3. سمفونية الخوارزمية: الإعلانات المدفوعة (PPC/SEM)</h3>
-                            <p>عبر منصات مثل Google Ads وYouTube وProgrammatic، نصمم حملات دقيقة تستخدم ميزانيتك بأقصى قدر من الكفاءة. نتحدث لغة الخوارزميات وندير كل نقرة، وكل ظهور، وكل تحويل بدقة — مما يزيد من عائد الاستثمار الخاص بك.</p>
-                            <p><strong>أبرز النقاط:</strong> تحسين إعلانات Google، حملات تركز على التحويل، استراتيجيات إعادة التسويق، تحليل التكلفة والعائد.</p>
+                            <p>عبر منصات مثل Google Ads وYouTube وProgrammatic، نصمم حملات دقيقة تستخدم ميزانيتك بأقصى
+                                قدر من الكفاءة. نتحدث لغة الخوارزميات وندير كل نقرة، وكل ظهور، وكل تحويل بدقة — مما يزيد
+                                من عائد الاستثمار الخاص بك.</p>
+                            <p><strong>أبرز النقاط:</strong> تحسين إعلانات Google، حملات تركز على التحويل، استراتيجيات
+                                إعادة التسويق، تحليل التكلفة والعائد.</p>
                         </div>
                     </div>
 
@@ -569,11 +807,15 @@ KODLUYORUZ"></h1>
 
                     <!-- 4. Content Marketing -->
                     <div class="split-block">
-                        <img src="hikaye-mimar.png" alt="هندسة القصة: تسويق المحتوى" class="section-image" loading="lazy">
+                        <img src="hikaye-mimar.png" alt="هندسة القصة: تسويق المحتوى" class="section-image"
+                            loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">4. هندسة القصة: تسويق المحتوى</h3>
-                            <p>ننتج محتوى جذابًا وثاقبًا يعكس فلسفة وقيمة علامتك التجارية. من مقالات المدونة إلى الرسوم البيانية، ومن مقاطع الفيديو إلى الكتب الإلكترونية، نصوغ محتوى يبني رابطًا عاطفيًا وفكريًا مع جمهورك. بالنسبة لنا، المحتوى ليس مجرد معلومات — إنه تجربة.</p>
-                            <p><strong>أبرز النقاط:</strong> محتوى مدفوع بالقيمة، سرد القصص، إدارة المدونة، استراتيجيات محتوى الفيديو.</p>
+                            <p>ننتج محتوى جذابًا وثاقبًا يعكس فلسفة وقيمة علامتك التجارية. من مقالات المدونة إلى الرسوم
+                                البيانية، ومن مقاطع الفيديو إلى الكتب الإلكترونية، نصوغ محتوى يبني رابطًا عاطفيًا
+                                وفكريًا مع جمهورك. بالنسبة لنا، المحتوى ليس مجرد معلومات — إنه تجربة.</p>
+                            <p><strong>أبرز النقاط:</strong> محتوى مدفوع بالقيمة، سرد القصص، إدارة المدونة، استراتيجيات
+                                محتوى الفيديو.</p>
                         </div>
                     </div>
 
@@ -581,11 +823,15 @@ KODLUYORUZ"></h1>
 
                     <!-- 5. Web Dev & CRO -->
                     <div class="split-block">
-                        <img src="dijital-deneyim.png" alt="تصميم التجربة الرقمية: تطوير الويب و CRO" class="section-image" loading="lazy">
+                        <img src="dijital-deneyim.png" alt="تصميم التجربة الرقمية: تطوير الويب و CRO"
+                            class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">5. تصميم التجربة الرقمية: تطوير الويب وتحسين التحويل (CRO)</h3>
-                            <p>موقع الويب الخاص بك هو الانطباع الأول لعلامتك التجارية في العالم الرقمي. نحوله إلى تحفة فنية جذابة بصريًا وتركز على التحويل. من خلال تصميم سريع، وصديق للجوال، وبديهي، نحول الزوار إلى عملاء ونحسن باستمرار من خلال تحليل كل نقرة.</p>
-                            <p><strong>أبرز النقاط:</strong> واجهة مستخدم سهلة الاستخدام (UI/UX)، توافق مع الجوال، تحسين مسار التحويل، تحسين الأداء.</p>
+                            <p>موقع الويب الخاص بك هو الانطباع الأول لعلامتك التجارية في العالم الرقمي. نحوله إلى تحفة
+                                فنية جذابة بصريًا وتركز على التحويل. من خلال تصميم سريع، وصديق للجوال، وبديهي، نحول
+                                الزوار إلى عملاء ونحسن باستمرار من خلال تحليل كل نقرة.</p>
+                            <p><strong>أبرز النقاط:</strong> واجهة مستخدم سهلة الاستخدام (UI/UX)، توافق مع الجوال، تحسين
+                                مسار التحويل، تحسين الأداء.</p>
                         </div>
                     </div>
 
@@ -594,7 +840,8 @@ KODLUYORUZ"></h1>
                         <img src="dijital-mimar.png" alt="أي لوحة نعدها لك؟" class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">أي لوحة نعدها لك؟</h3>
-                            <p>يتشكل مستقبل علامتك التجارية في استوديو الفن الرقمي لشركة Adastra. اتصل بنا لاكتشاف أي من خدماتنا ستحملك إلى النجوم، ولنبدأ في صياغة تحفة رقمية فريدة لعلامتك التجارية.</p>
+                            <p>يتشكل مستقبل علامتك التجارية في استوديو الفن الرقمي لشركة Adastra. اتصل بنا لاكتشاف أي من
+                                خدماتنا ستحملك إلى النجوم، ولنبدأ في صياغة تحفة رقمية فريدة لعلامتك التجارية.</p>
                         </div>
                     </div>
                     <div class="section-divider"></div>
@@ -619,11 +866,16 @@ KODLUYORUZ"></h1>
 
                     <!-- 1. Dijital Evrenin Mimarları: Sonsuz Potansiyel -->
                     <div class="split-block">
-                <img src="dijital-evren.png" alt="Dijital Evrenin Mimarları: Sonsuz Potansiyel" class="section-image" loading="lazy">
+                        <img src="dijital-evren.png" alt="Dijital Evrenin Mimarları: Sonsuz Potansiyel"
+                            class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">Dijital Evrenin Mimarları: Sonsuz Potansiyel</h3>
-                            <p>Biz, sadece bugünü değil, yarını inşa eden bir zihniyetle çalışırız. Adastra olarak, dijital evrenin sürekli evrilen sınırlarında, markalar için birer kaşif ve mimarız. İnsanlık, her zaman yıldızlara bakmış, ancak biz dijital yıldızları markalar için yeniden hizalıyoruz.</p>
-                            <p>“İnsan, kendini ancak gelecekte tamamlar; biz, markaların bu tamamlanmış haline yol gösteriyoruz.”</p>
+                            <p>Biz, sadece bugünü değil, yarını inşa eden bir zihniyetle çalışırız. Adastra olarak,
+                                dijital evrenin sürekli evrilen sınırlarında, markalar için birer kaşif ve mimarız.
+                                İnsanlık, her zaman yıldızlara bakmış, ancak biz dijital yıldızları markalar için
+                                yeniden hizalıyoruz.</p>
+                            <p>“İnsan, kendini ancak gelecekte tamamlar; biz, markaların bu tamamlanmış haline yol
+                                gösteriyoruz.”</p>
                         </div>
                     </div>
 
@@ -631,12 +883,19 @@ KODLUYORUZ"></h1>
 
                     <!-- 2. Yıldız Haritası Çıkarmak: Yapay Zeka ile Öncülük -->
                     <div class="split-block">
-                <img src="yildiz-haritasi.png" alt="Yıldız Haritası Çıkarmak: Yapay Zeka ile Öncülük" class="section-image" loading="lazy">
+                        <img src="yildiz-haritasi.png" alt="Yıldız Haritası Çıkarmak: Yapay Zeka ile Öncülük"
+                            class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">Yıldız Haritası Çıkarmak: Yapay Zeka ile Öncülük</h3>
-                            <p>Amacımız, her markanın dijitaldeki benzersiz "yıldız haritasını" çıkarmak ve onları henüz keşfedilmemiş zirvelere taşımaktır. Bizim için başarı, sadece metriklerde değil, yarattığımız etki ve öncülük ettiğimiz inovasyonda yatar.</p>
-                            <p>Bu hedefe ulaşmak için, teknolojik gelişmeleri ve yapay zeka destekli analizleri proaktif olarak takip ediyor, bu alanda sektöre öncülük ediyoruz. Personelimizin ve yöneticilerimizin, dijital pazarlamanın en güncel ve fütüristik araçları hakkında sürekli ve zorunlu eğitimler almasını sağlıyoruz.</p>
-                            <p>“Her şeyin özü, kendini koruma çabasındadır; markanın özünü dijitalde ölümsüzleştirmek bizim çabamızdır.”</p>
+                            <p>Amacımız, her markanın dijitaldeki benzersiz "yıldız haritasını" çıkarmak ve onları henüz
+                                keşfedilmemiş zirvelere taşımaktır. Bizim için başarı, sadece metriklerde değil,
+                                yarattığımız etki ve öncülük ettiğimiz inovasyonda yatar.</p>
+                            <p>Bu hedefe ulaşmak için, teknolojik gelişmeleri ve yapay zeka destekli analizleri proaktif
+                                olarak takip ediyor, bu alanda sektöre öncülük ediyoruz. Personelimizin ve
+                                yöneticilerimizin, dijital pazarlamanın en güncel ve fütüristik araçları hakkında
+                                sürekli ve zorunlu eğitimler almasını sağlıyoruz.</p>
+                            <p>“Her şeyin özü, kendini koruma çabasındadır; markanın özünü dijitalde ölümsüzleştirmek
+                                bizim çabamızdır.”</p>
                         </div>
                     </div>
 
@@ -644,10 +903,14 @@ KODLUYORUZ"></h1>
 
                     <!-- 3. Algoritmanın Sanatçıları: İfade Biçimi -->
                     <div class="split-block">
-                <img src="ifade-bicimi.png" alt="Algoritmanın Sanatçıları: İfade Biçimi" class="section-image" loading="lazy">
+                        <img src="ifade-bicimi.png" alt="Algoritmanın Sanatçıları: İfade Biçimi" class="section-image"
+                            loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">Algoritmanın Sanatçıları: İfade Biçimi</h3>
-                            <p>Dijital pazarlamanın yalnızca teknik bir süreç değil, aynı zamanda yaratıcı bir ifade biçimi olduğuna inanıyoruz. Gelecekte, algoritmaların sınırlarını zorlayarak, markaların dijitalde birer sanat eseri gibi parlamasını sağlamayı hedefliyoruz. Sanat ve bilim, Adastra'da ayrılmaz bir bütündür.</p>
+                            <p>Dijital pazarlamanın yalnızca teknik bir süreç değil, aynı zamanda yaratıcı bir ifade
+                                biçimi olduğuna inanıyoruz. Gelecekte, algoritmaların sınırlarını zorlayarak, markaların
+                                dijitalde birer sanat eseri gibi parlamasını sağlamayı hedefliyoruz. Sanat ve bilim,
+                                Adastra'da ayrılmaz bir bütündür.</p>
                         </div>
                     </div>
 
@@ -655,10 +918,14 @@ KODLUYORUZ"></h1>
 
                     <!-- 4. Sürekli Evrim: Adaptasyonun Felsefesi -->
                     <div class="split-block">
-                <img src="surekli-evrim.png" alt="Sürekli Evrim: Adaptasyonun Felsefesi" class="section-image" loading="lazy">
+                        <img src="surekli-evrim.png" alt="Sürekli Evrim: Adaptasyonun Felsefesi" class="section-image"
+                            loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">Sürekli Evrim: Adaptasyonun Felsefesi</h3>
-                            <p>Teknoloji ve trendler hızla değiştikçe, biz de değişiriz; ancak temel felsefemiz sabittir: öncü olmak, ilham vermek ve beklentilerin ötesine geçmek. Markaların dijitalde sürekli yenilenen bir güç olmasını sağlamak için, stratejilerimizi ve metodolojimizi sürekli yeniden programlarız.</p>
+                            <p>Teknoloji ve trendler hızla değiştikçe, biz de değişiriz; ancak temel felsefemiz
+                                sabittir: öncü olmak, ilham vermek ve beklentilerin ötesine geçmek. Markaların dijitalde
+                                sürekli yenilenen bir güç olmasını sağlamak için, stratejilerimizi ve metodolojimizi
+                                sürekli yeniden programlarız.</p>
                         </div>
                     </div>
 
@@ -666,16 +933,20 @@ KODLUYORUZ"></h1>
 
                     <!-- 5. İlham Kaynağımız: Liderlik Azmi -->
                     <div class="split-block">
-                <img src="liderlik-azmi.png" alt="İlham Kaynağımız: Liderlik Azmi" class="section-image" loading="lazy">
+                        <img src="liderlik-azmi.png" alt="İlham Kaynağımız: Liderlik Azmi" class="section-image"
+                            loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">İlham Kaynağımız: Liderlik Azmi</h3>
-                            <p>Her gün, yeni bir fikrin, yeni bir teknolojinin ve yeni bir hikayenin peşindeyiz. Vizyonumuz, markaların dijitalde sadece var olmalarını değil, geleceği tanımlayan liderler olmalarını sağlamaktır.</p>
+                            <p>Her gün, yeni bir fikrin, yeni bir teknolojinin ve yeni bir hikayenin peşindeyiz.
+                                Vizyonumuz, markaların dijitalde sadece var olmalarını değil, geleceği tanımlayan
+                                liderler olmalarını sağlamaktır.</p>
                         </div>
                     </div>
 
                     <div class="section-divider"></div>
 
-                    <p class="closing-line">"Ad astra, per aspera."<br>"Geleceğin zorluklarını aşarak yıldızlara ulaşma azmimiz,"<br>"her adımımızı aydınlatır ."</p>
+                    <p class="closing-line">"Ad astra, per aspera."<br>"Geleceğin zorluklarını aşarak yıldızlara ulaşma
+                        azmimiz,"<br>"her adımımızı aydınlatır ."</p>
                     <div class="section-divider"></div>
                 </div>
 
@@ -685,10 +956,13 @@ KODLUYORUZ"></h1>
 
                     <!-- 1. مهندسو الكون الرقمي -->
                     <div class="split-block">
-                        <img src="dijital-evren.png" alt="مهندسو الكون الرقمي: إمكانات لا نهائية" class="section-image" loading="lazy">
+                        <img src="dijital-evren.png" alt="مهندسو الكون الرقمي: إمكانات لا نهائية" class="section-image"
+                            loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">مهندسو الكون الرقمي: إمكانات لا نهائية</h3>
-                            <p>نحن لا نعمل فقط بعقلية بناء اليوم، بل نبني الغد. بصفتنا Adastra، نحن مستكشفون ومهندسون للعلامات التجارية في الحدود المتطورة باستمرار للكون الرقمي. لطالما نظرت البشرية إلى النجوم، لكننا نعيد تنظيم النجوم الرقمية للعلامات التجارية.</p>
+                            <p>نحن لا نعمل فقط بعقلية بناء اليوم، بل نبني الغد. بصفتنا Adastra، نحن مستكشفون ومهندسون
+                                للعلامات التجارية في الحدود المتطورة باستمرار للكون الرقمي. لطالما نظرت البشرية إلى
+                                النجوم، لكننا نعيد تنظيم النجوم الرقمية للعلامات التجارية.</p>
                             <p>“الإنسان يكمل نفسه فقط في المستقبل؛ ونحن نرشد العلامات التجارية إلى هذا الكمال.”</p>
                         </div>
                     </div>
@@ -697,12 +971,18 @@ KODLUYORUZ"></h1>
 
                     <!-- 2. رسم خريطة النجوم -->
                     <div class="split-block">
-                        <img src="yildiz-haritasi.png" alt="رسم خريطة النجوم: الريادة بالذكاء الاصطناعي" class="section-image" loading="lazy">
+                        <img src="yildiz-haritasi.png" alt="رسم خريطة النجوم: الريادة بالذكاء الاصطناعي"
+                            class="section-image" loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">رسم خريطة النجوم: الريادة بالذكاء الاصطناعي</h3>
-                            <p>هدفنا هو استخراج "خريطة النجوم" الفريدة لكل علامة تجارية في العالم الرقمي ونقلها إلى قمم لم تُكتشف بعد. بالنسبة لنا، النجاح لا يكمن فقط في المقاييس، بل في التأثير الذي نخلقه والابتكار الذي نقوده.</p>
-                            <p>لتحقيق هذا الهدف، نتابع التطورات التكنولوجية والتحليلات المدعومة بالذكاء الاصطناعي بشكل استباقي، ونقود القطاع في هذا المجال. نضمن أن يتلقى موظفونا ومديرونا تدريبًا مستمرًا وإلزاميًا حول أحدث الأدوات المستقبلية للتسويق الرقمي.</p>
-                            <p>“جوهر كل شيء يكمن في السعي للحفاظ على الذات؛ وسعينا هو تخليد جوهر العلامة التجارية في العالم الرقمي.”</p>
+                            <p>هدفنا هو استخراج "خريطة النجوم" الفريدة لكل علامة تجارية في العالم الرقمي ونقلها إلى قمم
+                                لم تُكتشف بعد. بالنسبة لنا، النجاح لا يكمن فقط في المقاييس، بل في التأثير الذي نخلقه
+                                والابتكار الذي نقوده.</p>
+                            <p>لتحقيق هذا الهدف، نتابع التطورات التكنولوجية والتحليلات المدعومة بالذكاء الاصطناعي بشكل
+                                استباقي، ونقود القطاع في هذا المجال. نضمن أن يتلقى موظفونا ومديرونا تدريبًا مستمرًا
+                                وإلزاميًا حول أحدث الأدوات المستقبلية للتسويق الرقمي.</p>
+                            <p>“جوهر كل شيء يكمن في السعي للحفاظ على الذات؛ وسعينا هو تخليد جوهر العلامة التجارية في
+                                العالم الرقمي.”</p>
                         </div>
                     </div>
 
@@ -710,10 +990,13 @@ KODLUYORUZ"></h1>
 
                     <!-- 3. فنانو الخوارزمية -->
                     <div class="split-block">
-                        <img src="ifade-bicimi.png" alt="فنانو الخوارزمية: شكل من أشكال التعبير" class="section-image" loading="lazy">
+                        <img src="ifade-bicimi.png" alt="فنانو الخوارزمية: شكل من أشكال التعبير" class="section-image"
+                            loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">فنانو الخوارزمية: شكل من أشكال التعبير</h3>
-                            <p>نؤمن أن التسويق الرقمي ليس مجرد عملية تقنية، بل هو أيضًا شكل من أشكال التعبير الإبداعي. في المستقبل، نهدف إلى دفع حدود الخوارزميات لجعل العلامات التجارية تتألق كأعمال فنية في العالم الرقمي. الفن والعلم جزء لا يتجزأ من Adastra.</p>
+                            <p>نؤمن أن التسويق الرقمي ليس مجرد عملية تقنية، بل هو أيضًا شكل من أشكال التعبير الإبداعي.
+                                في المستقبل، نهدف إلى دفع حدود الخوارزميات لجعل العلامات التجارية تتألق كأعمال فنية في
+                                العالم الرقمي. الفن والعلم جزء لا يتجزأ من Adastra.</p>
                         </div>
                     </div>
 
@@ -721,10 +1004,13 @@ KODLUYORUZ"></h1>
 
                     <!-- 4. التطور المستمر -->
                     <div class="split-block">
-                        <img src="surekli-evrim.png" alt="التطور المستمر: فلسفة التكيف" class="section-image" loading="lazy">
+                        <img src="surekli-evrim.png" alt="التطور المستمر: فلسفة التكيف" class="section-image"
+                            loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">التطور المستمر: فلسفة التكيف</h3>
-                            <p>مع تغير التكنولوجيا والاتجاهات بسرعة، نتغير نحن أيضًا؛ لكن فلسفتنا الأساسية ثابتة: أن نكون روادًا، ونلهم، ونتجاوز التوقعات. لضمان أن تكون العلامات التجارية قوة متجددة باستمرار في العالم الرقمي، نعيد برمجة استراتيجياتنا ومنهجياتنا باستمرار.</p>
+                            <p>مع تغير التكنولوجيا والاتجاهات بسرعة، نتغير نحن أيضًا؛ لكن فلسفتنا الأساسية ثابتة: أن
+                                نكون روادًا، ونلهم، ونتجاوز التوقعات. لضمان أن تكون العلامات التجارية قوة متجددة
+                                باستمرار في العالم الرقمي، نعيد برمجة استراتيجياتنا ومنهجياتنا باستمرار.</p>
                         </div>
                     </div>
 
@@ -732,16 +1018,19 @@ KODLUYORUZ"></h1>
 
                     <!-- 5. مصدر إلهامنا -->
                     <div class="split-block">
-                        <img src="liderlik-azmi.png" alt="مصدر إلهامنا: عزيمة القيادة" class="section-image" loading="lazy">
+                        <img src="liderlik-azmi.png" alt="مصدر إلهامنا: عزيمة القيادة" class="section-image"
+                            loading="lazy">
                         <div class="section-copy">
                             <h3 class="section-heading">مصدر إلهامنا: عزيمة القيادة</h3>
-                            <p>كل يوم، نسعى وراء فكرة جديدة، وتقنية جديدة، وقصة جديدة. رؤيتنا هي ضمان ألا تكون العلامات التجارية موجودة فقط في العالم الرقمي، بل أن تكون قادة يحددون المستقبل.</p>
+                            <p>كل يوم، نسعى وراء فكرة جديدة، وتقنية جديدة، وقصة جديدة. رؤيتنا هي ضمان ألا تكون العلامات
+                                التجارية موجودة فقط في العالم الرقمي، بل أن تكون قادة يحددون المستقبل.</p>
                         </div>
                     </div>
 
                     <div class="section-divider"></div>
 
-                    <p class="closing-line">"Ad astra, per aspera."<br>"عزيمتنا للوصول إلى النجوم بتجاوز صعوبات المستقبل،"<br>"تضيء كل خطوة نخطوها."</p>
+                    <p class="closing-line">"Ad astra, per aspera."<br>"عزيمتنا للوصول إلى النجوم بتجاوز صعوبات
+                        المستقبل،"<br>"تضيء كل خطوة نخطوها."</p>
                     <div class="section-divider"></div>
                 </div>
             </div>
@@ -777,51 +1066,58 @@ KODLUYORUZ"></h1>
                 </picture>
             </div>
             <div class="text-panel">
-            <div class="content-container contact-container">
-                <div class="section-divider"></div>
-                <div class="split-block">
-                    <div class="section-copy">
-                        <h3 class="section-heading">İletişime Geçin</h3>
-                        <p>Adastra ile dijital yolculuğunuza başlamak için bizimle iletişime geçin. Sorularınız, projeleriniz veya sadece tanışmak için buradayız.</p>
-                        <p><strong>Email:</strong> info@adastrabcv.com<br>
-                        <strong>Telefon:</strong> +90 (555) 123 45 67<br>
-                        <strong>Adres:</strong> Maslak Mah. Büyükdere Cad. No:123, Sarıyer/İstanbul</p>
+                <div class="content-container contact-container">
+                    <div class="section-divider"></div>
+                    <div class="split-block">
+                        <div class="section-copy">
+                            <h3 class="section-heading">İletişime Geçin</h3>
+                            <p>Adastra ile dijital yolculuğunuza başlamak için bizimle iletişime geçin. Sorularınız,
+                                projeleriniz veya sadece tanışmak için buradayız.</p>
+                            <p><strong>Email:</strong> info@adastrabcv.com<br>
+                                <strong>Telefon:</strong> +90 (555) 123 45 67<br>
+                                <strong>Adres:</strong> Maslak Mah. Büyükdere Cad. No:123, Sarıyer/İstanbul
+                            </p>
+                        </div>
                     </div>
+                    <div class="section-divider"></div>
                 </div>
-                <div class="section-divider"></div>
-            </div>
-            <div class="content-container contact-container-en ui-hidden">
-                <div class="section-divider"></div>
-                <div class="split-block">
-                    <div class="section-copy">
-                        <h3 class="section-heading">Contact Us</h3>
-                        <p>Contact us to start your digital journey with Adastra. We are here to answer your questions, discuss your projects, or just to meet.</p>
-                        <p><strong>Email:</strong> info@adastrabcv.com<br>
-                        <strong>Phone:</strong> +90 (555) 123 45 67<br>
-                        <strong>Address:</strong> Maslak Mah. Büyükdere Cad. No:123, Sarıyer/İstanbul</p>
+                <div class="content-container contact-container-en ui-hidden">
+                    <div class="section-divider"></div>
+                    <div class="split-block">
+                        <div class="section-copy">
+                            <h3 class="section-heading">Contact Us</h3>
+                            <p>Contact us to start your digital journey with Adastra. We are here to answer your
+                                questions, discuss your projects, or just to meet.</p>
+                            <p><strong>Email:</strong> info@adastrabcv.com<br>
+                                <strong>Phone:</strong> +90 (555) 123 45 67<br>
+                                <strong>Address:</strong> Maslak Mah. Büyükdere Cad. No:123, Sarıyer/İstanbul
+                            </p>
+                        </div>
                     </div>
+                    <div class="section-divider"></div>
                 </div>
-                <div class="section-divider"></div>
-            </div>
-            <div class="content-container contact-container-ar ui-hidden">
-                <div class="section-divider"></div>
-                <div class="split-block">
-                    <div class="section-copy">
-                        <h3 class="section-heading">تواصل معنا</h3>
-                        <p>تواصل معنا لبدء رحلتك الرقمية مع Adastra. نحن هنا للإجابة على أسئلتك، أو مناقشة مشاريعك، أو مجرد التعارف.</p>
-                        <p><strong>البريد الإلكتروني:</strong> info@adastrabcv.com<br>
-                        <strong>الهاتف:</strong> +90 (555) 123 45 67<br>
-                        <strong>العنوان:</strong> Maslak Mah. Büyükdere Cad. No:123, Sarıyer/İstanbul</p>
+                <div class="content-container contact-container-ar ui-hidden">
+                    <div class="section-divider"></div>
+                    <div class="split-block">
+                        <div class="section-copy">
+                            <h3 class="section-heading">تواصل معنا</h3>
+                            <p>تواصل معنا لبدء رحلتك الرقمية مع Adastra. نحن هنا للإجابة على أسئلتك، أو مناقشة مشاريعك،
+                                أو مجرد التعارف.</p>
+                            <p><strong>البريد الإلكتروني:</strong> info@adastrabcv.com<br>
+                                <strong>الهاتف:</strong> +90 (555) 123 45 67<br>
+                                <strong>العنوان:</strong> Maslak Mah. Büyükdere Cad. No:123, Sarıyer/İstanbul
+                            </p>
+                        </div>
                     </div>
+                    <div class="section-divider"></div>
                 </div>
-                <div class="section-divider"></div>
             </div>
-            </div>
-            
+
         </section>
     </main>
 
 
-    <script src="script.js"></script>
+    <script src="script.js?v=dev"></script>
 </body>
+
 </html>

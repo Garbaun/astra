@@ -1,102 +1,8 @@
-// Mobil cihaz uyumluluk kontrolü ve hata ayıklama
-window.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-(function() {
-    // iOS Safari için özel console.log
-    if (window.isMobile) {
-        console.log('Mobile device detected:', navigator.userAgent);
-        
-        // Hata yakalama için global handler
-        window.addEventListener('error', function(e) {
-            console.error('Mobile JavaScript Error:', e.message, e.filename, e.lineno);
-        });
-    }
-})();
-
-// Navigation System
+﻿// Navigation System
 document.addEventListener('DOMContentLoaded', function() {
-    // Mobil cihazlar için özel başlatma
-    if (window.isMobile) {
-        console.log('Mobile initialization started');
-        
-        // Farklı zamanlarda deneme yap - daha agresif yaklaşım
-        const tryToShowSlogans = function(attempt = 1) {
-            console.log('Mobile slogans attempt:', attempt);
-            
-            const slogans = document.querySelectorAll('.main-slogan, .section-slogan');
-            let visibleCount = 0;
-            
-            slogans.forEach(function(slogan, index) {
-                if (slogan) {
-                    // Tüm olası gizleme stillerini temizle - daha agresif
-                    slogan.style.cssText = 'opacity: 1 !important; visibility: visible !important; display: block !important; position: relative !important; z-index: 9999 !important; -webkit-transform: translateZ(0) !important; transform: translateZ(0) !important; -webkit-backface-visibility: hidden !important; backface-visibility: hidden !important; color: #ffffff !important; -webkit-text-fill-color: #ffffff !important;';
-                    
-                    // CSS class'larından gelen stilleri geçersiz kıl
-                    slogan.style.setProperty('opacity', '1', 'important');
-                    slogan.style.setProperty('visibility', 'visible', 'important');
-                    slogan.style.setProperty('display', 'block', 'important');
-                    slogan.style.setProperty('color', '#ffffff', 'important');
-                    slogan.style.setProperty('-webkit-text-fill-color', '#ffffff', 'important');
-                    
-                    // Metin içeriğini garanti altına al
-                    if (!slogan.textContent.trim()) {
-                        const dataText = slogan.getAttribute('data-text');
-                        if (dataText) {
-                            slogan.textContent = dataText;
-                            console.log('Set text for slogan', index, ':', dataText);
-                        }
-                    } else {
-                        console.log('Slogan', index, 'already has text:', slogan.textContent.trim());
-                        visibleCount++;
-                    }
-                    
-                    // Klas listesini kontrol et
-                    console.log('Slogan', index, 'classes:', slogan.className);
-                    console.log('Slogan', index, 'computed style:', window.getComputedStyle(slogan).opacity);
-                }
-            });
-            
-            console.log('Visible slogans:', visibleCount, '/', slogans.length);
-            
-            // Eğer henüz görünür değilse, tekrar dene
-            if (visibleCount < slogans.length && attempt < 10) {
-                setTimeout(function() {
-                    tryToShowSlogans(attempt + 1);
-                }, 500 * attempt); // Daha sık dene
-            } else {
-                console.log('Mobile slogans visibility ensured after', attempt, 'attempts');
-            }
-        };
-        
-        // Daha agresif zamanlama
-        tryToShowSlogans(1);
-        setTimeout(function() { tryToShowSlogans(2); }, 500);
-        setTimeout(function() { tryToShowSlogans(3); }, 1000);
-        setTimeout(function() { tryToShowSlogans(4); }, 2000);
-        setTimeout(function() { tryToShowSlogans(5); }, 3000);
-        setTimeout(function() { tryToShowSlogans(6); }, 5000);
-        
-        // Sayfa tamamen yüklendiğinde bir kez daha dene
-        window.addEventListener('load', function() {
-            console.log('Window load event - trying slogans again');
-            tryToShowSlogans(7);
-        });
-        
-        // iOS Safari için özel: touch event'inde de dene
-        document.addEventListener('touchstart', function() {
-            console.log('Touch start - trying slogans');
-            tryToShowSlogans(8);
-        }, { once: true });
-        
-        // Scroll event'inde de dene
-        window.addEventListener('scroll', function() {
-            console.log('Scroll event - trying slogans');
-            tryToShowSlogans(9);
-        }, { once: true });
-    }
     // Aktivasyon modu: 'mini_logo' olduğunda yalnızca mini-logo/nav/init kaynaklı aktivasyon yapılır
     let activationMode = 'mini_logo';
-const activateNav = (id, source = 'scroll') => {
+    const activateNav = (id, source = 'scroll') => {
         // Mini logo modunda bile scroll kaynaklı aktivasyonlara izin ver:
         // doğal kaydırmada aktif hero/slogan senkronize olsun.
         if (activationMode === 'mini_logo') {
@@ -109,21 +15,12 @@ const activateNav = (id, source = 'scroll') => {
         if ('scrollRestoration' in history) {
             history.scrollRestoration = 'manual';
         }
-        // Sayfa yenilendiğinde en başa (Home) zorla
-        window.scrollTo(0, 0);
-        
         if (window.location.hash) {
             // Başlangıçta yanlış sayfaya (ör. #blog) atlamayı önlemek için hash’i temizle
             history.replaceState(null, '', window.location.pathname + window.location.search);
         }
     } catch (_) {}
-const navLinks = document.querySelectorAll('.nav-link');
-// HTML'deki özgün (desktop) nav metinlerini yakala; TR masaüstünde bunlar kullanılacak
-const originalNavTexts = {};
-navLinks.forEach(link => {
-    const key = link.getAttribute('data-page');
-    originalNavTexts[key] = link.textContent;
-});
+    const navLinks = document.querySelectorAll('.nav-link');
     const sections = document.querySelectorAll('.page-section');
     const logoLink = document.querySelector('.logo-link');
     const navContainer = document.querySelector('.nav-container');
@@ -154,10 +51,8 @@ navLinks.forEach(link => {
     let introActive = true;
     let initialSettled = false; // İlk yükleme tamamlanana kadar aktif takibi beklet
     
-    // Başlangıç: nav sağda dikey sabit hizalı (sadece masaüstü)
-    if (!window.isMobile) {
-        stackNavRight();
-    }
+    // Başlangıç: nav sağda dikey sabit hizalı
+    stackNavRight();
     
     // Handle logo click: anlık şekilde home'a git
     if (logoLink) {
@@ -392,97 +287,6 @@ navLinks.forEach(link => {
                     ]
                 }
             }
-        },
-        ar: {
-            nav: {
-                home: 'الرئيسية',
-                about: 'من نحن',
-                services: 'خدماتنا',
-                vision: 'رؤيتنا',
-                blog: 'المدونة',
-                contact: 'اتصل بنا'
-            },
-            slogan: 'الطريق\nللوصول\nإلى النجوم',
-            slogans: {
-                about: 'نحن\nنبرمج\nالفن',
-                services: 'لوحات\nالمستقبل',
-                vision: 'منظور\nالغد',
-                blog: 'نبض\nالرقمية'
-            },
-            blogTags: {
-                all: 'الكل',
-                strategy: 'استراتيجية',
-                design: 'تصميم',
-                data: 'بيانات'
-            },
-            blogReadMore: 'اقرأ المزيد',
-            blogPosts: [
-                { title: 'عصر محركات البحث بالذكاء الاصطناعي: مكان علامتك التجارية في الخوارزمية.', excerpt: 'يعيد Google SGE ومحركات البحث الأخرى التي تعمل بالذكاء الاصطناعي تعريف البحث. تعرف على كيفية تميز علامتك التجارية وتصبح مرئية في عمق الخوارزميات.', img: 'blog/1.png', alt: 'عصر البحث بالذكاء الاصطناعي', tags: ['strategy','data'], content: 'يغير البحث المدعوم بالذكاء الاصطناعي الاكتشاف جذريًا. للتميز، تحتاج العلامات التجارية إلى ملاءمة دلالية، وبيانات منظمة، ومحتوى موثوق يمثل النية - ليس فقط الكلمات الرئيسية.\n\nاستثمر في المخطط، وإشارات E-E-A-T، والصفحات السريعة ويمكن الوصول إليها. تعامل مع الخوارزمية كجمهور ديناميكي: قم بالقياس والتكيف وتحسين الرسم البياني للمحتوى الخاص بك باستمرار.' }
-            ],
-            visionContent: [
-                {
-                    heading: 'مهندسو الكون الرقمي: إمكانات لا نهائية',
-                    paragraphs: [
-                        'نحن لا نعمل فقط بعقلية بناء اليوم، بل نبني الغد. بصفتنا Adastra، نحن مستكشفون ومهندسون للعلامات التجارية في الحدود المتطورة باستمرار للكون الرقمي. لطالما نظرت البشرية إلى النجوم، لكننا نعيد تنظيم النجوم الرقمية للعلامات التجارية.',
-                        '“الإنسان يكمل نفسه فقط في المستقبل؛ ونحن نرشد العلامات التجارية إلى هذا الكمال.”'
-                    ]
-                },
-                {
-                    heading: 'رسم خريطة النجوم: القيادة بالذكاء الاصطناعي',
-                    paragraphs: [
-                        'هدفنا هو رسم "خريطة النجوم" الفريدة لكل علامة تجارية في العالم الرقمي ودفعها إلى قمم غير مستكشفة. بالنسبة لنا، لا يكمن النجاح في المقاييس فحسب، بل في التأثير الذي نخلقه والابتكار الذي ندافع عنه.',
-                        'لتحقيق هذا الهدف، نراقب بشكل استباقي التقدم التكنولوجي وأدوات التحليل المدعومة بالذكاء الاصطناعي، ونقود الصناعة في هذا المجال. نضمن حصول موظفينا والمديرين التنفيذيين لدينا على تدريب مستمر وإلزامي حول أحدث الأدوات المستقبلية في التسويق الرقمي.',
-                        '“جوهر كل شيء هو سعيه للحفاظ على نفسه؛ سعينا هو تخليد جوهر العلامة التجارية في العالم الرقمي.”'
-                    ]
-                },
-                {
-                    heading: 'فنانو الخوارزميات: شكل من أشكال التعبير',
-                    paragraphs: [
-                        'نحن نؤمن بأن التسويق الرقمي ليس مجرد عملية تقنية، بل هو أيضًا شكل إبداعي من أشكال التعبير. في المستقبل، نهدف إلى دفع حدود الخوارزميات، وتمكين العلامات التجارية من التألق مثل الأعمال الفنية في الفضاء الرقمي. الفن والعلم كل لا يتجزأ في Adastra.'
-                    ]
-                },
-                {
-                    heading: 'التطور المستمر: فلسفة التكيف',
-                    paragraphs: [
-                        'مع تغير التكنولوجيا والاتجاهات بسرعة، نتغير نحن أيضًا؛ ومع ذلك، تظل فلسفتنا الأساسية ثابتة: أن نكون روادًا، ونلهم، ونتجاوز التوقعات. نعيد برمجة استراتيجياتنا ومنهجياتنا باستمرار لضمان بقاء العلامات التجارية قوة متجددة باستمرار في العالم الرقمي.'
-                    ]
-                },
-                {
-                    heading: 'مصدر إلهامنا: الشغف بالقيادة',
-                    paragraphs: [
-                        'كل يوم، نحن في سعي وراء فكرة جديدة، وتقنية جديدة، وقصة جديدة. رؤيتنا هي ضمان ألا تتواجد العلامات التجارية رقميًا فحسب، بل أن تصبح قادة يحددون المستقبل.'
-                    ]
-                }
-            ],
-            tips: {
-                label: 'تلميح',
-                tip1: {
-                    heading: 'التركيز على المستقبل.',
-                    items: [
-                        "تلميح 1: كل تحد يخفي فرصة. التحول الرقمي ليس مجرد عملية، بل هو بداية جديدة لعلامتك التجارية.",
-                        "تلميح 2: فكر بشكل كبير، وابدأ صغيرًا. حتى أكثر المشاريع طموحًا تبدأ بالخطوة الأولى.",
-                        "تلميح 3: لا تخف من ارتكاب الأخطاء؛ الرقمية هي فن التعلم المستمر والتكيف."
-                    ]
-                },
-                tip2: {
-                    heading: 'تحدث بالبيانات، وتفاعل بالفن.',
-                    items: [
-                        "تلميح 1: لا تعرف جمهورك المستهدف فحسب، بل افهمهم. تحليلات البيانات هي خريطة رحلتهم الرقمية.",
-                        "تلميح 2: لا تلتزم بمنصة واحدة. اسرد قصة علامتك التجارية عبر القنوات الرقمية الأكثر ملاءمة بنهج شامل.",
-                        "تلميح 3: المحتوى هو الملك، لكن التفاعل هو الملكة. أنشئ محتوى قيمًا، لكن لا تنس الحفاظ على حوار مستمر مع جمهورك.",
-                        "تلميح 4: اجعل اختبار A/B عادة. التسويق الرقمي هو عملية تجريب وتعلم مستمرة."
-                    ]
-                },
-                tip3: {
-                    heading: 'قل المزيد بأقل.',
-                    items: [
-                        "تلميح 1: انظر إلى البساطة كمصدر للقوة. التصميم الخالي من العناصر غير الضرورية يوصل الرسالة بشكل أوضح.",
-                        "تلميح 2: المساحة البيضاء هي نَفَس التصميم. استخدم المساحة السلبية بفعالية لإضافة عمق وتركيز لصورك.",
-                        "تلميح 3: الطباعة هي صوت العلامة التجارية. يجب أن تعكس اختيارات الخطوط الخاصة بك هوية العلامة التجارية والرسالة التي تريد نقلها بدقة.",
-                        "تلميح 4: استخدم لوحة الألوان الخاصة بك بشكل استراتيجي. أنشئ لغة بصرية مستقبلية ومذهلة باستخدام قليل ودقيق للألوان."
-                    ]
-                }
-            }
         }
     };
 
@@ -547,9 +351,6 @@ navLinks.forEach(link => {
                 const yyyy = d.getFullYear();
                 return `${dd}.${mm}.${yyyy}`;
             }
-            if (lang === 'ar') {
-                return d.toLocaleDateString('ar-EG', { month: 'short', day: 'numeric', year: 'numeric' });
-            }
             return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
         }
 
@@ -563,21 +364,10 @@ navLinks.forEach(link => {
             <article class="blog-card" tabindex="0" data-tags="${(p.tags||[]).join(',')}">
                 <img class="blog-thumb" src="${p.img}" alt="${p.alt||p.title}">
                 <div class="blog-meta">
+                    <div class="blog-card-date">${formatDate(p.__dateISO)}</div>
                     <h3 class="blog-card-title">${p.title}</h3>
                     <p class="blog-card-excerpt">${p.excerpt}</p>
-                    <div class="blog-card-footer">
-                        <span class="blog-card-date">${formatDate(p.__dateISO)}</span>
-                        <div class="blog-hashtags">
-                            ${(p.tags||[]).map(tag => `<span class="blog-hashtag">#${tag}</span>`).join('')}
-                        </div>
-                        <button class="blog-listen-btn" type="button" aria-label="Dinle">
-                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-                                <path d="M4 12a8 8 0 0116 0"/>
-                                <rect x="3" y="12" width="4" height="7" rx="2"/>
-                                <rect x="17" y="12" width="4" height="7" rx="2"/>
-                            </svg>
-                        </button>
-                    </div>
+                    <button class="read-more-btn" type="button">${dict.blogReadMore || 'Read More'}</button>
                 </div>
             </article>
         `).join('');
@@ -587,7 +377,7 @@ navLinks.forEach(link => {
             card.addEventListener('animationend', () => card.classList.remove('pulse'));
         });
         // Read More: modal aç
-        gallery.querySelectorAll('.blog-listen-btn').forEach((btn, idx) => {
+        gallery.querySelectorAll('.read-more-btn').forEach((btn, idx) => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 const post = filtered[idx];
@@ -633,7 +423,7 @@ navLinks.forEach(link => {
             .map(p => `<p>${p}</p>`)
             .join('');
         overlay.querySelector('.read-modal-content').innerHTML = contentHTML;
-        overlay.querySelector('.read-modal-close').setAttribute('aria-label', dict.blogClose || (lang==='tr'?'Kapat':(lang==='ar'?'إغلاق':'Close')));
+        overlay.querySelector('.read-modal-close').setAttribute('aria-label', dict.blogClose || (lang==='tr'?'Kapat':'Close'));
         overlay.classList.add('visible');
         document.body.style.overflow = 'hidden';
         const modal = overlay.querySelector('.read-modal');
@@ -647,55 +437,19 @@ navLinks.forEach(link => {
         document.body.style.overflow = '';
     }
 
-    let currentLang = null;
-    // Yardımcı: Viewport'a göre nav metinlerini güncelle
-    // İstek: TR dilinde 16:9 (geniş ekran) sürümde masaüstü metinleri kullan,
-    // mobilde ise kısaltmaları göster.
-    function updateNavLabelsForViewport(lang) {
-        const dict = i18n[lang] || i18n.en;
-        const aspect = Math.max(1, (window.innerWidth || 1)) / Math.max(1, (window.innerHeight || 1));
-        const isWide = (typeof window.matchMedia === 'function' && window.matchMedia('(min-aspect-ratio: 16/9)').matches)
-            || aspect >= (16/9 - 0.01);
-        const useDesktopTRTexts = (lang === 'tr') && isWide;
-
-        navLinks.forEach(link => {
-            const key = link.getAttribute('data-page');
-            // Dış bağlantılar (ör. Blog /yazilar/) data-page taşımayabilir; atla
-            if (!key) return;
-            if (useDesktopTRTexts) {
-                // 16:9 masaüstünde TR için HTML’deki özgün metinleri koru
-                const original = originalNavTexts[key];
-                const fallback = dict.nav && dict.nav[key];
-                if (original) link.textContent = original;
-                else if (fallback) link.textContent = fallback;
-            } else {
-                if (dict.nav && dict.nav[key]) {
-                    link.textContent = dict.nav[key];
-                }
-            }
-        });
-    }
-
     function applyLanguage(lang, restart = false) {
         const dict = i18n[lang] || i18n.en;
-        currentLang = lang;
-        // Nav metinleri: istek gereği yalnızca mobilde TR kısaltmalarını uygula; EN her yerde
-        updateNavLabelsForViewport(lang);
+        // Nav metinleri
+        navLinks.forEach(link => {
+            const key = link.getAttribute('data-page');
+            if (dict.nav[key]) link.textContent = dict.nav[key];
+        });
         // Slogan metinleri: sadece data-text güncelle, animasyonu tetikleme
         const homeSlogan = document.querySelector('#home .main-slogan');
         if (homeSlogan) {
             homeSlogan.setAttribute('data-text', dict.slogan);
             // Başlangıçta sloganın görünmemesini önlemek için gerçek metni yerleştir
             homeSlogan.textContent = dict.slogan;
-            // Mobil cihazlar için ek görünürlük garantisi
-            if (isMobile) {
-                homeSlogan.style.opacity = '1';
-                homeSlogan.style.visibility = 'visible';
-                homeSlogan.style.display = 'block';
-                // iOS Safari için ek garanti: z-index ve position
-                homeSlogan.style.position = 'relative';
-                homeSlogan.style.zIndex = '9999';
-            }
         }
         const sectionKeys = ['about','services','vision','blog'];
         sectionKeys.forEach(key => {
@@ -715,96 +469,59 @@ navLinks.forEach(link => {
             renderBlogGallery(lang);
         } catch (_) {}
 
-        // About içerik görünürlüğü (TR/EN/DE/AR)
+        // About içerik görünürlüğü (TR/EN)
         try {
             const aboutTr = document.querySelector('#about .about-content');
             const aboutEn = document.querySelector('#about .about-content-en');
-            const aboutAr = document.querySelector('#about .about-content-ar');
-            
-            [aboutTr, aboutEn, aboutAr].forEach(el => el && el.classList.add('ui-hidden'));
-            
-            if (lang === 'en' && aboutEn) {
-                aboutEn.classList.remove('ui-hidden');
-            } else if (lang === 'ar' && aboutAr) {
-                aboutAr.classList.remove('ui-hidden');
-            } else if (aboutTr) {
-                aboutTr.classList.remove('ui-hidden');
+            if (aboutTr && aboutEn) {
+                if (lang === 'en') {
+                    aboutEn.classList.remove('ui-hidden');
+                    aboutTr.classList.add('ui-hidden');
+                } else {
+                    aboutTr.classList.remove('ui-hidden');
+                    aboutEn.classList.add('ui-hidden');
+                }
             }
         } catch (_) {}
 
-        // Vision içerik görünürlüğü (TR/EN/AR)
-        try {
-            const visionTr = document.querySelector('#vision .vision-content');
-            const visionEn = document.querySelector('#vision .vision-content-en');
-            const visionAr = document.querySelector('#vision .vision-content-ar');
-            
-            [visionTr, visionEn, visionAr].forEach(el => el && el.classList.add('ui-hidden'));
-            
-            if (lang === 'en' && visionEn) {
-                visionEn.classList.remove('ui-hidden');
-            } else if (lang === 'ar' && visionAr) {
-                visionAr.classList.remove('ui-hidden');
-            } else if (visionTr) {
-                visionTr.classList.remove('ui-hidden');
+        // Vision metinleri: gerçek DOM yapısına uyum (text-panel içinde)
+        if (Array.isArray(dict.visionContent)) {
+            const blocks = document.querySelectorAll('#vision .text-panel .split-block');
+            blocks.forEach((block, idx) => {
+                const item = dict.visionContent[idx];
+                if (!item) return;
+                const copyEl = block.querySelector('.section-copy');
+                if (!copyEl) return;
+                const paras = (item.paragraphs || []).map(p => `<p>${p}</p>`).join('');
+                copyEl.innerHTML = `<h3 class="section-heading">${item.heading}</h3>${paras}`;
+            });
+            const closingEl = document.querySelector('#vision .text-panel .closing-line');
+            if (closingEl) {
+                if (lang === 'en') {
+                    closingEl.textContent = 'Ad astra, per aspera. Our determination to overcome the challenges of the future and reach the stars illuminates our every step.';
+                } else {
+                    closingEl.innerHTML = ['"Ad astra, per aspera."', '"Geleceğin zorluklarını aşarak yıldızlara ulaşma azmimiz,"', '"her adımımızı aydınlatır ."'].join('<br>');
+                }
             }
-        } catch (_) {}
+        }
 
-        // Contact içerik görünürlüğü (TR/EN/AR)
-        try {
-            const contactTr = document.querySelector('#contact .contact-container');
-            const contactEn = document.querySelector('#contact .contact-container-en');
-            const contactAr = document.querySelector('#contact .contact-container-ar');
-            
-            [contactTr, contactEn, contactAr].forEach(el => el && el.classList.add('ui-hidden'));
-            
-            if (lang === 'en' && contactEn) {
-                contactEn.classList.remove('ui-hidden');
-            } else if (lang === 'ar' && contactAr) {
-                contactAr.classList.remove('ui-hidden');
-            } else if (contactTr) {
-                contactTr.classList.remove('ui-hidden');
-            }
-        } catch (_) {}
-
-        // Services içerik görünürlüğü (TR/EN/DE/AR)
+        // Services içerik görünürlüğü (TR/EN)
         try {
             const servicesTr = document.querySelector('#services .services-content');
             const servicesEn = document.querySelector('#services .services-content-en');
-            const servicesAr = document.querySelector('#services .services-content-ar');
-
-            [servicesTr, servicesEn, servicesAr].forEach(el => el && el.classList.add('ui-hidden'));
-            
-            if (lang === 'en' && servicesEn) {
-                servicesEn.classList.remove('ui-hidden');
-            } else if (lang === 'ar' && servicesAr) {
-                servicesAr.classList.remove('ui-hidden');
-            } else if (servicesTr) {
-                servicesTr.classList.remove('ui-hidden');
+            if (servicesTr && servicesEn) {
+                if (lang === 'en') {
+                    servicesEn.classList.remove('ui-hidden');
+                    servicesTr.classList.add('ui-hidden');
+                } else {
+                    servicesTr.classList.remove('ui-hidden');
+                    servicesEn.classList.add('ui-hidden');
+                }
             }
         } catch (_) {}
 
-        // Home içerik görünürlüğü (TR/EN/AR)
-        try {
-            const homeTr = document.querySelector('#home .home-content');
-            const homeEn = document.querySelector('#home .home-content-en');
-            const homeAr = document.querySelector('#home .home-content-ar');
-
-            [homeTr, homeEn, homeAr].forEach(el => el && el.classList.add('ui-hidden'));
-            
-            if (lang === 'en' && homeEn) {
-                homeEn.classList.remove('ui-hidden');
-            } else if (lang === 'ar' && homeAr) {
-                homeAr.classList.remove('ui-hidden');
-            } else if (homeTr) {
-                homeTr.classList.remove('ui-hidden');
-            }
-        } catch (_) {}
-
-        // HTML lang ve dir özniteliklerini güncelle
-        try { 
-            document.documentElement.setAttribute('lang', lang);
-            document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
-        } catch (_) {}
+        // HTML lang özniteliğini güncelle
+        try { document.documentElement.setAttribute('lang', lang); } catch (_) {}
 
         // Tips içerikleri
         if (dict.tips) {
@@ -821,7 +538,7 @@ navLinks.forEach(link => {
                 if (headingEl && tip.heading) headingEl.textContent = sanitizeHeading(tip.heading);
                 if (listEl && Array.isArray(tip.items)) {
                     listEl.innerHTML = tip.items.map((text, idx) => {
-                        const cleaned = text.replace(/^(Tip|İpucu|Tipp)\s*\d+:\s*/i, '');
+                        const cleaned = text.replace(/^(Tip|İpucu)\s*\d+:\s*/i, '');
                         return `<li><strong>${label} ${idx+1}:</strong> ${cleaned}</li>`;
                     }).join('');
                 }
@@ -843,17 +560,6 @@ navLinks.forEach(link => {
 
     const savedLang = localStorage.getItem('lang') || 'en';
     applyLanguage(savedLang, false);
-
-    // Viewport değiştiğinde nav etiketlerini yeniden değerlendir
-    let rafNav = null;
-    window.addEventListener('resize', () => {
-        if (rafNav) return;
-        rafNav = requestAnimationFrame(() => {
-            rafNav = null;
-            const langNow = currentLang || (localStorage.getItem('lang') || savedLang);
-            updateNavLabelsForViewport(langNow);
-        });
-    });
 
     // Blog: Yükleme sonrası güvenlik ağı – galeri boşsa yeniden çiz
     try {
@@ -890,10 +596,12 @@ navLinks.forEach(link => {
         try {
             // Önce tüm önizlemeleri temizle
             sections.forEach(s => s.classList.remove('hero-preview'));
-            // Çapraz geçiş kapalı: hero-hold eklenmez (şeffaflaşma/çakışma önlenir)
+            // Çapraz geçiş: önceki bölüm hero’sunu kısa süre tut
+            if (prevSection) prevSection.classList.add('hero-hold');
             // Sonra yeni bölümü aktif hale getir
             sections.forEach(s => s.classList.toggle('hero-active', s.id === id));
-            // Önceki tutma sınıfı kullanılmıyor
+            // Kısa gecikme sonra önceki tutmayı kaldır
+            if (prevSection) setTimeout(() => { prevSection.classList.remove('hero-hold'); }, 300);
         } catch (_) {}
         // Slogan görünürlüğünü senkronize et: yalnızca aktif bölümde görünür olsun
         try {
@@ -919,7 +627,6 @@ navLinks.forEach(link => {
         currentActiveId = id;
     }
     // İlk yüklemede ana sayfa aktif
-    window.scrollTo(0, 0);
     activateNav('home', 'init');
 
     // Aktif bölümde hero’yu sabitleyen sınıfı senkronize et
@@ -977,12 +684,8 @@ navLinks.forEach(link => {
 
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            const targetPage = this.getAttribute('data-page');
-            // data-page yoksa (ör. Blog: /yazilar/ gibi dış/ayrı sayfa), varsayılan gezinmeye izin ver
-            if (!targetPage) {
-                return; // tarayıcı kendi yönlendirmesini yapsın
-            }
             e.preventDefault();
+            const targetPage = this.getAttribute('data-page');
             const targetSection = document.getElementById(targetPage);
             if (targetSection) {
                 // Bölümü hemen aktif et: hero görünür ve sabit ayarlar doğru uygulanır
@@ -1060,12 +763,10 @@ navLinks.forEach(link => {
 
         // Sloganın yazım animasyonu setActiveNav içinde tetikleniyor; burada çağırmıyoruz
 
-        // Sayfa açıldı: nav'ı sağda yığ ve animasyonu durdur (sadece masaüstü)
-        if (!window.isMobile) {
-            setTimeout(() => {
-                stackNavRight();
-            }, 1600);
-        }
+        // Sayfa açıldı: nav'ı sağda yığ ve animasyonu durdur
+        setTimeout(() => {
+            stackNavRight();
+        }, 1600);
     }
     
     // About section animations
@@ -1799,27 +1500,27 @@ navLinks.forEach(link => {
                 const r = el.getBoundingClientRect();
                 if (r.top <= mid && r.bottom >= mid) { visibleSectionId = id; break; }
             }
+            const navContainer = document.querySelector('.nav-container');
+            const logoEl = document.querySelector('.logo');
+            const langEl = document.querySelector('.language-switcher');
             const panel = visibleSectionId ? document.querySelector(`#${visibleSectionId} .text-panel`) : null;
 
-            // Home ve Contact’ta her zaman görünür.
+            // Basitleştirilmiş mantık: panel görünür olduğunda üst sabit UI'yi gizle
+            // Ana sayfanın kahraman (hero) kısmında UI görünür kalsın, contact'ta da görünür
             if (!panel || visibleSectionId === 'home' || visibleSectionId === 'contact') {
-                if (logoEl) { logoEl.style.opacity = '1'; logoEl.style.pointerEvents = 'auto'; }
-                if (langEl) { langEl.style.opacity = '1'; langEl.style.pointerEvents = 'auto'; }
-                // Nav her zaman görünür kalsın
                 document.body.style.setProperty('--ui-opacity', '1');
                 document.body.classList.remove('tips-active');
+                // UI her zaman görünür ve tıklanabilir kalsın
                 return;
             }
 
             const rect = panel.getBoundingClientRect();
             const vh = window.innerHeight;
-            // Panel üst kenarı viewport içine girdiğinde, üst UI’yi tamamen gizle
+            // Panel üst kenarı viewport içine girdiğinde (ör. alt %95), gizle
             const panelEntering = rect.top < (vh * 0.95) && rect.bottom > 0;
-            if (logoEl) { logoEl.style.opacity = panelEntering ? '0' : '1'; logoEl.style.pointerEvents = panelEntering ? 'none' : 'auto'; }
-            if (langEl) { langEl.style.opacity = panelEntering ? '0' : '1'; langEl.style.pointerEvents = panelEntering ? 'none' : 'auto'; }
-            // Nav opacity’sini değiştirme: sabit kalsın
-            document.body.style.setProperty('--ui-opacity', '1');
-            document.body.classList.remove('tips-active');
+            // Kademeli, hafif fade; etkileşimi kapatma
+            document.body.style.setProperty('--ui-opacity', panelEntering ? '0.92' : '1');
+            document.body.classList.toggle('tips-active', !!panelEntering);
         }
 
         window.addEventListener('scroll', () => {
@@ -2037,14 +1738,14 @@ navLinks.forEach(link => {
                             tmp.decoding = 'async';
                             tmp.src = prevHeroImg.src;
                         }
-                        // Preview efekti kapalı: yalnızca görsel preload edilir
+                        prevSection.classList.add('hero-preview');
 
                         // Ekrana girer girmez önceki bölümün hero'sunu aktif et (kaydırma yok)
                         try { startBlackFade(0.35, 600); } catch (_) {}
                         triggered.add(key);
                         try { activateNav(pid, 'mini'); } catch (_) {}
                         // Aktivasyon sonrasında preview gereksiz olacağından kaldırmayı deneyin
-                        // Preview eklenmedi; kaldırma gereksiz
+                        setTimeout(() => { prevSection.classList.remove('hero-preview'); }, 300);
                     }
                 }, { root: null, threshold: 0, rootMargin: '0% 0% 40% 0%' });
                 observers.push(obsTop);
@@ -2098,7 +1799,7 @@ navLinks.forEach(link => {
                             const tmp = new Image();
                             tmp.decoding = 'async';
                             tmp.src = nextHeroImg.src;
-                            // Preview efekti kapalı: yalnızca görsel preload edilir
+                            nextSection.classList.add('hero-preview');
                             preloadedByBottomEdge.add(key);
                         }
                     }
@@ -2134,18 +1835,11 @@ navLinks.forEach(link => {
             const panel = section.querySelector('.text-panel');
             if (!hero || !panel) return;
 
-            // İlk yüklemede scroll başlamadan kararma olmasın
-            const scrollTop = (window.scrollY || window.pageYOffset || 0);
-            if (scrollTop < 5) {
-                hero.style.setProperty('--hero-darkness', '0');
-                return;
-            }
-
             const rect = panel.getBoundingClientRect();
             const vh = window.innerHeight;
             // Panel görünmeye başladığında kararma başlasın; metne yaklaştıkça artan koyuluk
-            const start = vh * 1.0; // kararma daha da geç başlasın (panel neredeyse görünürken)
-            const end = vh * 0.45;   // maksimum koyuluk için eşik biraz yukarıda
+            const start = vh * 0.92; // kararma daha geç başlasın
+            const end = vh * 0.35;   // maksimum koyuluk eşiklerini koru
 
             let t = 1; // 1 → hiç koyu değil
             if (rect.top < start && rect.bottom > 0) {
@@ -2231,4 +1925,47 @@ navLinks.forEach(link => {
         });
         tick();
     })();
+});
+
+// --- Mobile Hamburger Menu Logic ---
+document.addEventListener('DOMContentLoaded', function() {
+    const hamburger = document.querySelector('.hamburger-menu');
+    const navContainer = document.querySelector('.nav-container');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    if (hamburger && navContainer) {
+        hamburger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            this.classList.toggle('active');
+            navContainer.classList.toggle('mobile-active');
+            
+            // Menü açıldığında scroll'u engelle
+            if (navContainer.classList.contains('mobile-active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        });
+        
+        // Linklere tıklanınca menüyü kapat
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navContainer.classList.remove('mobile-active');
+                document.body.style.overflow = '';
+            });
+        });
+        
+        // Menü dışına tıklanınca kapat
+        document.addEventListener('click', function(e) {
+            if (navContainer.classList.contains('mobile-active') && 
+                !navContainer.contains(e.target) && 
+                !hamburger.contains(e.target)) {
+                
+                hamburger.classList.remove('active');
+                navContainer.classList.remove('mobile-active');
+                document.body.style.overflow = '';
+            }
+        });
+    }
 });
