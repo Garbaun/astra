@@ -211,7 +211,7 @@ html[lang="ar"] .text-panel .split-block, html[dir="rtl"] .text-panel .split-blo
 .page-section:not(#contact) .hero-fill { position: sticky; top: 0; height: 100vh; min-height: 100vh; z-index: 1; pointer-events: none; }
 .page-section:not(#contact) .text-panel { margin-top: 0; position: relative; z-index: 10005; background: #121212; }
 .mini-logo { display: block; width: 48px; height: auto; filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(0, 212, 255, 0.45)); margin: 12px auto; align-self: center; opacity: 0; pointer-events: none; }
-.mini-logo-top { } .mini-logo-bottom { }
+
 #home .hero-fill { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; min-height: 100vh; pointer-events: none; z-index: 1; }
 .fixed-hero-active .hero-fill { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; min-height: 100vh; pointer-events: none; z-index: 1; }
 .fixed-hero-active .text-panel { margin-top: 75vh; }
