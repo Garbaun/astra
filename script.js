@@ -78,7 +78,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     startBlackFade(0.5, 1200);
                     smoothScrollToElement(homeSection, 1200, () => {
                         try { setActiveNav('home'); } catch (_) {}
-                        try { history.replaceState(null, '', '#home'); } catch (_) {}
                         suppressUpwardModeUntil = 0;
                     });
                 }
@@ -121,7 +120,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 about: 'WE\nCODE\nART',
                 services: 'CANVASES\nOF\nTHE FUTURE',
                 vision: 'PERSPECTIVE\nOF\nTOMORROW',
-                blog: 'THE PULSE\nOF\nTHE DIGITAL'
+                blog: 'THE PULSE\nOF\nTHE DIGITAL',
+                contact: 'TIME\nIS\nVALUABLE'
             },
             blogTags: {
                 all: 'All',
@@ -137,7 +137,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 { title: 'Sustainable SEO: Remaining Resilient Against Algorithm Shifts.', excerpt: 'SEO algorithms constantly change. Secure your rankings with resilient strategies and predict future SEO trends.', img: 'blog/4.png', alt: 'Sustainable SEO', tags: ['strategy','data'], content: 'Algorithm changes reward sites that serve users well. Focus on content quality, topical depth, and technical hygiene like Core Web Vitals.\n\nBuild resilient traffic with evergreen hubs, internal linking, and ongoing editorial improvements rather than one-off hacks.' },
                 { title: 'Micromarketing and Hyper-Segmentation: A Custom Digital Experience for Every Customer.', excerpt: 'The era of generic campaigns is over. Design tailored journeys with AI-powered micromarketing to boost conversions.', img: 'blog/5.png', alt: 'Micromarketing', tags: ['strategy','data'], content: 'Micromarketing matches moments to messages. With permissioned data and AI, tailor offers, timing, and creative to each segment.\n\nRespect privacy, add value, and measure uplift. When personalization feels helpful, conversion follows naturally.' },
                 { title: 'The Future of Digital Interaction: The Metaverse and Brands.', excerpt: 'The Metaverse opens a new frontier. Create brand experiences, design digital products and engage next-gen consumers.', img: 'blog/6.png', alt: 'Metaverse and Brands', tags: ['strategy','design'], content: 'New mediums demand new behaviors. In immersive spaces, design for presence, community, and co-creation rather than passive consumption.\n\nBrands that experiment responsibly will learn faster and earn trust as the ecosystem matures.' },
-                { title: 'Content Marketing 2.0: Generative AI and the Art of Storytelling.', excerpt: 'Generative AI transforms content creation. Build effective, personalized and scalable content without losing the human touch.', img: 'blog/7.png', alt: 'Content Marketing 2.0', tags: ['strategy','design'], content: 'Generative AI accelerates ideation and production. Keep humans in the loop for strategy, voice, and ethics.\n\nCombine templates with original thinking and real expertise to build content that is useful, distinctive, and trustworthy.' }
+                { title: 'Content Marketing 2.0: Generative AI and the Art of Storytelling.', excerpt: 'Generative AI transforms content creation. Build effective, personalized and scalable content without losing the human touch.', img: 'blog/7.png', alt: 'Content Marketing 2.0', tags: ['strategy','design'], content: 'Generative AI accelerates ideation and production. Keep humans in the loop for strategy, voice, and ethics.\n\nCombine templates with original thinking and real expertise to build content that is useful, distinctive, and trustworthy.' },
+                { title: 'Adaptive Content Systems: Building Consistency at Scale.', excerpt: 'Scale content without losing brand tone. Build modular systems and governance that keep teams aligned.', img: 'blog/8.png', alt: 'Adaptive Content Systems', tags: ['strategy','design'], content: 'Adaptive content needs systems. Build modular blocks, clear voice guidelines, and reusable patterns so teams move fast without drifting.\n\nDefine governance, QA checkpoints, and a living style guide. Consistency is not rigidity; it is a shared language.' },
+                { title: 'Human-Centered Analytics: Turning Metrics into Meaning.', excerpt: 'Move beyond dashboards. Translate data into decisions with a human-centered analytics lens.', img: 'blog/9.png', alt: 'Human-Centered Analytics', tags: ['data','strategy'], content: 'Human-centered analytics starts with questions, not dashboards. Translate metrics into stories that clarify decisions and highlight real user impact.\n\nPair qualitative signals with quantitative trends, then prioritize actions that reduce friction and amplify value.' }
             ],
             visionContent: [
                 {
@@ -206,19 +208,20 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         tr: {
             nav: {
-                home: 'Ev',
-                about: 'Bizler',
-                services: 'İşimiz',
-                vision: 'Vizyon',
+                home: 'Ana Sayfa',
+                about: 'Hakkımızda',
+                services: 'Hizmetler',
+                vision: 'Vizyonumuz',
                 blog: 'Blog',
                 contact: 'İletişim'
             },
-            slogan: 'YILDIZLARA\nULAŞMANIN\nYOLU',
+            slogan: 'GELECEĞE\nAÇILAN\nDİJİTAL EVREN',
             slogans: {
-                about: 'SANATI\nKODLUYORUZ',
-                services: 'GELECEĞİN\nKANVASLARI',
-                vision: 'YARININ\nPERSPEKTİFİ\nİÇİN',
-                blog: 'DİJİTALİN\nNABZI'
+                about: 'SANATI,\nSTRATEJİYİ VE\nTEKNOLOJİYİ KODLUYORUZ',
+                services: 'MARKANIZ İÇİN\nGELECEĞİN DİJİTAL\nKANVASI',
+                vision: 'YARINI\nTASARLAYAN\nPERSPEKTİF',
+                blog: 'DİJİTAL DÜNYANIN\nNABZI',
+                contact: 'ZAMAN\nDEĞERLİDİR'
             },
             blogTags: {
                 all: 'Tümü',
@@ -234,7 +237,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 { title: 'Sürdürülebilir SEO: Algoritma Değişikliklerine Karşı Esnek Kalmak.', excerpt: 'SEO algoritmaları sürekli güncelleniyor. Sıralamaları kalıcı kılmak için esnek stratejiler ve geleceğin SEO trendlerini öngörme yaklaşımlarını inceleyin.', img: 'blog/4.png', alt: 'Sürdürülebilir SEO', tags: ['strategy','data'], content: 'Algoritma güncellemeleri; kullanıcıya iyi hizmet veren siteleri ödüllendirir. İçerik kalitesine, konu derinliğine ve Core Web Vitals gibi teknik hijyene odaklanın.\n\nEvergreen içerik merkezleri, dahili bağlantılar ve sürekli editoryal iyileştirmelerle dayanıklı trafik oluşturun.' },
                 { title: 'Mikropazarlama ve Hiper-Segmentasyon: Her Müşteriye Özel Bir Dijital Deneyim.', excerpt: 'Genel kampanyaların devri bitti. Yapay zekâ destekli mikropazarlama ile her müşteriye özel yolculuk tasarlayarak dönüşümleri artırın.', img: 'blog/5.png', alt: 'Mikropazarlama', tags: ['strategy','data'], content: 'Mikropazarlama; anları mesajlarla eşleştirir. İzinli veri ve YZ ile teklifleri, zamanlamayı ve kreatifi her segmente göre uyarlayın.\n\nGizliliğe saygı duyun, değer katın ve gerçek etkiyi ölçün. Kişiselleştirme yardımcı hissettirdiğinde dönüşüm doğal olarak gelir.' },
                 { title: 'Dijital Etkileşimin Geleceği: Metaverse ve Markalar.', excerpt: 'Metaverse, markalar için yeni bir alan. Sanal dünyada deneyimler yaratın, dijital ürünler tasarlayın ve yeni nesil tüketicilerle etkileşime geçin.', img: 'blog/6.png', alt: 'Metaverse ve Markalar', tags: ['strategy','design'], content: 'Yeni ortamlar; yeni davranışlar ister. İmmersif alanlarda tasarım; varlık hissi, topluluk ve birlikte üretim üzerine kurulmalıdır—pasif tüketim değil.\n\nEkosistem olgunlaşırken sorumlu deney yapan markalar daha hızlı öğrenir ve güven kazanır.' },
-                { title: 'İçerik Pazarlaması 2.0: Yaratıcı Yapay Zeka ve Hikaye Anlatımı.', excerpt: 'Yaratıcı yapay zekâ içerik üretimini dönüştürüyor. İnsan dokunuşunu koruyarak etkili, kişiselleştirilmiş ve ölçeklenebilir içerikler üretin.', img: 'blog/7.png', alt: 'İçerik Pazarlaması 2.0', tags: ['strategy','design'], content: 'Yaratıcı YZ; fikir üretimi ve üretimi hızlandırır. Strateji, üslup ve etik için insanı döngüde tutun.\n\nŞablonları özgün düşünce ve gerçek uzmanlıkla birleştirerek faydalı, ayırt edici ve güvenilir içerikler üretin.' }
+                { title: 'İçerik Pazarlaması 2.0: Yaratıcı Yapay Zeka ve Hikaye Anlatımı.', excerpt: 'Yaratıcı yapay zekâ içerik üretimini dönüştürüyor. İnsan dokunuşunu koruyarak etkili, kişiselleştirilmiş ve ölçeklenebilir içerikler üretin.', img: 'blog/7.png', alt: 'İçerik Pazarlaması 2.0', tags: ['strategy','design'], content: 'Yaratıcı YZ; fikir üretimi ve üretimi hızlandırır. Strateji, üslup ve etik için insanı döngüde tutun.\n\nŞablonları özgün düşünce ve gerçek uzmanlıkla birleştirerek faydalı, ayırt edici ve güvenilir içerikler üretin.' },
+                { title: 'Uyarlanabilir İçerik Sistemleri: Ölçekte Tutarlılık.', excerpt: 'Marka tonunu koruyarak içerik üretimini ölçekleyin. Modüler yapı ve yönetişimle ekipleri hizalayın.', img: 'blog/8.png', alt: 'Uyarlanabilir İçerik Sistemleri', tags: ['strategy','design'], content: 'Uyarlanabilir içerik; modüler bloklar, net ses rehberi ve yeniden kullanılabilir desenlerle ölçeklenir. Böylece ekipler hızlanır ama marka tonu dağılmaz.\n\nYönetişim, kalite kontrol ve yaşayan bir stil rehberi kurun. Tutarlılık katılık değil, ortak dildir.' },
+                { title: 'İnsan Odaklı Analitik: Metrikleri Anlama Dönüştürmek.', excerpt: 'Gösterge panellerinin ötesine geçin. Veriyi, kararları netleştiren içgörülere dönüştürün.', img: 'blog/9.png', alt: 'İnsan Odaklı Analitik', tags: ['data','strategy'], content: 'İnsan odaklı analitik, önce soruyla başlar. Metrikleri, kararları netleştiren hikâyelere dönüştürerek gerçek etkiyi görünür kılar.\n\nNitel içgörüyü nicel trendlerle eşleştirip sürtünmeyi azaltan aksiyonlara öncelik verin.' }
             ],
             visionContent: [
                 {
@@ -315,7 +320,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 about: 'نحن نبرمج\nالفن',
                 services: 'لوحات\nالمستقبل',
                 vision: 'منظور\nالغد',
-                blog: 'نبض\nالرقمية'
+                blog: 'نبض\nالرقمية',
+                contact: 'الوقت\nثمين'
             },
             blogTags: {
                 all: 'الكل',
@@ -331,7 +337,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 { title: 'SEO المستدام: البقاء مرناً ضد تحولات الخوارزمية.', excerpt: 'تتغير خوارزميات SEO باستمرار. أمّن تصنيفاتك باستراتيجيات مرنة وتنبأ باتجاهات SEO المستقبلية.', img: 'blog/4.png', alt: 'Sustainable SEO', tags: ['strategy','data'], content: 'تكافئ تغييرات الخوارزمية المواقع التي تخدم المستخدمين بشكل جيد. ركز على جودة المحتوى، والعمق الموضوعي، والنظافة التقنية مثل Core Web Vitals.\n\nابنِ حركة مرور مرنة بمراكز دائمة الخضرة، وروابط داخلية، وتحسينات تحريرية مستمرة بدلاً من الحيل لمرة واحدة.' },
                 { title: 'التسويق الجزئي والتجزئة الفائقة: تجربة رقمية مخصصة لكل عميل.', excerpt: 'انتهى عصر الحملات العامة. صمم رحلات مخصصة مع التسويق الجزئي المدعوم بالذكاء الاصطناعي لزيادة التحويلات.', img: 'blog/5.png', alt: 'Micromarketing', tags: ['strategy','data'], content: 'يطابق التسويق الجزئي اللحظات بالرسائل. ببيانات مصرح بها وذكاء اصطناعي، خصص العروض، والتوقيت، والإبداع لكل شريحة.\n\nاحترم الخصوصية، وأضف قيمة، وقس الارتفاع. عندما يبدو التخصيص مفيداً، يتبع التحويل بشكل طبيعي.' },
                 { title: 'مستقبل التفاعل الرقمي: الميتافيرس والعلامات التجارية.', excerpt: 'يفتح الميتافيرس حدوداً جديدة. أنشئ تجارب للعلامة التجارية، وصمم منتجات رقمية واشترك مع مستهلكي الجيل القادم.', img: 'blog/6.png', alt: 'Metaverse and Brands', tags: ['strategy','design'], content: 'تتطلب الوسائط الجديدة سلوكيات جديدة. في المساحات الغامرة، صمم للحضور، والمجتمع، والإبداع المشترك بدلاً من الاستهلاك السلبي.\n\nالعلامات التجارية التي تجرب بمسؤولية ستتعلم أسرع وتكسب الثقة مع نضوج النظام البيئي.' },
-                { title: 'تسويق المحتوى 2.0: الذكاء الاصطناعي التليدي وفن سرد القصص.', excerpt: 'يحول الذكاء الاصطناعي التليدي إنشاء المحتوى. ابنِ محتوى فعالاً، ومخصصاً وقابلاً للتوسع دون فقدان اللمسة البشرية.', img: 'blog/7.png', alt: 'Content Marketing 2.0', tags: ['strategy','design'], content: 'يسرع الذكاء الاصطناعي التليدي التفكير والإنتاج. أبقِ البشر في الحلقة للاستراتيجية، والصوت، والأخلاق.\n\nاجمع بين القوالب والتفكير الأصلي والخبرة الحقيقية لبناء محتوى مفيد، ومميز، وجدير بالثقة.' }
+                { title: 'تسويق المحتوى 2.0: الذكاء الاصطناعي التوليدي وفن سرد القصص.', excerpt: 'يحول الذكاء الاصطناعي التوليدي إنشاء المحتوى. ابنِ محتوى فعالاً، ومخصصاً وقابلاً للتوسع دون فقدان اللمسة البشرية.', img: 'blog/7.png', alt: 'Content Marketing 2.0', tags: ['strategy','design'], content: 'يسرع الذكاء الاصطناعي التوليدي التفكير والإنتاج. أبقِ البشر في الحلقة للاستراتيجية، والصوت، والأخلاق.\n\nاجمع بين القوالب والتفكير الأصلي والخبرة الحقيقية لبناء محتوى مفيد، ومميز، وجدير بالثقة.' },
+                { title: 'أنظمة محتوى متكيفة: اتساق على نطاق واسع.', excerpt: 'وسّع إنتاج المحتوى دون فقدان نبرة العلامة. ابنِ أنظمة معيارية وحوكمة تحفظ الاتساق.', img: 'blog/8.png', alt: 'أنظمة محتوى متكيفة', tags: ['strategy','design'], content: 'تحتاج الأنظمة المتكيفة إلى وحدات محتوى قابلة لإعادة الاستخدام وإرشادات صوت واضحة حتى يعمل الفريق بسرعة دون فقدان النبرة.\n\nضع حوكمة ونقاط تدقيق جودة ودليلا أسلوبيا متجددا. الاتساق ليس جمودا بل لغة مشتركة.' },
+                { title: 'تحليلات متمحورة حول الإنسان: تحويل المقاييس إلى معنى.', excerpt: 'تجاوز لوحات البيانات. حوّل الأرقام إلى قرارات واضحة من منظور إنساني.', img: 'blog/9.png', alt: 'تحليلات متمحورة حول الإنسان', tags: ['data','strategy'], content: 'التحليلات المتمحورة حول الإنسان تبدأ بالأسئلة لا باللوحات. حوّل الأرقام إلى قصص توضّح القرار وتكشف الأثر الحقيقي.\n\nادمج الإشارات النوعية مع الاتجاهات الكمية ثم ركز على الإجراءات التي تقلل الاحتكاك وتزيد القيمة.' }
             ],
             visionContent: null, // Static HTML used for AR
             tips: {
@@ -513,6 +521,31 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.style.overflow = '';
     }
 
+    function setupCalendarModal() {
+        const modal = document.getElementById('calendarModal');
+        if (!modal) return;
+        const openButtons = document.querySelectorAll('[data-calendar-open]');
+        const closeButtons = modal.querySelectorAll('[data-calendar-close]');
+        const close = () => {
+            modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('calendar-modal-open');
+        };
+        const open = () => {
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('calendar-modal-open');
+        };
+        openButtons.forEach(btn => btn.addEventListener('click', open));
+        closeButtons.forEach(btn => btn.addEventListener('click', close));
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) close();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') close();
+        });
+    }
+
     function applyLanguage(lang, restart = false) {
         const dict = i18n[lang] || i18n.en;
         // Nav metinleri
@@ -527,7 +560,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Başlangıçta sloganın görünmemesini önlemek için gerçek metni yerleştir
             homeSlogan.textContent = dict.slogan;
         }
-        const sectionKeys = ['about','services','vision','blog'];
+        const sectionKeys = ['about','services','vision','blog','contact'];
         sectionKeys.forEach(key => {
             const el = document.querySelector(`#${key} .section-slogan`);
             if (!el) return;
@@ -603,7 +636,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (lang === 'en') {
                     closingEl.textContent = 'Ad astra, per aspera. Our determination to overcome the challenges of the future and reach the stars illuminates our every step.';
                 } else {
-                    closingEl.innerHTML = ['"Ad astra, per aspera."', '"Geleceğin zorluklarını aşarak yıldızlara ulaşma azmimiz,"', '"her adımımızı aydınlatır ."'].join('<br>');
+                    closingEl.innerHTML = ['Ad astra, per aspera.', 'Geleceğin zorluklarını aşarak yıldızlara ulaşma azmimiz,', 'her adımımızı aydınlatır .'].join('<br>');
                 }
             }
         }
@@ -630,6 +663,23 @@ document.addEventListener('DOMContentLoaded', function() {
                     servicesTr.classList.remove('ui-hidden');
                     servicesEn.classList.add('ui-hidden');
                 }
+            }
+        } catch (_) {}
+
+        // Contact içerik görünürlüğü (TR/EN/AR)
+        try {
+            const contactTr = document.querySelector('.contact-container');
+            const contactEn = document.querySelector('.contact-container-en');
+            const contactAr = document.querySelector('.contact-container-ar');
+
+            if (contactTr && contactEn && contactAr) {
+                contactTr.classList.add('ui-hidden');
+                contactEn.classList.add('ui-hidden');
+                contactAr.classList.add('ui-hidden');
+
+                if (lang === 'en') contactEn.classList.remove('ui-hidden');
+                else if (lang === 'ar') contactAr.classList.remove('ui-hidden');
+                else contactTr.classList.remove('ui-hidden');
             }
         } catch (_) {}
 
@@ -676,6 +726,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const savedLang = localStorage.getItem('lang') || 'en';
     applyLanguage(savedLang, false);
+    setupCalendarModal();
 
     // Blog: Yükleme sonrası güvenlik ağı – galeri boşsa yeniden çiz
     try {
@@ -745,11 +796,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // İlk yüklemede ana sayfa aktif
     activateNav('home', 'init');
     window.scrollTo(0, 0);
-    // Siyah ekranın kalkması için loaded sınıfını ekle
-    setTimeout(() => {
-        document.body.classList.add('loaded');
-    }, 100);
-
     // Aktif bölümde hero’yu sabitleyen sınıfı senkronize et
     (function syncFixedHeroWithActiveSection() {
         const EXCLUDE = new Set(['contact']);
@@ -817,7 +863,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     startBlackFade(0.5, 1200);
                     smoothScrollToElement(targetSection, 1200, () => {
                         try { setActiveNav('home'); } catch (_) {}
-                        try { history.replaceState(null, '', `#${targetPage}`); } catch (_) {}
                         suppressUpwardModeUntil = 0;
                     });
                 } else {
@@ -826,10 +871,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     smoothScrollToElement(targetSection);
                     setTimeout(() => { suppressUpwardModeUntil = 0; }, 700);
                 }
-            }
-            // URL hash’i güncelle: geri/ileri tuşlarında tutarlı davranış
-            if (targetPage !== 'home') {
-                try { history.replaceState(null, '', `#${targetPage}`); } catch (_) {}
             }
         });
     });
@@ -1545,10 +1586,32 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             // Scroll pozisyonunu kesinlikle en üste al
             try { window.scrollTo({ top: 0, behavior: 'auto' }); } catch (_) { window.scrollTo(0, 0); }
-            // Aktif takibi çok kısa bir gecikme sonrası devreye al
-            setTimeout(() => { initialSettled = true; }, 60);
+            const settleOnUserInput = () => {
+                if (initialSettled) return;
+                initialSettled = true;
+            };
+            window.addEventListener('wheel', settleOnUserInput, { passive: true, once: true });
+            window.addEventListener('touchstart', settleOnUserInput, { passive: true, once: true });
+            window.addEventListener('pointerdown', settleOnUserInput, { passive: true, once: true });
+            window.addEventListener('keydown', settleOnUserInput, { passive: true, once: true });
+            let bootUnlocked = false;
+            const unlockBoot = () => { bootUnlocked = true; };
+            window.addEventListener('wheel', unlockBoot, { passive: true, once: true });
+            window.addEventListener('touchstart', unlockBoot, { passive: true, once: true });
+            window.addEventListener('pointerdown', unlockBoot, { passive: true, once: true });
+            window.addEventListener('keydown', unlockBoot, { passive: true, once: true });
+            const bootLockUntil = Date.now() + 1200;
+            const bootLockTick = () => {
+                if (bootUnlocked) return;
+                if (Date.now() > bootLockUntil) return;
+                if ((window.scrollY || 0) > 0) window.scrollTo(0, 0);
+                requestAnimationFrame(bootLockTick);
+            };
+            requestAnimationFrame(bootLockTick);
             // Eski initial-block artık kullanılmıyor; varsa kaldır
             document.body.classList.remove('initial-block');
+            document.documentElement.classList.add('loaded');
+            document.body.classList.add('loaded');
         } catch (_) {}
     })();
 
@@ -1764,7 +1827,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Mini logo görünürlüğüne bağlı yönlü otomatik geçiş (üst: önceki, alt: sonraki)
     (function enableMiniLogoAdvance() {
-        const ENABLE = true;
+        const ENABLE = false;
         if (!ENABLE) return;
         const order = ['home', 'about', 'services', 'vision', 'blog', 'contact'];
         const observers = [];
